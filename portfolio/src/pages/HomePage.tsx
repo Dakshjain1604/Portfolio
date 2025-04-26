@@ -4,6 +4,8 @@ import { BottomBar } from "../compoents/BottomBar";
 import { Projects } from "../compoents/Projects";
 import { Skills } from "../compoents/Skills";
 import { ContactBottomBar, GetinTouch } from "./Contact";
+import { Experience } from "../compoents/Experience";
+
 
 export function HomePage() {
     return <>
@@ -13,7 +15,7 @@ export function HomePage() {
             <BottomBar/>
             <Projects/>
             <Skills/>
-            <GetinTouch/>
+            <Experience/>
             <ContactBottomBar/>
         </div>
     </>

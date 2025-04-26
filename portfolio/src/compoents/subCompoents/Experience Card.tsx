@@ -1,26 +1,28 @@
-interface expData {
+interface exp {
+  title: string;
   company: string;
-  logo?: string;
-  position: string;
-  learning?: string[];
-  tech?: string[];
-  date: string;
+  description: string;
+  image: string;
+  date:string
 }
-export function ExperienceCard(props: expData) {
+
+export function ExperienceCard(props: exp) {
   return (
-    <div className="flex flex-col text-white shadow-2xl shadow-gray-400 border-2 rounded-xl p-5">
-      <div className="flex items-center justify-between">
-        <div className="flex">
-          <div className=" font-semibold text-3xl pr-2">{props.position}</div>
-          <div className="text-2xl ">@{" " + props.company}</div>
+    <div className="w-full border-white rounded-xl px-20 pb-10 shadow-gray-300 shadow-md text-gray-300">
+      <div className="flex flex-row justify-between py-5 px-5 mt-4 text-3xl rounded-xl shadow-md shadow-gray-600 mb-5 ">
+        <div className="flex align-baseline">
+          <div>{props.title}</div>
+          <div className="pl-2 ">| {props.company}</div>
         </div>
-        <div className="text-2xl ">
-            {props.date}
+        <div>
+          <div className="text-xl "> {props.date}</div>
         </div>
       </div>
-      <div className="pt-5 pl-5 text-lg">
-        <polyline></polyline>
-        {props.learning}
+      <div className="h-[60%] pt-5 indent-2 flex justify-evenly shadow-md shadow-gray-600 rounded-xl px-10 pb-10">
+        <div className="text-justify pr-10 ">{props.description}</div>
+        <div className="bg-gray-300 rounded-xl h-fit ">
+          <img src={props.image}></img>
+        </div>
       </div>
     </div>
   );

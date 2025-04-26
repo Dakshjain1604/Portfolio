@@ -24,7 +24,7 @@ import { SkillBox } from "./subCompoents/SkillButton";
 
 export function Skills() {
   return (
-    <div className="pb-30 pt-20">
+    <div className="pb-20 pt-20">
       <div className="text-6xl font-bold pt-10 pb-10 text-white flex justify-center">
         Skills
       </div>

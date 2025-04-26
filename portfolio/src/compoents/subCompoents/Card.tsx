@@ -3,7 +3,7 @@ import { Github } from "../../icons/github";
 
 interface card {
     title: string,
-    image: string,
+    image?: string,
     onClick?: MouseEventHandler,
 }
 

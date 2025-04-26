@@ -4,7 +4,7 @@ import { Card } from "./subCompoents/Card";
 
 export function Projects() {
     return <div className="">
-        <div className="text-6xl font-bold pt-10 pb-10 text-white flex justify-center ">Projects</div>
+        <div className="text-6xl font-bold pt-10 pb-10 text-gray-200 flex justify-center ">PROJECTS</div>
         <div className="grid grid-col-2 px-10" >
             <div className="flex flex-col sm:flex-row md:w-full gap-10 justify-center">
             <Card title="Brainly" image="src/images/BrainlyImage.png" onClick={()=>{

@@ -25,7 +25,7 @@ export function GetinTouch() {
 
 export function ContactBottomBar() {
   return (
-    <div className="bg-gray-900 w-full h-full text-white">
+    <div className="bg-gray-900 w-full h-fit text-white">
       <div className="flex flex-col justify-center items-center">
         <div className="pt-10 text-2xl font-semibold">Contact Me</div>
         <div className=" text-center text-sm sm:text-lg text-gray-400">
@@ -44,10 +44,10 @@ export function Contact() {
   return (
     <div className="bg-black h-[100vh]">
       <Headerbar />
-      <div className="pt-50 flex flex-col justify-between">
+      <div className="flex flex-col justify-end ">
         {" "}
-        <GetinTouch />
-        <div className="pt-50"><ContactBottomBar /></div>
+        <div className="pt-30"><GetinTouch /></div>
+        <div className="pt-20"><ContactBottomBar /></div>
       </div>
     </div>
   );
