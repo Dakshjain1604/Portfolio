@@ -9,7 +9,7 @@ interface card {
 
 export function Card(props: card) {
     return (
-        <div className="text-white flex flex-col rounded-md w-120 h-fit border-2 p-2 border-gray-800">
+        <div className="text-white flex flex-col rounded-md w-80  sm:w-100 h-fit border-2 p-2 border-gray-800 md:w-120">
             <div className="flex justify-between py-3 px-2 ">
                 <div className="text-3xl font-bold">
                     {props.title}

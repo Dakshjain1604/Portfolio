@@ -3,7 +3,7 @@ import { ContactBottomBar } from "./Contact";
 
 export function AboutMe() {
   return (
-    <div className="bg-black text-white min-h-screen">
+    <div className="bg-black text-white min-h-screen h-[100%]">
       <Headerbar />
       <div className="flex justify-center items-center px-10">
       <div className="text-base sm:text-lg px-6 sm:px-20 pt-20 flex flex-col pb-20">

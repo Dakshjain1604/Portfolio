@@ -1,5 +1,5 @@
 import{useNavigate} from "react-router-dom";
-const defaultStyling="flex justify-center gap-5 md:gap-10 lg:gap-20 py-3 text-lg cursor-pointer  ";
+const defaultStyling="flex justify-center gap-5 md:gap-10 lg:gap-20 py-3 text-lg cursor-pointer ";
 export function Headerbar() {
     const navigate = useNavigate();
     return <>
