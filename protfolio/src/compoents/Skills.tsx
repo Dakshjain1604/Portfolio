@@ -29,39 +29,38 @@ export function Skills() {
         Skills
       </div>
       <div className="flex flex-col justify-center">
-        <div  className="flex justify-center gap-5 pb-3">
-          <SkillBox logo={<HtmlIcon />} text="Html"></SkillBox>
-          <SkillBox logo={<Cssicon />} text="CSS"></SkillBox>
-          <SkillBox logo={<JavaScript />} text="JavaScript"></SkillBox>
-          <SkillBox logo={<PythonIcon />} text="Python"></SkillBox>
-          <SkillBox logo={<NodejsIcon />} text="Node js"></SkillBox>
+        <div className="flex flex-wrap justify-center gap-2 sm:gap-5 pb-5">
+          <SkillBox logo={<HtmlIcon />} text="Html" />
+          <SkillBox logo={<Cssicon />} text="CSS" />
+          <SkillBox logo={<JavaScript />} text="JavaScript" />
+          <SkillBox logo={<PythonIcon />} text="Python" />
+          <SkillBox logo={<NodejsIcon />} text="Node js" />
         </div>
-        <div className="flex justify-center gap-5 pb-3">
-          <SkillBox logo={<Reactlogo />} text="React js"></SkillBox>
-          <SkillBox logo={<TypeScriptIcon />} text="TypeScript"></SkillBox>
-          <SkillBox logo={<MySqlIcon />} text="My SQL"></SkillBox>
-          <SkillBox logo={<MongoDbIcon />} text="Mongo DB"></SkillBox>
-          <SkillBox logo={<RedisIcon />} text="Redis"></SkillBox>
-          <SkillBox logo={<AzureIcon />} text="Azure"></SkillBox>
-          <SkillBox logo={<DockerIcon />} text="Docker"></SkillBox>
-        </div>
-        <div className="flex justify-center gap-5 pb-3">
-          <SkillBox logo={<GraphhQL />} text="GraphQl"></SkillBox>
-          <SkillBox logo={<PostManIcon />} text="PostMan"></SkillBox>
-          <SkillBox logo={<SwaggerIcon />} text="Swagger UI"></SkillBox>
-          <SkillBox logo={<GitIcon />} text="Git"></SkillBox>
-          <SkillBox
-            logo={<Github height={25} width={25} />}
-            text="GitHub"
-          ></SkillBox>
 
-          <SkillBox logo={<NextjsIcon />} text="Next js"></SkillBox>
+        <div className="flex flex-wrap justify-center gap-2 sm:gap-5 pb-5">
+          <SkillBox logo={<Reactlogo />} text="React js" />
+          <SkillBox logo={<TypeScriptIcon />} text="TypeScript" />
+          <SkillBox logo={<MySqlIcon />} text="My SQL" />
+          <SkillBox logo={<MongoDbIcon />} text="Mongo DB" />
+          <SkillBox logo={<RedisIcon />} text="Redis" />
+          <SkillBox logo={<AzureIcon />} text="Azure" />
+          <SkillBox logo={<DockerIcon />} text="Docker" />
         </div>
-        <div className="flex justify-center gap-5 pb-3">
-          <SkillBox logo={<ZodIcon />} text="Zod"></SkillBox>
-          <SkillBox logo={<TailwindIcon />} text="Tailwind CSS"></SkillBox>
-          <SkillBox logo={<PrismIcon />} text="Prisma"></SkillBox>
-          <SkillBox logo={<PostgreSQL />} text="PostgreSQL"></SkillBox>
+
+        <div className="flex flex-wrap justify-center gap-2 sm:gap-5 pb-5">
+          <SkillBox logo={<GraphhQL />} text="GraphQl" />
+          <SkillBox logo={<PostManIcon />} text="PostMan" />
+          <SkillBox logo={<SwaggerIcon />} text="Swagger UI" />
+          <SkillBox logo={<GitIcon />} text="Git" />
+          <SkillBox logo={<Github height={25} width={25} />} text="GitHub" />
+          <SkillBox logo={<NextjsIcon />} text="Next js" />
+        </div>
+
+        <div className="flex flex-wrap justify-center gap-2 sm:gap-5 pb-5">
+          <SkillBox logo={<ZodIcon />} text="Zod" />
+          <SkillBox logo={<TailwindIcon />} text="Tailwind CSS" />
+          <SkillBox logo={<PrismIcon />} text="Prisma" />
+          <SkillBox logo={<PostgreSQL />} text="PostgreSQL" />
         </div>
       </div>
     </div>

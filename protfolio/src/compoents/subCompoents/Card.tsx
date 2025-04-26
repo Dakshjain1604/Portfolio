@@ -10,11 +10,11 @@ interface card {
 export function Card(props: card) {
     return (
         <div className="text-white flex flex-col rounded-md w-120 h-fit border-2 p-2 border-gray-800">
-            <div className="flex justify-between py-3 ">
+            <div className="flex justify-between py-3 px-2 ">
                 <div className="text-3xl font-bold">
                     {props.title}
                 </div>
-                <div onClick={props.onClick} className="hover:scale-110" >
+                <div onClick={props.onClick} className="hover:scale-125" >
                     {<Github height={30} width={30} />}
                 </div>
             </div>

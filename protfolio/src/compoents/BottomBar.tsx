@@ -4,7 +4,7 @@ import { Leetcode } from "../icons/Leetcode";
 import { Linkedin } from "../icons/linkedin";
 
 export function BottomBar(){
-    return <div className="pt-10 pb-20 flex justify-center items-center gap-20 ">
+    return <div className="pt-10 pb-20 flex justify-center items-center  gap-10 md:gap-10 lg:gap-20 ">
         <div onClick={()=>{
           window.open('https://www.linkedin.com/in/daksh-jain16/', '_blank');
         }} className="hover:scale-110"><Linkedin/></div>
