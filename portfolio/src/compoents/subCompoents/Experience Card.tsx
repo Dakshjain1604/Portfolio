@@ -19,7 +19,7 @@ export function ExperienceCard(props: exp) {
         </div>
       </div>
       <div className="h-[60%] pt-5 indent-2 flex justify-evenly shadow-md shadow-gray-600 rounded-xl px-10 pb-10">
-        <div className="text-justify pr-10 text-lg">{props.description}</div>
+        <div className="text-justify text-gray-400 pr-10 text-lg">{props.description}</div>
         <div className="bg-gray-300 rounded-xl h-fit ">
           <img src={props.image}></img>
         </div>

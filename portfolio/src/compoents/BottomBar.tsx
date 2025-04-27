@@ -2,7 +2,7 @@ import { Github } from "../icons/github";
 import { Gmailicon } from "../icons/GmailIcon";
 import { Leetcode } from "../icons/Leetcode";
 import { Linkedin } from "../icons/linkedin";
-
+import {motion} from "motion/react"
 export function BottomBar(){
     return <div className="pt-10 pb-20 flex justify-center items-center  gap-10 md:gap-10 lg:gap-20 ">
         <div onClick={()=>{

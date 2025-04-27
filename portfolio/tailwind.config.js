@@ -19,6 +19,14 @@ export default {
       cursor: {
         fancy: 'url("protfolio/public/icons8-cursor-50.png"), auto', // Replace with your image path
       },
+      fontFamily: {
+        sans: , // default sans
+        serif: ['Playfair Display', 'serif'], // default serif
+        dancing: ['Dancing Script', 'cursive'],
+        limelight: ['Limelight', 'cursive'],
+        tagesschrift: ['Tagesschrift', 'cursive'],
+        tektur: ['Tektur', 'sans-serif'],
+      },
     },
   },
   plugins: [],

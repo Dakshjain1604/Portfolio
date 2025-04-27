@@ -22,19 +22,18 @@ export function GetinTouch() {
   );
 }
 
-
 export function ContactBottomBar() {
   return (
-    <div className="bg-gray-900 w-full h-fit text-white">
-      <div className="flex flex-col justify-center items-center">
-        <div className="pt-10 text-2xl font-semibold">Contact Me</div>
-        <div className=" text-center text-sm sm:text-lg text-gray-400">
-          I’m always open to new opportunities,
-          exciting collaborations, or
+    <div className="bg-gray-900 w-full text-white">
+      <div className="flex flex-col justify-center px-4 sm:px-10 lg:px-20">
+        <div className="pt-10 text-2xl font-semibold text-center">CONTACT ME</div>
+        <div className="text-center text-sm sm:text-lg text-gray-400">
+          I’m always open to new opportunities, exciting collaborations, or
           just
-          <br/>a friendly hello.
+          <br />
+          a friendly hello.
         </div>
-        <div ><BottomBar/></div>
+        <div className="mt-4"><BottomBar /></div>
       </div>
     </div>
   );
@@ -42,12 +41,12 @@ export function ContactBottomBar() {
 
 export function Contact() {
   return (
-    <div className="bg-black h-[100vh]">
+    <div className="bg-black min-h-screen">
       <Headerbar />
       <div className="flex flex-col justify-end ">
         {" "}
         <div className="pt-30"><GetinTouch /></div>
-        <div className="pt-20"><ContactBottomBar /></div>
+        <div className="pt-20 xl:pt-50"><ContactBottomBar /></div>
       </div>
     </div>
   );

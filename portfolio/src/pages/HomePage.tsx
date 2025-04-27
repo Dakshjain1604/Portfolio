@@ -3,14 +3,14 @@ import { HeroContent } from "../compoents/HeroSectiont";
 import { BottomBar } from "../compoents/BottomBar";
 import { Projects } from "../compoents/Projects";
 import { Skills } from "../compoents/Skills";
-import { ContactBottomBar, GetinTouch } from "./Contact";
-import { Experience } from "../compoents/Experience";
+import { ContactBottomBar } from "./Contact";
+import { Experience } from "../compoents/Experience"
 
 
 export function HomePage() {
     return <>
         <div className="h-full flex flex-col bg-black text-white">
-            <Headerbar />
+            <Headerbar/>
             <HeroContent/>
             <BottomBar/>
             <Projects/>
