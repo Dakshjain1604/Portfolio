@@ -32,7 +32,7 @@ export function AboutMe() {
         <div>
           <img src="src/images/Dakshbest.jpg" className="rounded-[50%]"></img>
         </div>
-
+      <ContactBottomBar/>
       </div>
     </div>
   );
