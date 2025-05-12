@@ -11,19 +11,7 @@ export function HeroContent() {
     <div className="font-dancing">
       <div className={`${newchanges}`}>
         <div className="flex justify-center items-center">
-          <motion.img
-            src="src/images/ChatGPT Image Apr 28, 2025, 05_41_44 PM.png"
-            className="h-40 w-40"
-            animate={{
-              y: [0, -10, 0], // move up 10px and come back
-            }}
-            transition={{
-              duration: 2, // slow and smooth
-              repeat: Infinity, // loop forever
-              repeatType: "loop", // normal looping
-              ease: "easeInOut", // smooth up and down
-            }}
-          />
+          
           <motion.video
             drag
             whileDrag={{
@@ -45,19 +33,7 @@ export function HeroContent() {
             loop
             className="cursor-grab -mb-3 "
           ></motion.video>
-           <motion.img
-            src="src/images/thinking.png"
-            className="h-60 w-42"
-            animate={{
-              y: [0, -10, 0], // move up 10px and come back
-            }}
-            transition={{
-              duration: 2, // slow and smooth
-              repeat: Infinity, // loop forever
-              repeatType: "loop", // normal looping
-              ease: "easeInOut", // smooth up and down
-            }}
-          />
+           
         </div>
         <div className="text-gray-300 flex flex-col justify-center items-center px-5">
           <div
