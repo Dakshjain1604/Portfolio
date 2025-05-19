@@ -2,6 +2,9 @@
 
 A modern, responsive portfolio website built with React, TypeScript, and Tailwind CSS to showcase my projects, skills, and experience.
 
+![image](https://github.com/user-attachments/assets/f9fba0ff-a550-4ef0-96b5-6dd6f8983a08)
+
+
 ## Features
 
 - Responsive design that works on all devices
