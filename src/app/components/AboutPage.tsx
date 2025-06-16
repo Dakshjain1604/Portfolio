@@ -22,11 +22,11 @@ export function AboutMe() {
             className="text-justify leading-relaxed text-sm sm:text-base md:text-md"
           >
             <p>
-              I'm a passionate <b> Computer Science undergraduate </b> specializing in 
+              I&apos;m a passionate <b> Computer Science undergraduate </b> specializing in 
               <b> Cloud Computing </b> at JECRC University, with a strong 
               <b> 8.3 CGPA </b> and hands-on experience in 
               <b> full-stack development </b>. My journey in tech has been shaped by 
-              <b> real-world internships </b> at <b> Celebal Technologies </b>, where I've worked on both 
+              <b> real-world internships </b> at <b> Celebal Technologies </b>, where I&apos;ve worked on both 
               <b> backend development </b> and <b> data science projects </b>, gaining expertise in building 
               <b> scalable web applications </b> and <b> machine learning solutions </b>.
             </p>
@@ -37,7 +37,7 @@ export function AboutMe() {
               <b> React.js, Node.js, Express </b>, and various databases like <b> MongoDB and PostgreSQL </b>. 
               My technical toolkit spans from frontend frameworks and responsive design to 
               <b> backend APIs, authentication systems </b>, and containerization with 
-              <b> Docker </b>. I've successfully delivered projects like 
+              <b> Docker </b>. I&apos;ve successfully delivered projects like 
               <b> Transactly </b>, a secure payment transfer application, and developed 
               interactive portfolio websites that showcase my commitment to <b> clean code </b> and 
               <b> user experience </b>.
@@ -46,7 +46,7 @@ export function AboutMe() {
             <p className="pt-4">
               Beyond development, I bring valuable experience in <b> data science and machine learning </b>, 
               having worked with <b> Python, Scikit-learn, and NLP models </b> during my recent internship. 
-              I'm currently learning <b> Generative AI </b> and implementing it into my projects, including a 
+              I&apos;m currently learning <b> Generative AI </b> and implementing it into my projects, including a 
               <b> website clone generator </b> that demonstrates AI-powered development tools. 
               This diverse skill set, combined with my <b> 5× Microsoft Azure certifications </b>, 
               positions me uniquely to tackle complex technical challenges across different domains.
@@ -59,11 +59,11 @@ export function AboutMe() {
               viewport={{ once: true }}
               className="pt-6"
             >
-              I'm driven by the opportunity to <b> transform ideas into reliable, impactful solutions </b> and 
+              I&apos;m driven by the opportunity to <b> transform ideas into reliable, impactful solutions </b> and 
               thrive in <b> collaborative environments </b> where I can contribute to meaningful projects. 
-              Whether it's building <b> robust APIs </b>, creating 
+              Whether it&apos;s building <b> robust APIs </b>, creating 
               <b> intuitive user interfaces </b>, or exploring 
-              <b> cutting-edge technologies </b>, I'm always eager to learn and deliver 
+              <b> cutting-edge technologies </b>, I&apos;m always eager to learn and deliver 
               <b> excellence in every project </b> I undertake.
             </motion.p>
           </motion.div>

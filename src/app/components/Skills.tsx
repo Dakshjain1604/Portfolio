@@ -27,15 +27,15 @@ import { motion } from "framer-motion";
 export function Skills() {
   return (
     <div className="">
-      <motion.div 
+      <motion.h2 
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         viewport={{ once: true }}
-        className="text-6xl font-bold pt-10 pb-10 text-white flex justify-center hover:scale-110"
+        className="text-6xl font-bold pt-10 pb-10  flex justify-center hover:scale-110  "
       >
         Skills
-      </motion.div>
+      </motion.h2>
       <div className="flex flex-col justify-center px-2 sm:px-4 md:px-6 lg:px-8">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}

@@ -26,10 +26,10 @@ export function HeroSection() {
             viewport={{ once: true }}
             className="text-base sm:text-lg md:text-xl text-center md:text-center text-blue-100 pt-4 font-serif max-w-xl"
           >
-            Welcome! I'm a Full-Stack Web Developer who loves building sleek,
+            Welcome! I&apos;m a Full-Stack Web Developer who loves building sleek,
             scalable apps
             <br />
-            check out my work and let's connect!
+            check out my work and let&apos;s connect!
           </motion.div>
         </div>
         <motion.video
