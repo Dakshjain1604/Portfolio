@@ -36,7 +36,7 @@ export function Skills() {
       >
         Skills
       </motion.div>
-      <div className="flex flex-col justify-center">
+      <div className="flex flex-col justify-center px-2 sm:px-4 md:px-6 lg:px-8">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

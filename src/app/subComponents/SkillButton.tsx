@@ -23,7 +23,7 @@ export function SkillBox(props: Skills) {
             left: 2,
             right: 2
         }}
-        className=" opacity-30 flex flex-row rounded-3xl shadow-lg shadow-gray-700  text-white sm:w-fit h-fit justify-center items-center p-4 gap-3 border-white/20 border-1"
+        className=" opacity-30 flex flex-row rounded-3xl shadow-lg shadow-gray-700  text-white sm:w-fit h-fit justify-center items-center p-2 md:p-4 gap-3 border-white/20 border-1"
     >
         <motion.div 
             whileHover={{ rotate: 360 }}
