@@ -13,6 +13,7 @@ export function Projects() {
               "https://github.com/Dakshjain1604/transactly_frontend/blob/main/README.md"
             }
             liveLink={"https://transactly-frontend.vercel.app/signup"}
+            delay={0.3}
           />
           <Card
             name="Live Tracking App"
@@ -20,11 +21,13 @@ export function Projects() {
             gitHubLink={
               "https://github.com/Dakshjain1604/Live-Tracking/tree/main"
             }
+            delay={0.4}
           />
           <Card
             name="Brainly - Personal Link Saver"
             imageSrc="images/brainlyImages/BrainlyImage.png"
             gitHubLink={"https://github.com/Dakshjain1604/Brainly"}
+            delay={0.5}
           />
         </div>
         <div className="flex mt-10 justify-center">
@@ -33,6 +36,7 @@ export function Projects() {
             imageSrc="images/Website_Cloner.avif"
             gitHubLink={"https://github.com/Dakshjain1604/Brainly"}
             AIenabled={true}
+            delay={0.6}
           />
         </div>
       </div>

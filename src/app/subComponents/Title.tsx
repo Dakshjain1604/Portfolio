@@ -36,7 +36,7 @@ const buildKeyframes = (
 const BlurText: React.FC<BlurTextProps> = ({
   text = "",
   delay = 200,
-  className = "",
+  className ="",
   animateBy = "words",
   direction = "top",
   threshold = 0.1,
@@ -120,7 +120,7 @@ const BlurText: React.FC<BlurTextProps> = ({
               display: "inline-block",
               willChange: "transform, filter, opacity",
             }}
-            className="font-playfair"
+            className="font-serif "
           >
             {segment === " " ? "\u00A0" : segment}
             {animateBy === "words" && index < elements.length - 1 && "\u00A0"}

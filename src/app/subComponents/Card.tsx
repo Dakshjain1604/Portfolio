@@ -4,17 +4,30 @@ import { Github } from "../icons/github";
 import { WebSiteIcon } from "../icons/webisteIcon";
 import { Url } from "next/dist/shared/lib/router/router";
 import { AI } from "../icons/AI_icon";
-
+import {motion } from "framer-motion"
 interface PropsCard {
   name: string;
   imageSrc: string;
   gitHubLink: Url;
   liveLink?: Url;
-  AIenabled?: Boolean;
+  AIenabled?:boolean;
+  delay:number
 }
 const Card = (props: PropsCard) => {
   return (
-    <div className="bg-gray-950 w-120 h-fit rounded-lg pt-3 border-2 hover:scale-105 cursor-pointer shadow-2xl shadow-white/20 min-h-80 max-w-100 ">
+    <motion.div initial={{ opacity: 0, y: -50 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    transition={{
+      type: "spring",
+      bounce: 0.4, 
+      duration: 0.8, 
+      delay: props.delay,
+    }}
+    viewport={{ once: true }}
+    
+    
+    
+    className="bg-gray-950 w-120 h-fit rounded-lg pt-3 border-2 hover:scale-105 cursor-pointer shadow-2xl shadow-white/20 min-h-80 max-w-100 ">
       <div className="flex justify-between border-gray-400 border-1 rounded-md px-3 py-1 mx-3 ">
         <div className="flex p-2 gap-1">
           <div className="text-xl font-bold hover:scale-110 hover:text-blue-300 h-fit">
@@ -58,7 +71,7 @@ const Card = (props: PropsCard) => {
             />
           </div>
         </div>
-      </div>
+      </motion.div>
   );
 };
 

@@ -16,7 +16,7 @@ export function HeroSection() {
             delay={150}
             animateBy="words"
             direction="top"
-            className="text-9xl mb-8 mt-15 justify-center"
+            className="text-9xl mb-8 mt-15 justify-center text-shadow-2xl text-shadow-white"
           />
           </div>
           <motion.div
@@ -24,7 +24,7 @@ export function HeroSection() {
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.3, delay: 0.4 }}
             viewport={{ once: true }}
-            className="text-xl align-center text-center text-white pt-4 font-serif"
+            className="text-xl align-center text-center text-blue-100 pt-4 font-serif"
           >
             Welcome! I'm a Full-Stack Web Developer who loves building sleek,
             scalable apps

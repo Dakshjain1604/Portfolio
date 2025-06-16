@@ -2,7 +2,7 @@ import { BottomBar } from './BottomBar';
 
 export default function Footer() {
   return (
-    <footer className="bottom-0 left-0 w-full z-50 bg-gray-80/50 border-1 border-white/50 rounded-md mt-20 text-white px-6 py-10">
+    <footer className="bottom-0 left-0 w-full z-50 bg-gray-80/50 border-1 border-white/50 rounded-md mt-20 text-white px-6 py-10" id="contacts">
       <div className="flex flex-col md:flex-row justify-around items-start md:items-center">
         
         {/* Left Section - Contact Text */}
