@@ -22,51 +22,30 @@ export function AboutMe() {
             className="text-justify leading-relaxed text-sm sm:text-base md:text-md"
           >
             <p>
-              I&apos;m a passionate <b> Computer Science undergraduate </b> specializing in 
-              <b> Cloud Computing </b> at JECRC University, with a strong 
-              <b> 8.3 CGPA </b> and hands-on experience in 
-              <b> full-stack development </b>. My journey in tech has been shaped by 
-              <b> real-world internships </b> at <b> Celebal Technologies </b>, where I&apos;ve worked on both 
-              <b> backend development </b> and <b> data science projects </b>, gaining expertise in building 
-              <b> scalable web applications </b> and <b> machine learning solutions </b>.
-            </p>
+  I&apos;m a driven <b>Computer Science undergraduate</b> specializing in <b>Cloud Computing</b> at JECRC University with a solid academic standing (<b>CGPA: 8.3</b>) and a passion for full-stack development. My technical journey has been fueled by real-world experience, including a backend-focused internship at <b>Celebal Technologies</b>, where I built and optimized scalable services and also explored <b>machine learning and AI integrations</b>.
+</p>
 
-            <p className="pt-4">
-              As a <b> full-stack developer </b>, I specialize in creating 
-              <b> secure, scalable applications </b> using modern technologies including 
-              <b> React.js, Node.js, Express </b>, and various databases like <b> MongoDB and PostgreSQL </b>. 
-              My technical toolkit spans from frontend frameworks and responsive design to 
-              <b> backend APIs, authentication systems </b>, and containerization with 
-              <b> Docker </b>. I&apos;ve successfully delivered projects like 
-              <b> Transactly </b>, a secure payment transfer application, and developed 
-              interactive portfolio websites that showcase my commitment to <b> clean code </b> and 
-              <b> user experience </b>.
-            </p>
+<p className="pt-4">
+  As a <b>full-stack developer</b>, I enjoy building end-to-end solutions — from crafting clean, responsive UIs with <b>React.js, Next.js, and TailwindCSS</b>, to designing secure and efficient backends using <b>Node.js, Express.js, and MongoDB/PostgreSQL</b>. My work includes projects like <b>Transactly</b> (a peer-to-peer payment system) and <b>DrawSync</b> (a real-time collaborative whiteboard), where I handled authentication, state management, sockets, and deployment.
+</p>
 
-            <p className="pt-4">
-              Beyond development, I bring valuable experience in <b> data science and machine learning </b>, 
-              having worked with <b> Python, Scikit-learn, and NLP models </b> during my recent internship. 
-              I&apos;m currently learning <b> Generative AI </b> and implementing it into my projects, including a 
-              <b> website clone generator </b> that demonstrates AI-powered development tools. 
-              This diverse skill set, combined with my <b> 5× Microsoft Azure certifications </b>, 
-              positions me uniquely to tackle complex technical challenges across different domains.
-            </p>
+<p className="pt-4">
+  My curiosity extends into <b>AI/ML and developer tooling</b>. I’ve worked on <b>RAG pipelines</b> with <b>LangChain</b> and OpenAI APIs, and I’m currently developing a <b>website generator</b> powered by generative AI. I also bring experience in <b>Python</b>, <b>Scikit-learn</b>, and <b>NLP models</b>, which I apply in personal projects and internships.
+</p>
 
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5,delay:0.3 }}
-              viewport={{ once: true }}
-              className="pt-6"
-            >
-              I&apos;m driven by the opportunity to <b> transform ideas into reliable, impactful solutions </b> and 
-              thrive in <b> collaborative environments </b> where I can contribute to meaningful projects. 
-              Whether it&apos;s building <b> robust APIs </b>, creating 
-              <b> intuitive user interfaces </b>, or exploring 
-              <b> cutting-edge technologies </b>, I&apos;m always eager to learn and deliver 
-              <b> excellence in every project </b> I undertake.
-            </motion.p>
-          </motion.div>
+<p className="pt-4">
+  I hold <b>Microsoft Azure and Dynamics 365 certifications</b>, and I’m comfortable working in <b>Linux environments</b>, with tools like Docker, GitHub Actions, and Postman. Whether it’s building robust APIs, architecting scalable systems, or creating clean UX, I thrive on solving real problems and learning through building.
+</p>
+
+<motion.p 
+  initial={{ opacity: 0, y: 20 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.5, delay: 0.3 }}
+  viewport={{ once: true }}
+  className="pt-6"
+>
+  I believe in <b>collaborative engineering</b> and love being part of communities where ideas turn into impact. Whether I’m solving algorithms, deploying features, or experimenting with new tech, I strive to create solutions that are <b>functional, reliable, and user-centric</b>.
+</motion.p></motion.div>
         </motion.div>
 
         <motion.div 
