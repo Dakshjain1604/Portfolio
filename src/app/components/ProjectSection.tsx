@@ -36,10 +36,22 @@ export function Projects() {
           <Card
             name="AI Enabled Website Cloner"
             imageSrc="/images/Website_Cloner.avif"
-            gitHubLink="https://github.com/Dakshjain1604/Brainly"
+            gitHubLink="https://github.com/Dakshjain1604/website_cloner.git"
             AIenabled={true}
             delay={0.6}
           />
+
+            <Card
+            name="Doucmind AI-Ai document assistant"
+            imageSrc="/images/Website_Cloner.avif"
+            gitHubLink="https://github.com/Dakshjain1604/DocuMind-Ai"
+            liveLink="docu-mind-ai-nu.vercel.app"
+            AIenabled={true}
+            delay={0.6}
+          />
+
+
+          
         </div>
       </div>
     </section>

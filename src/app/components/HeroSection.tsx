@@ -13,7 +13,7 @@ export function HeroSection() {
           <div className="text-center md:text-center">
             <BlurText
               text="Daksh Jain"
-              delay={150}
+              delay={75}
               animateBy="words"
               direction="top"
               className="text-5xl sm:text-6xl md:text-7xl lg:text-9xl mb-4 md:mb-8 mt-8 md:mt-15 justify-center text-shadow-2xl text-shadow-white"
@@ -22,7 +22,7 @@ export function HeroSection() {
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.3, delay: 0.4 }}
+            transition={{ duration: 0.3, delay: 0.2}}
             viewport={{ once: true }}
             className="text-base sm:text-lg md:text-xl text-center md:text-center text-blue-100 pt-4 font-serif max-w-xl"
           >
