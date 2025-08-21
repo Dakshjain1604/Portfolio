@@ -71,9 +71,9 @@ const Card = (props: PropsCard) => {
           height={225}
         />
       </div>
-      <div className="h-10 rounded-md text-lg font-semibold flex items-center justify-center ">
+      {/* <div className="h-10 rounded-md text-lg font-semibold flex items-center justify-center ">
           Tech Stack: {props.techStack}
-      </div>
+      </div> */}
     </motion.div>
     
   );
