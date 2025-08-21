@@ -17,6 +17,7 @@ export function Projects() {
             gitHubLink="https://github.com/Dakshjain1604/transactly_frontend/blob/main/README.md"
             liveLink="https://transactly-frontend.vercel.app/signup"
             delay={0.3}
+            techStack="React.js,Node.js,TypeScript,MongoDB"
           />
 
           <Card
@@ -24,6 +25,7 @@ export function Projects() {
             imageSrc="/images/live-tracking.png"
             gitHubLink="https://github.com/Dakshjain1604/Live-Tracking/tree/main"
             delay={0.4}
+            techStack="JavaScript,HTML,CSS"
           />
 
           <Card
@@ -31,6 +33,7 @@ export function Projects() {
             imageSrc="/images/brainlyImages/BrainlyImage.png"
             gitHubLink="https://github.com/Dakshjain1604/Brainly"
             delay={0.5}
+            techStack="React.js,Node.js,MongoDB"
           />
 
           <Card
@@ -39,6 +42,7 @@ export function Projects() {
             gitHubLink="https://github.com/Dakshjain1604/website_cloner.git"
             AIenabled={true}
             delay={0.6}
+            techStack="Next.js,FAST Api,Open Api"
           />
 
             <Card
@@ -48,6 +52,8 @@ export function Projects() {
             liveLink="https://docu-mind-ai-nu.vercel.app/"
             AIenabled={true}
             delay={0.6}
+            techStack="Next.js,FAST Api,Open Api,ChromaDB"
+            
           />
         </div>
       </div>

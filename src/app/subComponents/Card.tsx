@@ -40,7 +40,7 @@ const Card = (props: PropsCard) => {
             onClick={() => window.open(props.gitHubLink, "_blank")}
             aria-label="GitHub repository"
           >
-            <Github height={20} width={20} />
+            <Github height={22} width={22} />
           </button>
 
           {props.liveLink && (
@@ -71,9 +71,9 @@ const Card = (props: PropsCard) => {
           height={225}
         />
       </div>
-      {/* <div className="h-10 rounded-md text-lg font-semibold flex items-center justify-center ">
-          Tech Stack: {props.techStack}
-      </div> */}
+      <div className="h-12 rounded-md text-sm font-semibold flex items-center justify-center bg-gradient-to-r from-white via-blue-500 to-white text-transparent bg-clip-text">
+          {props.techStack}
+      </div>
     </motion.div>
     
   );
