@@ -42,16 +42,13 @@ export function Projects() {
           />
 
             <Card
-            name="Doucmind AI-Ai document assistant"
-            imageSrc="/images/Website_Cloner.avif"
+            name="Documind AI"
+            imageSrc="/images/Documind.png"
             gitHubLink="https://github.com/Dakshjain1604/DocuMind-Ai"
-            liveLink="docu-mind-ai-nu.vercel.app"
+            liveLink="https://docu-mind-ai-nu.vercel.app/"
             AIenabled={true}
             delay={0.6}
           />
-
-
-          
         </div>
       </div>
     </section>

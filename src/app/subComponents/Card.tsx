@@ -12,10 +12,12 @@ interface PropsCard {
   liveLink?: string;
   AIenabled?: boolean;
   delay: number;
+  techStack?:string;
 }
 
 const Card = (props: PropsCard) => {
   return (
+    
     <motion.div
       initial={{ opacity: 0, y: -50 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -28,11 +30,11 @@ const Card = (props: PropsCard) => {
       viewport={{ once: true }}
       className="bg-black w-full h-full rounded-lg p-3 border border-gray-700 hover:border-white transition-all duration-300 hover:shadow-lg hover:shadow-white/10 flex flex-col"
     >
-      <div className="flex justify-between items-center p-2 mb-3">
-        <h3 className="text-lg sm:text-xl font-semibold text-white truncate max-w-[70%]">
+      <div className="flex justify-between items-center p-1 mb-3">
+        <p className="text-lg sm:text-lg font-semibold text-white max-w-[70%]">
           {props.name}
-        </h3>
-        <div className="flex items-center gap-2">
+        </p>
+        <div className="flex items-center gap-1">
           <button
             className="p-1 hover:text-gray-300 transition-colors hover:scale-110"
             onClick={() => window.open(props.gitHubLink, "_blank")}
@@ -53,7 +55,7 @@ const Card = (props: PropsCard) => {
 
           {props.AIenabled && (
             <div className="ml-1">
-              <AI />
+              <AI/>
             </div>
           )}
         </div>
@@ -66,10 +68,14 @@ const Card = (props: PropsCard) => {
           className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
           loading="lazy"
           width={400}
-          height={200}
+          height={225}
         />
       </div>
+      <div className="h-10 rounded-md text-lg font-semibold flex items-center justify-center ">
+          Tech Stack: {props.techStack}
+      </div>
     </motion.div>
+    
   );
 };
 
