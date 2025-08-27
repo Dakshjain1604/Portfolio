@@ -19,7 +19,7 @@ export function AboutMe() {
         >
           <div className="text-sm md:text-base text-justify leading-relaxed space-y-3">
             <p>
-              I'm a <b>Computer Science undergraduate</b> specializing in <b>Cloud Computing</b> at JECRC University (CGPA: 8.3) with backend experience at <b>Celebal Technologies</b>.
+              I`&apos;`m a <b>Computer Science undergraduate</b> specializing in <b>Cloud Computing</b> at JECRC University (CGPA: 8.3) with backend experience at <b>Celebal Technologies</b>.
             </p>
 
             <p>
