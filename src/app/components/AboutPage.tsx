@@ -1,63 +1,163 @@
-"use client"
-import { motion } from "framer-motion";
+"use client";
+import { motion, useInView } from "framer-motion";
+import { useRef, useEffect, useState } from "react";
+import { Briefcase, FolderGit2, GraduationCap, Award, Code, Rocket, Coffee, Heart } from "lucide-react";
+
+const stats = [
+  { icon: <Briefcase size={18} />, value: 2, suffix: "+", label: "Internships" },
+  { icon: <FolderGit2 size={18} />, value: 10, suffix: "+", label: "Projects" },
+  { icon: <GraduationCap size={18} />, value: 8.3, suffix: "", label: "CGPA" },
+  { icon: <Award size={18} />, value: 3, suffix: "+", label: "Certifications" },
+];
+
+const quickFacts = [
+  { icon: <Coffee size={14} />, text: "Coffee Fueled" },
+  { icon: <Code size={14} />, text: "Clean Code" },
+  { icon: <Rocket size={14} />, text: "Always Learning" },
+  { icon: <Heart size={14} />, text: "Passionate Builder" },
+];
+
+function AnimatedCounter({ value, suffix, inView }: { value: number; suffix: string; inView: boolean }) {
+  const [count, setCount] = useState(0);
+  const isFloat = value % 1 !== 0;
+
+  useEffect(() => {
+    if (!inView) return;
+    const duration = 1500;
+    const steps = 40;
+    const stepValue = value / steps;
+    let current = 0;
+    const timer = setInterval(() => {
+      current += stepValue;
+      if (current >= value) {
+        setCount(value);
+        clearInterval(timer);
+      } else {
+        setCount(isFloat ? Math.round(current * 10) / 10 : Math.floor(current));
+      }
+    }, duration / steps);
+    return () => clearInterval(timer);
+  }, [inView, value, isFloat]);
+
+  return (
+    <span className="text-2xl md:text-3xl font-bold gradient-text">
+      {isFloat ? count.toFixed(1) : count}{suffix}
+    </span>
+  );
+}
+
+const container = {
+  hidden: { opacity: 0 },
+  show: { opacity: 1, transition: { staggerChildren: 0.15 } },
+};
+
+const item = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+};
 
 export function AboutMe() {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-100px" });
+
   return (
-    <div className="bg-black text-white py-8 md:py-12" id="about">
-      <div className="flex justify-center items-center text-3xl md:text-4xl font-bold mb-6 md:mb-8 hover:scale-105 transition-transform">
-        About Me
-      </div>
-      
-      <div className="flex flex-col lg:flex-row justify-center items-center px-4 md:px-8 gap-6 md:gap-8 max-w-6xl mx-auto">
-        
-        <motion.div 
+    <section className="py-20 md:py-28 relative overflow-hidden bg-[#09090b]" id="about">
+      <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-cyan-500/5 rounded-full blur-[120px] pointer-events-none" />
+
+      <div className="max-w-5xl mx-auto px-6 md:px-8">
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           viewport={{ once: true }}
-          className="flex-1 max-w-2xl"
+          className="text-center mb-12"
         >
-          <div className="text-sm md:text-base text-justify leading-relaxed space-y-3">
-            <p>
-              I`&apos;`m a <b>Computer Science undergraduate</b> specializing in <b>Cloud Computing</b> at JECRC University (CGPA: 8.3) with backend experience at <b>Celebal Technologies</b>.
-            </p>
-
-            <p>
-              As a <b>full-stack developer</b>, I build end-to-end solutions using <b>React.js, Next.js, Node.js, Express.js, and MongoDB/PostgreSQL</b>. Key projects include <b>Transactly</b> (P2P payments) and <b>DrawSync</b> (collaborative whiteboard).
-            </p>
-
-            <p>
-              I work with <b>AI/ML, RAG pipelines, LangChain</b>, and OpenAI APIs. Currently developing an <b>AI-powered website generator</b>. Certified in <b>Microsoft Azure and Dynamics 365</b>.
-            </p>
-
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="text-gray-300"
-            >
-              I believe in <b>collaborative engineering</b> and creating solutions that are <b>functional, reliable, and user-centric</b>.
-            </motion.p>
-          </div>
+          <h2 className="text-3xl md:text-4xl font-bold">
+            About <span className="gradient-text">Me</span>
+          </h2>
+          <div className="section-divider mt-4" />
         </motion.div>
 
-        <motion.div 
-          initial={{ opacity: 0, x: 20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          viewport={{ once: true }}
-          className="flex-shrink-0"
-        >
-          <motion.img
-            whileHover={{ scale: 1.03 }}
-            transition={{ duration: 0.3 }}
-            src="/images/profile.avif"
-            alt="Daksh Jain - Full Stack Developer"
-            className="rounded-full w-32 md:w-48 lg:w-56 h-32 md:h-48 lg:h-56 object-cover shadow-lg shadow-gray-700"
-          />
-        </motion.div>
+        <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-14">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="flex-shrink-0 relative group"
+          >
+            <div className="absolute -inset-1 bg-cyan-500/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <img
+              src="/images/profile.avif"
+              alt="Daksh Jain"
+              className="relative rounded-full w-36 md:w-44 h-36 md:h-44 object-cover border border-white/10"
+            />
+          </motion.div>
+
+          <motion.div
+            ref={ref}
+            variants={container}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            className="flex-1"
+          >
+            <motion.div variants={item} className="glass-card rounded-xl p-5 md:p-6 mb-6">
+              <div className="space-y-3 text-sm md:text-base text-neutral-400 leading-relaxed">
+                <p>
+                  Computer Science undergraduate specializing in{" "}
+                  <span className="text-white font-medium">Cloud Computing</span> at JECRC University 
+                  with hands-on experience at{" "}
+                  <span className="text-white font-medium">Celebal Technologies</span>.
+                </p>
+                <p>
+                  I build end-to-end solutions using{" "}
+                  <span className="text-neutral-300">React, Next.js, Node.js, Express, and MongoDB/PostgreSQL</span>.
+                </p>
+                <p>
+                  Currently exploring{" "}
+                  <span className="text-cyan-400 font-medium">AI/ML, RAG pipelines, and LangChain</span>.
+                  Certified in Microsoft Azure & Dynamics 365.
+                </p>
+              </div>
+
+              <motion.div variants={item} className="flex flex-wrap gap-2 mt-4">
+                {quickFacts.map((fact, idx) => (
+                  <motion.div
+                    key={fact.text}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.5 + idx * 0.1 }}
+                    viewport={{ once: true }}
+                    whileHover={{ scale: 1.05 }}
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/5 text-xs text-neutral-500"
+                  >
+                    <span className="text-cyan-400">{fact.icon}</span>
+                    {fact.text}
+                  </motion.div>
+                ))}
+              </motion.div>
+            </motion.div>
+
+            <motion.div variants={item} className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {stats.map((stat) => (
+                <motion.div
+                  key={stat.label}
+                  variants={item}
+                  whileHover={{ y: -3 }}
+                  className="glass-card rounded-lg p-4 text-center group"
+                >
+                  <div className="flex justify-center mb-2 text-neutral-500 group-hover:text-cyan-400 transition-colors">
+                    {stat.icon}
+                  </div>
+                  <AnimatedCounter value={stat.value} suffix={stat.suffix} inView={inView} />
+                  <p className="text-xs text-neutral-600 mt-1">{stat.label}</p>
+                </motion.div>
+              ))}
+            </motion.div>
+          </motion.div>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }

@@ -1,4 +1,5 @@
-"use client"
+"use client";
+import { motion } from "framer-motion";
 import { AzureIcon } from "../icons/AzureIcon";
 import { Cssicon } from "../icons/css";
 import { DockerIcon } from "../icons/DockerIcon";
@@ -21,80 +22,149 @@ import { SwaggerIcon } from "../icons/SwaggerIcon";
 import { TailwindIcon } from "../icons/Tailwindcss";
 import { TypeScriptIcon } from "../icons/TypeScriptIcon";
 import { ZodIcon } from "../icons/ZodIcon";
-import { SkillBox } from "../subComponents/SkillButton";
-import { motion } from "framer-motion";
+import { Brain, Link2, Database, Server, Code, Wrench } from "lucide-react";
+
+interface Skill {
+  name: string;
+  icon: React.ReactNode;
+}
+
+interface SkillCategory {
+  title: string;
+  icon: React.ReactNode;
+  skills: Skill[];
+}
+
+const categories: SkillCategory[] = [
+  {
+    title: "Frontend",
+    icon: <Code size={14} />,
+    skills: [
+      { name: "HTML", icon: <HtmlIcon /> },
+      { name: "CSS", icon: <Cssicon /> },
+      { name: "JavaScript", icon: <JavaScript /> },
+      { name: "TypeScript", icon: <TypeScriptIcon /> },
+      { name: "React", icon: <Reactlogo /> },
+      { name: "Next.js", icon: <NextjsIcon /> },
+      { name: "Tailwind", icon: <TailwindIcon /> },
+    ],
+  },
+  {
+    title: "Backend",
+    icon: <Server size={14} />,
+    skills: [
+      { name: "Node.js", icon: <NodejsIcon /> },
+      { name: "Python", icon: <PythonIcon /> },
+      { name: "GraphQL", icon: <GraphhQL /> },
+      { name: "Prisma", icon: <PrismIcon /> },
+      { name: "Zod", icon: <ZodIcon /> },
+    ],
+  },
+  {
+    title: "Databases",
+    icon: <Database size={14} />,
+    skills: [
+      { name: "MongoDB", icon: <MongoDbIcon /> },
+      { name: "PostgreSQL", icon: <PostgreSQL /> },
+      { name: "MySQL", icon: <MySqlIcon /> },
+      { name: "Redis", icon: <RedisIcon /> },
+    ],
+  },
+  {
+    title: "DevOps & Tools",
+    icon: <Wrench size={14} />,
+    skills: [
+      { name: "Docker", icon: <DockerIcon /> },
+      { name: "Azure", icon: <AzureIcon /> },
+      { name: "Git", icon: <GitIcon /> },
+      { name: "GitHub", icon: <Github height={18} width={18} /> },
+      { name: "Postman", icon: <PostManIcon /> },
+      { name: "Swagger", icon: <SwaggerIcon /> },
+    ],
+  },
+  {
+    title: "AI/ML",
+    icon: <Brain size={14} />,
+    skills: [
+      { name: "OpenAI APIs", icon: <Brain size={18} className="text-neutral-400" /> },
+      { name: "LangChain", icon: <Link2 size={18} className="text-neutral-400" /> },
+      { name: "RAG Pipelines", icon: <Database size={18} className="text-neutral-400" /> },
+    ],
+  },
+];
+
+const container = {
+  hidden: { opacity: 0 },
+  show: { opacity: 1, transition: { staggerChildren: 0.1 } },
+};
+
+const item = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.4 } },
+};
 
 export function Skills() {
   return (
-    <div className="">
-      <motion.h2 
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        viewport={{ once: true }}
-        className="text-6xl font-bold pt-10 pb-10  flex justify-center hover:scale-110  "
-      >
-        Skills
-      </motion.h2>
-      <div className="flex flex-col justify-center px-2 sm:px-4 md:px-6 lg:px-8">
-        <motion.div 
+    <section className="py-20 md:py-28 relative overflow-hidden bg-[#09090b]" id="skills">
+      <div className="absolute bottom-0 left-1/4 w-[300px] h-[300px] bg-cyan-500/5 rounded-full blur-[120px] pointer-events-none" />
+
+      <div className="max-w-5xl mx-auto px-6 md:px-8">
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
+          transition={{ duration: 0.5 }}
           viewport={{ once: true }}
-          className="flex flex-wrap justify-center gap-2 sm:gap-5 pb-5"
+          className="text-center mb-12"
         >
-          <SkillBox logo={<HtmlIcon />} text="Html" />
-          <SkillBox logo={<Cssicon />} text="CSS" />
-          <SkillBox logo={<JavaScript />} text="JavaScript" />
-          <SkillBox logo={<PythonIcon />} text="Python" />
-          <SkillBox logo={<NodejsIcon />} text="Node js" />
+          <h2 className="text-3xl md:text-4xl font-bold">
+            Technical <span className="gradient-text">Skills</span>
+          </h2>
+          <div className="section-divider mt-4" />
         </motion.div>
 
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          viewport={{ once: true }}
-          className="flex flex-wrap justify-center gap-2 sm:gap-5 pb-5"
-        >
-          <SkillBox logo={<Reactlogo />} text="React js" />
-          <SkillBox logo={<TypeScriptIcon />} text="TypeScript" />
-          <SkillBox logo={<MySqlIcon />} text="My SQL" />
-          <SkillBox logo={<MongoDbIcon />} text="Mongo DB" />
-          <SkillBox logo={<RedisIcon />} text="Redis" />
-          <SkillBox logo={<AzureIcon />} text="Azure" />
-          <SkillBox logo={<DockerIcon />} text="Docker" />
-        </motion.div>
-
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.6 }}
-          viewport={{ once: true }}
-          className="flex flex-wrap justify-center gap-2 sm:gap-5 pb-5"
-        >
-          <SkillBox logo={<GraphhQL />} text="GraphQl" />
-          <SkillBox logo={<PostManIcon />} text="PostMan" />
-          <SkillBox logo={<SwaggerIcon />} text="Swagger UI" />
-          <SkillBox logo={<GitIcon />} text="Git" />
-          <SkillBox logo={<Github height={25} width={25} />} text="GitHub" />
-          <SkillBox logo={<NextjsIcon />} text="Next js" />
-        </motion.div>
-
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.8 }}
-          viewport={{ once: true }}
-          className="flex flex-wrap justify-center gap-2 sm:gap-5 pb-5"
-        >
-          <SkillBox logo={<ZodIcon />} text="Zod" />
-          <SkillBox logo={<TailwindIcon />} text="Tailwind CSS" />
-          <SkillBox logo={<PrismIcon />} text="Prisma" />
-          <SkillBox logo={<PostgreSQL />} text="PostgreSQL" />
-        </motion.div>
+        <div className="space-y-8">
+          {categories.map((category, catIdx) => (
+            <motion.div
+              key={category.title}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: catIdx * 0.1 }}
+              viewport={{ once: true }}
+            >
+              <div className="flex items-center gap-2 mb-4">
+                <span className="text-cyan-400">{category.icon}</span>
+                <h3 className="text-xs uppercase tracking-widest text-neutral-500 font-medium">
+                  {category.title}
+                </h3>
+              </div>
+              
+              <motion.div
+                variants={container}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true }}
+                className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-7 gap-2"
+              >
+                {category.skills.map((skill) => (
+                  <motion.div
+                    key={skill.name}
+                    variants={item}
+                    whileHover={{ y: -4 }}
+                    className="glass-card rounded-lg p-3 flex flex-col items-center gap-2 cursor-default group"
+                  >
+                    <div className="[&>svg]:w-5 [&>svg]:h-5 text-neutral-500 group-hover:text-white transition-colors duration-300">
+                      {skill.icon}
+                    </div>
+                    <span className="text-[10px] text-neutral-600 group-hover:text-neutral-400 transition-colors text-center leading-tight">
+                      {skill.name}
+                    </span>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </motion.div>
+          ))}
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
