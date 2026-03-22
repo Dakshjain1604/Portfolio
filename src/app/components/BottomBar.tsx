@@ -1,80 +1,68 @@
-"use client"
-import {motion} from 'framer-motion';
+"use client";
+import { motion } from "framer-motion";
 import { Github } from "../icons/github";
-import { Gmail } from '../icons/Gmail';
+import { Gmail } from "../icons/Gmail";
 import { Leetcode } from "../icons/Leetcode";
 import { Linkedin } from "../icons/Linkedin";
 
-export function BottomBar(){
-    return <div className="pb-20 flex justify-center items-center  gap-10 md:gap-10 lg:gap-20 bottom-0 ">
+const socials = [
+  {
+    icon: <Linkedin />,
+    href: "https://www.linkedin.com/in/daksh-jain16/",
+    label: "LinkedIn",
+    hoverColor: "hover:text-blue-400",
+    glowColor: "group-hover:shadow-blue-500/20",
+  },
+  {
+    icon: <Github height={38} width={38} />,
+    href: "https://github.com/Dakshjain1604",
+    label: "GitHub",
+    hoverColor: "hover:text-white",
+    glowColor: "group-hover:shadow-white/10",
+  },
+  {
+    icon: <Leetcode />,
+    href: "https://leetcode.com/u/Daksh8816/",
+    label: "LeetCode",
+    hoverColor: "hover:text-amber-400",
+    glowColor: "group-hover:shadow-amber-500/20",
+  },
+  {
+    icon: <Gmail />,
+    href: "mailto:dakshjain8816@gmail.com",
+    label: "Email",
+    hoverColor: "hover:text-red-400",
+    glowColor: "group-hover:shadow-red-500/20",
+  },
+];
 
-        <motion.div 
-        
-        initial={{ opacity: 0, y: -50 }}
-        whileInView={{ opacity: 1, y: 0  }}
-        transition={{
-          type: "spring",
-          bounce: 0.4, 
-          duration: 0.8, 
-          delay: 0.1,
-        }}
-        viewport={{ once: true }}
-
-        
-        onClick={()=>{
-          window.open('https://www.linkedin.com/in/daksh-jain16/', '_blank');
-        }} className="hover:scale-110 hover:rotate-15"><Linkedin/></motion.div>
-
-        <motion.div 
-           initial={{ opacity: 0, y: -50 }}
-           whileInView={{ opacity: 1, y: 0 }}
-           transition={{
+export function BottomBar() {
+  return (
+    <div className="flex justify-center items-center gap-6 md:gap-10">
+      {socials.map((social, i) => (
+        <motion.a
+          key={social.label}
+          href={social.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{
             type: "spring",
-            bounce: 0.4, 
-            duration: 0.8, 
-            delay: 0.2,
+            bounce: 0.4,
+            duration: 0.6,
+            delay: i * 0.1,
           }}
-           viewport={{ once: true }}
-        
-        
-        
-        className="hover:scale-110 hover:rotate-15" onClick={()=>{
-          window.open('https://github.com/Dakshjain1604', '_blank');
-        }}><Github height={42} width={42} /></motion.div>
-
-        <motion.div 
-           initial={{ opacity: 0, y: -50 }}
-           whileInView={{ opacity: 1, y: 0 }}
-           transition={{
-            type: "spring",
-            bounce: 0.4, 
-            duration: 0.8, 
-            delay: 0.3,
-          }}
-           viewport={{ once: true }}
-        
-        
-        
-        
-        onClick={()=>{
-          window.open("https://leetcode.com/u/Daksh8816/","_blank")
-        }} className="hover:scale-110 hover:rotate-15"><Leetcode/></motion.div>
-
-        <motion.div 
-        
-        initial={{ opacity: 0, y: -50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{
-                  type: "spring",
-                  bounce: 0.4, 
-                  duration: 0.8, 
-                  delay: 0.4,
-                }}
-                viewport={{ once: true }}
-        
-        className="hover:scale-105 hover:rotate-15 "onClick={()=>{
-          window.open("https://mail.google.com/mail/u/0/#inbox?compose=CllgCJNvMZDCbHbrHplLnvQpFQCgzcbVXzLFxsfvLLjBdfQpCBpMCTsQfgZQknBgQgRTcGWmhsB","_blank");
-        }}><Gmail/></motion.div>
-
+          viewport={{ once: true }}
+          whileHover={{ y: -6, scale: 1.15 }}
+          whileTap={{ scale: 0.95 }}
+          className={`text-neutral-500 ${social.hoverColor} transition-all duration-300 group relative`}
+          aria-label={social.label}
+        >
+          <div className={`absolute inset-0 rounded-xl blur-xl opacity-0 group-hover:opacity-30 transition-opacity ${social.glowColor}`} />
+          <div className="relative">{social.icon}</div>
+        </motion.a>
+      ))}
     </div>
+  );
 }
