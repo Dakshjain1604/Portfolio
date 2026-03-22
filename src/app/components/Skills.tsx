@@ -1,27 +1,23 @@
 "use client";
 import { motion } from "framer-motion";
 import { AzureIcon } from "../icons/AzureIcon";
-import { Cssicon } from "../icons/css";
+
 import { DockerIcon } from "../icons/DockerIcon";
 import { Github } from "../icons/github";
-import { GitIcon } from "../icons/GitIcon";
+
 import { GraphhQL } from "../icons/GraphQl";
-import { HtmlIcon } from "../icons/Html";
+
 import { JavaScript } from "../icons/JavaScript";
 import { MongoDbIcon } from "../icons/MongoDb";
-import { MySqlIcon } from "../icons/MySqlIcon";
 import { NextjsIcon } from "../icons/Nextjsicon";
 import { NodejsIcon } from "../icons/nodejs";
 import { PostgreSQL } from "../icons/Postgre";
-import { PostManIcon } from "../icons/PostManIcon";
 import { PrismIcon } from "../icons/primsaicon";
 import { PythonIcon } from "../icons/PythonIcon";
 import { Reactlogo } from "../icons/ReactIcon";
 import { RedisIcon } from "../icons/RedisIcon";
-import { SwaggerIcon } from "../icons/SwaggerIcon";
 import { TailwindIcon } from "../icons/Tailwindcss";
 import { TypeScriptIcon } from "../icons/TypeScriptIcon";
-import { ZodIcon } from "../icons/ZodIcon";
 import { 
   Brain, Link2, Database, Server, Code, Wrench, 
   TerminalSquare, Sparkles, MessageSquareCode, 

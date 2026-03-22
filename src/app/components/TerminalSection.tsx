@@ -114,7 +114,6 @@ export function TerminalSection() {
       if (exactCmds.includes(input)) return input;
 
       // Keyword-based fuzzy matching
-      const words = input.split(/\s+/);
       const has = (...keywords: string[]) => keywords.some((k) => input.includes(k));
 
       if (has("hi", "hello", "hey", "yo", "sup")) return "__greeting";

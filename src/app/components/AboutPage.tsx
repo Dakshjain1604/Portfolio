@@ -1,7 +1,7 @@
 "use client";
 import { motion, useInView } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
-import { Briefcase, FolderGit2, GraduationCap, Award, Code, Rocket, Coffee, Heart } from "lucide-react";
+import { Briefcase, FolderGit2, GraduationCap, Award, Code, Rocket, Heart } from "lucide-react";
 
 const stats = [
   { icon: <Briefcase size={18} />, value: 2, suffix: "+", label: "Companies" },
