@@ -15,7 +15,7 @@
     "framer-motion": "^12.17.0",
     "gsap": "^3.13.0",
     "lucide-react": "^0.563.0",
-    "next": "15.3.3",
+    "next": "^16.2.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",
