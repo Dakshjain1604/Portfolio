@@ -105,16 +105,14 @@ export function AboutMe() {
             <motion.div variants={item} className="glass-card rounded-xl p-5 md:p-6 mb-6">
               <div className="space-y-4 text-sm md:text-base text-neutral-400 leading-relaxed">
                 <p>
-                  Full-stack engineer who ships AI-powered products fast. Currently a Full-Stack + AI Engineer at{" "}
-                  <span className="text-white font-medium">NEO</span>, where I lead end-to-end feature delivery, from API migrations to building internal LangChain agents.
+                  Full-stack engineer who ships AI-powered products fast. Experienced building production Node.js, React, and GenAI systems at an early-stage startup — owning features end-to-end from API design to UI delivery.
                 </p>
                 <p>
-                  I specialize in building production-ready systems using{" "}
-                  <span className="text-white font-medium">Next.js, Node.js, and GenAI</span> technologies like RAG and Claude API.
+                  Proficient in AI-assisted development with Claude Code, regularly shipping solo what typically takes a team. I thrive in high-ownership, fast-moving environments.
                 </p>
                 <p>
                   Computer Science undergraduate at{" "}
-                  <span className="text-cyan-400 font-medium">JECRC University</span>, bringing a strong foundation in scalable backend architectures and AI-assisted development.
+                  <span className="text-cyan-400 font-medium">JECRC University</span>, bringing a strong foundation in scalable architectures and AI-integrated systems.
                 </p>
               </div>
 

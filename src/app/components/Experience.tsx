@@ -8,31 +8,34 @@ const experiences = [
     title: "Full-Stack + AI Engineer",
     company: "NEO",
     location: "Remote",
-    period: "Feb 2025 – Present",
-    description:
-      "Engineering comprehensive AI solutions, migrating monolithic infrastructures to Next.js + Node.js ecosystems, and deploying intelligent RAG pipelines using LangChain & Claude API.",
-    highlights: [
-      "Next.js & Node.js Ecosystems",
-      "LangChain & Claude API",
-      "RAG Pipelines",
-    ],
+    period: "Oct 2025 – Present",
+    description: (
+      <ul className="list-disc list-outside ml-4 space-y-2 text-cyan-50/70">
+        <li>Solely owned and delivered the full-stack migration from v1 to v2 APIs, including a complete React UI refresh — designed, built, and shipped end-to-end.</li>
+        <li>Built 3 internal AI tools (research agent, PDF parsing, data processing) using LangChain and Claude API.</li>
+        <li>Used Claude Code for AI-assisted development — consistently shipping features solo that would typically require a multi-person team.</li>
+        <li>Designed and deployed RESTful APIs handling 10K+ daily requests, improving query performance by 35%.</li>
+      </ul>
+    ),
+    highlights: ["API Migration", "AI Agents", "High Ownership"],
     tech: ["Next.js", "Node.js", "LangChain", "Claude API", "PostgreSQL"],
     logo: <Zap size={20} className="text-white" />,
     color: "from-indigo-500 to-purple-500",
   },
   {
-    title: "Backend Development Intern",
+    title: "Backend Developer Intern",
     company: "Celebal Technologies",
     location: "Remote",
-    period: "June 2024 – Aug 2024",
-    description:
-      "Built robust backend systems for an e-commerce platform using Node.js and Express, significantly improving API performance. Integrated JWT authentication, implemented GraphQL APIs, and documented REST APIs with Swagger UI. Containerized the application with Docker for seamless streamlined deployment.",
-    highlights: [
-      "Node.js & Express API",
-      "JWT & GraphQL Auth",
-      "Docker Containerization",
-    ],
-    tech: ["Node.js", "Express", "GraphQL", "MongoDB", "Docker"],
+    period: "May 2025 – Jul 2025",
+    description: (
+      <ul className="list-disc list-outside ml-4 space-y-2 text-cyan-50/70">
+        <li>Built and optimized REST APIs with Node.js and Express; reduced response time by 28% via middleware tuning.</li>
+        <li>Developed AI-powered NLP modules for automated document analysis and information extraction.</li>
+        <li>Designed MongoDB schemas and implemented aggregation pipelines to support complex workflows.</li>
+      </ul>
+    ),
+    highlights: ["Backend Optimization", "NLP Modules", "MongoDB Aggregation"],
+    tech: ["Node.js", "Express", "Python", "MongoDB", "NLP"],
     logo: <Settings size={20} className="text-white" />,
     color: "from-cyan-500 to-blue-500",
   },
