@@ -1,104 +1,85 @@
 "use client";
-import { useEffect, useState } from "react";
-import { motion, useSpring, useMotionValue } from "framer-motion";
+import React, { useEffect, useState } from "react";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 
 export function CustomCursor() {
+  const [isClient, setIsClient] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
-  const [isClicking, setIsClicking] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
 
-  const cursorX = useMotionValue(-100);
-  const cursorY = useMotionValue(-100);
+  const mouseX = useMotionValue(-100);
+  const mouseY = useMotionValue(-100);
 
-  const springConfig = { damping: 25, stiffness: 400 };
-  const cursorXSpring = useSpring(cursorX, springConfig);
-  const cursorYSpring = useSpring(cursorY, springConfig);
+  // Smooth springs for the outer ring trailing
+  const springConfig = { damping: 20, stiffness: 300, mass: 0.5 };
+  const cursorX = useSpring(mouseX, springConfig);
+  const cursorY = useSpring(mouseY, springConfig);
 
   useEffect(() => {
+    setIsClient(true);
+    
+    // Add a class to body to hide default cursor
+    document.body.classList.add("custom-cursor-active");
+
     const moveCursor = (e: MouseEvent) => {
-      cursorX.set(e.clientX);
-      cursorY.set(e.clientY);
-      if (!isVisible) setIsVisible(true);
+      mouseX.set(e.clientX);
+      mouseY.set(e.clientY);
     };
 
-    const handleMouseDown = () => setIsClicking(true);
-    const handleMouseUp = () => setIsClicking(false);
-
-    const handleMouseEnter = (e: MouseEvent) => {
+    const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      if (target.tagName === "A" || target.tagName === "BUTTON" || target.closest("a") || target.closest("button")) {
+      // Check if hovering over clickable elements
+      if (
+        target.tagName === "A" ||
+        target.tagName === "BUTTON" ||
+        target.closest("a") ||
+        target.closest("button")
+      ) {
         setIsHovering(true);
+      } else {
+        setIsHovering(false);
       }
     };
 
-    const handleMouseLeave = () => setIsHovering(false);
-
     window.addEventListener("mousemove", moveCursor);
-    window.addEventListener("mousedown", handleMouseDown);
-    window.addEventListener("mouseup", handleMouseUp);
-    document.addEventListener("mouseover", handleMouseEnter);
-    document.addEventListener("mouseout", handleMouseLeave);
+    window.addEventListener("mouseover", handleMouseOver);
 
     return () => {
+      document.body.classList.remove("custom-cursor-active");
       window.removeEventListener("mousemove", moveCursor);
-      window.removeEventListener("mousedown", handleMouseDown);
-      window.removeEventListener("mouseup", handleMouseUp);
-      document.removeEventListener("mouseover", handleMouseEnter);
-      document.removeEventListener("mouseout", handleMouseLeave);
+      window.removeEventListener("mouseover", handleMouseOver);
     };
-  }, [cursorX, cursorY, isVisible]);
+  }, [mouseX, mouseY]);
 
-  if (typeof window !== "undefined" && "ontouchstart" in window) return null;
+  if (!isClient) return null;
 
   return (
     <>
+      {/* Outer trailing ring */}
       <motion.div
-        className="fixed top-0 left-0 pointer-events-none z-[9999] mix-blend-difference"
+        className="fixed top-0 left-0 z-[100] w-10 h-10 border border-cyan-400/80 rounded-full pointer-events-none shadow-[0_0_15px_rgba(34,211,238,0.5)]"
         style={{
-          x: cursorXSpring,
-          y: cursorYSpring,
+          x: cursorX,
+          y: cursorY,
           translateX: "-50%",
           translateY: "-50%",
         }}
-      >
-        <motion.div
-          animate={{
-            scale: isClicking ? 0.8 : isHovering ? 1.5 : 1,
-            opacity: isVisible ? 1 : 0,
-          }}
-          transition={{ type: "spring", damping: 20, stiffness: 300 }}
-          className="relative"
-        >
-          <div className={`rounded-full bg-white ${isHovering ? "w-8 h-8" : "w-4 h-4"} transition-all duration-200`} />
-          {isHovering && (
-            <motion.div
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 0.3 }}
-              exit={{ scale: 0, opacity: 0 }}
-              className="absolute inset-0 rounded-full border border-white"
-              style={{ transform: "scale(2)" }}
-            />
-          )}
-        </motion.div>
-      </motion.div>
-
+        animate={{
+          scale: isHovering ? 1.5 : 1,
+          backgroundColor: isHovering ? "rgba(34, 211, 238, 0.15)" : "transparent",
+        }}
+        transition={{ duration: 0.2 }}
+      />
+      {/* Inner dot reflecting exact mouse position */}
       <motion.div
-        className="fixed top-0 left-0 pointer-events-none z-[9998]"
+        className="fixed top-0 left-0 z-[100] w-2 h-2 rounded-full pointer-events-none shadow-[0_0_8px_rgba(34,211,238,0.8)]"
         style={{
-          x: cursorXSpring,
-          y: cursorYSpring,
+          x: mouseX,
+          y: mouseY,
           translateX: "-50%",
           translateY: "-50%",
+          backgroundColor: isHovering ? "transparent" : "#22d3ee",
         }}
-      >
-        <motion.div
-          animate={{
-            scale: isHovering ? 2 : 1,
-          }}
-          transition={{ type: "spring", damping: 25, stiffness: 200 }}
-          className="w-10 h-10 rounded-full border border-cyan-500/30"
-        />
-      </motion.div>
+      />
     </>
   );
 }

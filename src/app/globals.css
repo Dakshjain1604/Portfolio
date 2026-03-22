@@ -105,6 +105,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.custom-cursor-active,
+.custom-cursor-active * {
+  cursor: none !important;
+}
+
 ::selection {
   background: rgba(34, 211, 238, 0.25);
   color: #ffffff;

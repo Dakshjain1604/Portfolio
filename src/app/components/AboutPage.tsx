@@ -4,17 +4,17 @@ import { useRef, useEffect, useState } from "react";
 import { Briefcase, FolderGit2, GraduationCap, Award, Code, Rocket, Coffee, Heart } from "lucide-react";
 
 const stats = [
-  { icon: <Briefcase size={18} />, value: 2, suffix: "+", label: "Internships" },
+  { icon: <Briefcase size={18} />, value: 2, suffix: "+", label: "Companies" },
   { icon: <FolderGit2 size={18} />, value: 10, suffix: "+", label: "Projects" },
-  { icon: <GraduationCap size={18} />, value: 8.3, suffix: "", label: "CGPA" },
+  { icon: <GraduationCap size={18} />, value: 8.4, suffix: "", label: "CGPA" },
   { icon: <Award size={18} />, value: 3, suffix: "+", label: "Certifications" },
 ];
 
 const quickFacts = [
-  { icon: <Coffee size={14} />, text: "Coffee Fueled" },
-  { icon: <Code size={14} />, text: "Clean Code" },
-  { icon: <Rocket size={14} />, text: "Always Learning" },
-  { icon: <Heart size={14} />, text: "Passionate Builder" },
+  { icon: <Rocket size={14} />, text: "Fast Shipper" },
+  { icon: <Code size={14} />, text: "AI Integrations" },
+  { icon: <Briefcase size={14} />, text: "Full-Stack" },
+  { icon: <Heart size={14} />, text: "High Ownership" },
 ];
 
 function AnimatedCounter({ value, suffix, inView }: { value: number; suffix: string; inView: boolean }) {
@@ -62,7 +62,7 @@ export function AboutMe() {
 
   return (
     <section className="py-20 md:py-28 relative overflow-hidden bg-[#09090b]" id="about">
-      <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-cyan-500/5 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-cyan-500/5 rounded-full opacity-30 pointer-events-none" />
 
       <div className="max-w-5xl mx-auto px-6 md:px-8">
         <motion.div
@@ -103,21 +103,18 @@ export function AboutMe() {
             className="flex-1"
           >
             <motion.div variants={item} className="glass-card rounded-xl p-5 md:p-6 mb-6">
-              <div className="space-y-3 text-sm md:text-base text-neutral-400 leading-relaxed">
+              <div className="space-y-4 text-sm md:text-base text-neutral-400 leading-relaxed">
                 <p>
-                  Computer Science undergraduate specializing in{" "}
-                  <span className="text-white font-medium">Cloud Computing</span> at JECRC University 
-                  with hands-on experience at{" "}
-                  <span className="text-white font-medium">Celebal Technologies</span>.
+                  Full-stack engineer who ships AI-powered products fast. Currently a Full-Stack + AI Engineer at{" "}
+                  <span className="text-white font-medium">NEO</span>, where I lead end-to-end feature delivery, from API migrations to building internal LangChain agents.
                 </p>
                 <p>
-                  I build end-to-end solutions using{" "}
-                  <span className="text-neutral-300">React, Next.js, Node.js, Express, and MongoDB/PostgreSQL</span>.
+                  I specialize in building production-ready systems using{" "}
+                  <span className="text-white font-medium">Next.js, Node.js, and GenAI</span> technologies like RAG and Claude API.
                 </p>
                 <p>
-                  Currently exploring{" "}
-                  <span className="text-cyan-400 font-medium">AI/ML, RAG pipelines, and LangChain</span>.
-                  Certified in Microsoft Azure & Dynamics 365.
+                  Computer Science undergraduate at{" "}
+                  <span className="text-cyan-400 font-medium">JECRC University</span>, bringing a strong foundation in scalable backend architectures and AI-assisted development.
                 </p>
               </div>
 

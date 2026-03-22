@@ -1,24 +1,24 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
-import { Briefcase, Calendar, MapPin, ExternalLink } from "lucide-react";
+import { Briefcase, Calendar, MapPin, ExternalLink, Zap, Settings } from "lucide-react";
 
 const experiences = [
   {
-    title: "Data Science Intern",
-    company: "Celebal Technologies",
+    title: "Full-Stack + AI Engineer",
+    company: "NEO",
     location: "Remote",
-    period: "Oct 2024 – Feb 2025",
+    period: "Feb 2025 – Present",
     description:
-      "Developed machine learning models for predictive analytics and designed interactive data visualizations. Optimized data preprocessing pipelines with Python, Pandas, and NumPy. Researched and implemented Transformer models and NLP techniques for AI applications.",
+      "Engineering comprehensive AI solutions, migrating monolithic infrastructures to Next.js + Node.js ecosystems, and deploying intelligent RAG pipelines using LangChain & Claude API.",
     highlights: [
-      "ML Models & Predictive Analytics",
-      "Python, Pandas, NumPy",
-      "Transformer & NLP Research",
+      "Next.js & Node.js Ecosystems",
+      "LangChain & Claude API",
+      "RAG Pipelines",
     ],
-    tech: ["Python", "TensorFlow", "Pandas", "NumPy", "Scikit-learn"],
-    logo: "🧠",
-    color: "from-cyan-500 to-pink-500",
+    tech: ["Next.js", "Node.js", "LangChain", "Claude API", "PostgreSQL"],
+    logo: <Zap size={20} className="text-white" />,
+    color: "from-indigo-500 to-purple-500",
   },
   {
     title: "Backend Development Intern",
@@ -26,14 +26,14 @@ const experiences = [
     location: "Remote",
     period: "June 2024 – Aug 2024",
     description:
-      "Built backend systems for an e-commerce platform using Node.js and Express, significantly improving API performance. Integrated JWT authentication, implemented GraphQL APIs, and documented REST APIs with Swagger UI. Containerized the application with Docker for streamlined deployment.",
+      "Built robust backend systems for an e-commerce platform using Node.js and Express, significantly improving API performance. Integrated JWT authentication, implemented GraphQL APIs, and documented REST APIs with Swagger UI. Containerized the application with Docker for seamless streamlined deployment.",
     highlights: [
-      "Node.js & Express Backend",
-      "JWT Auth & GraphQL APIs",
+      "Node.js & Express API",
+      "JWT & GraphQL Auth",
       "Docker Containerization",
     ],
     tech: ["Node.js", "Express", "GraphQL", "MongoDB", "Docker"],
-    logo: "⚙️",
+    logo: <Settings size={20} className="text-white" />,
     color: "from-cyan-500 to-blue-500",
   },
 ];

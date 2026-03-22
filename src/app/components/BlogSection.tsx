@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import { Calendar, Clock, ArrowRight } from "lucide-react";
+import { Calendar, Clock, ArrowRight, Construction } from "lucide-react";
 
 const blogPosts = [
   {
@@ -116,7 +116,7 @@ export function BlogSection() {
           className="text-center mt-12"
         >
           <p className="text-neutral-500 text-sm">
-            🚧 Articles coming soon! Stay tuned for technical deep-dives and tutorials.
+            <Construction size={14} className="inline mr-1 text-amber-400" /> Articles coming soon! Stay tuned for technical deep-dives and tutorials.
           </p>
         </motion.div>
       </div>

@@ -56,13 +56,7 @@ export function Headerbar() {
             : "bg-white/5 border-white/5 backdrop-blur-md"
         }`}
       >
-        <motion.a
-          href="#home"
-          whileHover={{ scale: 1.05 }}
-          className="text-lg font-bold gradient-text hidden md:block"
-        >
-          DJ
-        </motion.a>
+        
 
         <div className="hidden md:flex items-center gap-1">
           {navLinks.map((link) => (

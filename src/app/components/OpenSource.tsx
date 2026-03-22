@@ -1,7 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
-import { Github, GitPullRequest, GitMerge, FolderGit2, Loader2 } from "lucide-react";
+import { Github, GitPullRequest, GitMerge, FolderGit2, Loader2, Star } from "lucide-react";
 
 interface OpenSourceData {
   totalContributions: number;
@@ -136,7 +136,7 @@ export function OpenSource() {
                     {repo.name}
                   </h4>
                   <div className="flex items-center gap-1 text-neutral-500 text-xs">
-                    <span>★</span>
+                    <Star size={12} className="text-yellow-400" />
                     <span>{repo.stars}</span>
                   </div>
                 </div>

@@ -137,9 +137,9 @@ export async function GET() {
 
     // Process contribution calendar (last 52 weeks)
     const weeks = user.contributionsCollection.contributionCalendar.weeks.slice(-52);
-    const contributions = weeks.map((week) => ({
-      week: week.contributionDays.map((day) => day.contributionCount),
-    }));
+    const contributions = weeks.map((week) =>
+      week.contributionDays.map((day) => day.contributionCount)
+    );
 
     // Process repositories for stats
     const repos = user.repositories.nodes;

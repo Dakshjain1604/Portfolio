@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Github, ExternalLink, Code2, Folder } from "lucide-react";
 
 interface Command {
@@ -9,18 +9,18 @@ interface Command {
 }
 
 const initialCommands: Command[] = [
-  { command: "whoami", output: "daksh-jain" },
-  { command: "cat skills.txt", output: "Full Stack, AI/ML, Cloud Computing" },
-  { command: "echo $PASSION", output: "Building innovative solutions" },
-  { command: "ls ./projects", output: "transactly/ documind-ai/ brainly/" },
-  { command: "npm run current_focus", output: "AI-powered apps & RAG pipelines" },
+  { command: "whoami", output: "daksh-jain — Full Stack + AI Engineer" },
+  { command: "cat skills.txt", output: "Full Stack · AI/ML · Cloud · DevOps" },
+  { command: "echo $PASSION", output: "Building innovative AI-powered solutions" },
+  { command: "ls ./projects", output: "documind-ai/ transactly/ brainly/ website-cloner/" },
+  { command: "npm run status", output: "Currently building RAG pipelines & AI agents" },
 ];
 
 const projects = [
   { name: "Documind AI", desc: "RAG-powered document chat", url: "https://docu-mind-ai-nu.vercel.app/" },
   { name: "AI Website Cloner", desc: "AI-powered website cloning", url: "https://github.com/Dakshjain1604/website_cloner" },
-  { name: "Transactly", desc: "Real-time transaction tracking", url: "https://transactly.vercel.app/" },
-  { name: "Brainly", desc: "AI-powered learning platform", url: "https://brainly-ai.vercel.app/" },
+  { name: "Transactly", desc: "Real-time payment platform", url: "https://transactly.vercel.app/" },
+  { name: "Brainly", desc: "AI-powered second brain", url: "https://brainly-ai.vercel.app/" },
 ];
 
 const skills = [
@@ -32,91 +32,130 @@ const skills = [
 
 const socialLinks = [
   { platform: "GitHub", url: "https://github.com/Dakshjain1604" },
-  { platform: "LinkedIn", url: "https://linkedin.com/in/dakshjain1604" },
-  { platform: "LeetCode", url: "https://leetcode.com/dakshjain1604" },
-  { platform: "Email", url: "mailto:dakshjain1604@gmail.com" },
+  { platform: "LinkedIn", url: "https://linkedin.com/in/daksh-jain16" },
+  { platform: "LeetCode", url: "https://leetcode.com/u/Daksh8816/" },
+  { platform: "Email", url: "mailto:dakshjain8816@gmail.com" },
 ];
 
 export function TerminalSection() {
   const [displayedCommands, setDisplayedCommands] = useState<Command[]>([]);
   const [currentText, setCurrentText] = useState("");
-  const [currentCommandIndex, setCurrentCommandIndex] = useState(0);
-  const [isTyping, setIsTyping] = useState(true);
-  const [showCursor, setShowCursor] = useState(true);
+  const [phase, setPhase] = useState<"typing" | "interactive">("typing");
+  const [animIndex, setAnimIndex] = useState(0);
   const [input, setInput] = useState("");
   const [history, setHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
-  const [isInteractive, setIsInteractive] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
+  const animRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  // ── Typing animation using interval (Strict Mode safe) ──
   useEffect(() => {
-    const cursorInterval = setInterval(() => {
-      setShowCursor((prev) => !prev);
-    }, 500);
-    return () => clearInterval(cursorInterval);
-  }, []);
+    if (phase !== "typing") return;
 
-  useEffect(() => {
-    if (isInteractive) {
-      inputRef.current?.focus();
-      return;
-    }
-
-    if (currentCommandIndex >= initialCommands.length) {
-      const resetTimeout = setTimeout(() => {
+    // All commands have been typed — switch to interactive
+    if (animIndex >= initialCommands.length) {
+      animRef.current = setTimeout(() => {
         setDisplayedCommands([]);
-        setCurrentCommandIndex(0);
-        setCurrentText("");
-        setIsTyping(true);
-        setIsInteractive(true);
-      }, 3000);
-      return () => clearTimeout(resetTimeout);
+        setPhase("interactive");
+      }, 2000);
+      return () => {
+        if (animRef.current) clearTimeout(animRef.current);
+      };
     }
 
-    const currentCommand = initialCommands[currentCommandIndex];
+    const cmd = initialCommands[animIndex];
 
-    if (isTyping) {
-      if (currentText.length < currentCommand.command.length) {
-        const typeTimeout = setTimeout(() => {
-          setCurrentText(currentCommand.command.slice(0, currentText.length + 1));
-        }, 50 + Math.random() * 50);
-        return () => clearTimeout(typeTimeout);
-      } else {
-        setIsTyping(false);
-        const executeTimeout = setTimeout(() => {
-          setDisplayedCommands((prev) => [...prev, currentCommand]);
-          setCurrentCommandIndex((prev) => prev + 1);
-          setCurrentText("");
-          setIsTyping(true);
-        }, 500);
-        return () => clearTimeout(executeTimeout);
-      }
+    // Still typing current command
+    if (currentText.length < cmd.command.length) {
+      animRef.current = setTimeout(() => {
+        setCurrentText((prev) => cmd.command.slice(0, prev.length + 1));
+      }, 55 + Math.random() * 45);
+      return () => {
+        if (animRef.current) clearTimeout(animRef.current);
+      };
     }
-  }, [currentText, currentCommandIndex, isTyping, isInteractive]);
 
+    // Finished typing — execute after brief pause
+    animRef.current = setTimeout(() => {
+      setDisplayedCommands((prev) => [...prev, cmd]);
+      setAnimIndex((prev) => prev + 1);
+      setCurrentText("");
+    }, 400);
+    return () => {
+      if (animRef.current) clearTimeout(animRef.current);
+    };
+  }, [phase, animIndex, currentText]);
+
+  // Focus input when entering interactive mode
+  useEffect(() => {
+    if (phase === "interactive") {
+      setTimeout(() => inputRef.current?.focus(), 100);
+    }
+  }, [phase]);
+
+  // Scroll terminal to bottom on new output
   useEffect(() => {
     if (terminalRef.current) {
       terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
     }
-  }, [displayedCommands]);
+  }, [displayedCommands, currentText]);
 
-  const handleCommand = (cmd: string) => {
+  const handleCommand = useCallback((cmd: string) => {
     const trimmed = cmd.trim().toLowerCase();
     let output: React.ReactNode = "";
 
-    switch (trimmed) {
+    // ── Smart keyword matching for natural language ──
+    const resolve = (input: string): string => {
+      if (!input || input === "clear") return input;
+
+      // Exact match first
+      const exactCmds = ["help", "whoami", "projects", "skills", "git", "github", "leetcode", "social"];
+      if (exactCmds.includes(input)) return input;
+
+      // Keyword-based fuzzy matching
+      const words = input.split(/\s+/);
+      const has = (...keywords: string[]) => keywords.some((k) => input.includes(k));
+
+      if (has("hi", "hello", "hey", "yo", "sup")) return "__greeting";
+      if (has("about", "daksh", "who", "yourself", "tell me", "introduce")) return "whoami";
+      if (has("project", "built", "portfolio", "work", "app", "made", "build", "create")) return "projects";
+      if (has("skill", "tech", "stack", "language", "framework", "tool", "know")) return "skills";
+      if (has("github", "repo", "repository", "code", "source", "git")) return "git";
+      if (has("leet", "dsa", "competitive", "coding", "algorithm")) return "leetcode";
+      if (has("social", "link", "connect", "contact", "reach", "email", "linkedin", "twitter")) return "social";
+      if (has("help", "command", "what can", "how", "option", "menu")) return "help";
+      if (has("clear", "cls", "reset")) return "clear";
+
+      return "__unknown";
+    };
+
+    const resolved = resolve(trimmed);
+
+    switch (resolved) {
+      case "__greeting":
+        output = (
+          <div className="space-y-1">
+            <p className="text-cyan-400">Hey there! 👋 I&apos;m Daksh&apos;s terminal bot.</p>
+            <p className="text-neutral-400">Try these commands to learn more:</p>
+            <p className="text-neutral-500">
+              <span className="text-yellow-400">whoami</span> · <span className="text-yellow-400">projects</span> · <span className="text-yellow-400">skills</span> · <span className="text-yellow-400">social</span> · <span className="text-yellow-400">help</span>
+            </p>
+          </div>
+        );
+        break;
       case "help":
         output = (
           <div className="space-y-1">
             <p className="text-cyan-400">Available commands:</p>
-            <p><span className="text-yellow-400">whoami</span>    - About me</p>
-            <p><span className="text-yellow-400">projects</span>  - List all projects</p>
-            <p><span className="text-yellow-400">skills</span>    - Show technical skills</p>
-            <p><span className="text-yellow-400">git</span>       - GitHub profile</p>
-            <p><span className="text-yellow-400">leetcode</span>  - LeetCode profile</p>
-            <p><span className="text-yellow-400">social</span>    - Social links</p>
-            <p><span className="text-yellow-400">clear</span>    - Clear terminal</p>
+            <p><span className="text-yellow-400">whoami</span>    — About me</p>
+            <p><span className="text-yellow-400">projects</span>  — List all projects</p>
+            <p><span className="text-yellow-400">skills</span>    — Show technical skills</p>
+            <p><span className="text-yellow-400">git</span>       — GitHub profile</p>
+            <p><span className="text-yellow-400">leetcode</span>  — LeetCode profile</p>
+            <p><span className="text-yellow-400">social</span>    — Social links</p>
+            <p><span className="text-yellow-400">clear</span>     — Clear terminal</p>
+            <p className="text-neutral-600 mt-2 text-xs">💡 You can also type naturally, e.g. &quot;tell me about daksh&quot;</p>
           </div>
         );
         break;
@@ -184,12 +223,12 @@ export function TerminalSection() {
           <div className="flex items-center gap-2">
             <Code2 size={16} className="text-yellow-400" />
             <a
-              href="https://leetcode.com/dakshjain1604"
+              href="https://leetcode.com/u/Daksh8816/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-yellow-300 hover:underline"
             >
-              leetcode.com/dakshjain1604
+              leetcode.com/Daksh8816
             </a>
           </div>
         );
@@ -227,7 +266,7 @@ export function TerminalSection() {
     }
 
     setDisplayedCommands((prev) => [...prev, { command: cmd, output }]);
-  };
+  }, []);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
@@ -259,6 +298,12 @@ export function TerminalSection() {
     }
   };
 
+  const handleTerminalClick = () => {
+    if (phase === "interactive") {
+      inputRef.current?.focus();
+    }
+  };
+
   return (
     <section className="py-20 md:py-28 relative overflow-hidden bg-[#09090b]">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-cyan-500/5 rounded-full blur-[120px] pointer-events-none" />
@@ -274,6 +319,9 @@ export function TerminalSection() {
           <h2 className="text-3xl md:text-4xl font-bold">
             Interactive <span className="gradient-text">Terminal</span>
           </h2>
+          <p className="text-neutral-500 text-sm mt-2">
+            Click the terminal and type <span className="text-cyan-400 font-mono">help</span> to explore
+          </p>
         </motion.div>
 
         <motion.div
@@ -283,20 +331,23 @@ export function TerminalSection() {
           viewport={{ once: true }}
           className="glass-card rounded-xl overflow-hidden"
         >
+          {/* Title bar */}
           <div className="flex items-center gap-2 px-4 py-2.5 bg-white/5 border-b border-white/5">
-            <div className="w-2.5 h-2.5 rounded-full bg-neutral-600" />
-            <div className="w-2.5 h-2.5 rounded-full bg-neutral-600" />
-            <div className="w-2.5 h-2.5 rounded-full bg-neutral-600" />
+            <div className="w-2.5 h-2.5 rounded-full bg-red-500/70" />
+            <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/70" />
+            <div className="w-2.5 h-2.5 rounded-full bg-green-500/70" />
             <span className="ml-4 text-xs text-neutral-600 font-mono">
-              daksh@portfolio ~ {isInteractive ? "%" : "~"}
+              daksh@portfolio ~ {phase === "interactive" ? "%" : "~"}
             </span>
           </div>
 
+          {/* Terminal body */}
           <div
             ref={terminalRef}
-            className="p-5 font-mono text-sm min-h-[280px] max-h-[400px] overflow-y-auto"
+            onClick={handleTerminalClick}
+            className="p-5 font-mono text-sm min-h-[280px] max-h-[400px] overflow-y-auto cursor-text"
           >
-            {!isInteractive ? (
+            {phase === "typing" ? (
               <>
                 {displayedCommands.map((cmd, i) => (
                   <motion.div
@@ -322,17 +373,27 @@ export function TerminalSection() {
                   </motion.div>
                 ))}
 
-                <div className="flex items-center gap-2 text-neutral-400">
-                  <span className="text-cyan-400">→</span>
-                  <span className="text-neutral-500">$</span>
-                  <span className="text-neutral-300">{currentText}</span>
-                  <span className={`${showCursor ? "opacity-100" : "opacity-0"} text-cyan-400`}>
-                    ▋
-                  </span>
-                </div>
+                {/* Currently typing line */}
+                {animIndex < initialCommands.length && (
+                  <div className="flex items-center gap-2 text-neutral-400">
+                    <span className="text-cyan-400">→</span>
+                    <span className="text-neutral-500">$</span>
+                    <span className="text-neutral-300">{currentText}</span>
+                    <span className="text-cyan-400 animate-pulse">▋</span>
+                  </div>
+                )}
               </>
             ) : (
               <>
+                {displayedCommands.length === 0 && (
+                  <div className="mb-4 text-neutral-500 text-xs">
+                    <p className="text-cyan-400/70 mb-1">Welcome to the interactive terminal!</p>
+                    <p>
+                      Type <span className="text-yellow-400">help</span> to see available commands.
+                    </p>
+                  </div>
+                )}
+
                 {displayedCommands.map((cmd, i) => (
                   <div key={i} className="mb-3">
                     <div className="flex items-center gap-2 text-neutral-400">
@@ -353,10 +414,11 @@ export function TerminalSection() {
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={handleKeyDown}
-                    onFocus={() => setIsInteractive(true)}
-                    className="flex-1 bg-transparent border-none outline-none text-neutral-300 focus:ring-0"
+                    className="flex-1 bg-transparent border-none outline-none text-neutral-300 focus:ring-0 caret-cyan-400"
                     autoFocus
                     autoComplete="off"
+                    spellCheck={false}
+                    placeholder="Type a command..."
                   />
                 </div>
               </>

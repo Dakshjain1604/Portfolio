@@ -1,7 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { Send, Mail, User, MessageSquare, MapPin, Phone, Loader2 } from "lucide-react";
+import { Send, Mail, User, MessageSquare, MapPin, Phone, Loader2, Check } from "lucide-react";
 
 export function ContactSection() {
   const [formState, setFormState] = useState({
@@ -179,7 +179,7 @@ export function ContactSection() {
                   </>
                 ) : submitted ? (
                   <>
-                    <span className="text-green-400">✓</span>
+                    <Check size={14} className="text-green-400" />
                     Sent!
                   </>
                 ) : (

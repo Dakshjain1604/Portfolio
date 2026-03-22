@@ -289,7 +289,7 @@ export function FeaturedProjects() {
             viewport={{ once: true }}
             className="inline-block px-4 py-1 rounded-full text-xs font-medium text-cyan-300 bg-cyan-500/10 border border-cyan-500/20 mb-4"
           >
-            ✨ AI Showcase
+            <Sparkles size={12} className="inline mr-1" /> AI Showcase
           </motion.span>
           <h2 className="text-3xl md:text-5xl font-bold">
             Featured <span className="gradient-text">AI Projects</span>
