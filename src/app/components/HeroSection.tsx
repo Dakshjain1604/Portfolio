@@ -20,7 +20,6 @@ const ThreeSkillsBackground = dynamic(
 const roles = [
   "Full Stack Developer",
   "AI Engineer",
-  "Cloud Enthusiast",
   "Problem Solver",
 ];
 
