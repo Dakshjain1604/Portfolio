@@ -39,7 +39,7 @@ export function ActivityFeed() {
     { type: "commit", repo: "transactly_frontend", time: "2h ago", message: "Add payment integration" },
     { type: "pr", repo: "DocuMind-Ai", time: "5h ago", message: "Merged PR #12" },
     { type: "star", repo: "Brainly", time: "1d ago", message: "Starred repository" },
-    { type: "issue", repo: "website_cloner", time: "2d ago", message: "Fixed bug in parser" },
+    { type: "issue", repo: "AutoCareer", time: "2d ago", message: "Refactored browser runner" },
   ];
 
   const icons = {

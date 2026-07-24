@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import { Github, GitCommit, GitPullRequest, Star, Code, Loader2 } from "lucide-react";
+import { Github, GitCommit, GitPullRequest, Star, Code, Loader2, AlertCircle } from "lucide-react";
 import { useState, useEffect } from "react";
 
 interface GitHubData {
@@ -16,34 +16,21 @@ interface GitHubData {
   languages: Array<{ name: string; count: number }>;
 }
 
-const defaultStats = [
-  { label: "Repositories", value: "25+", icon: <Code size={18} /> },
-  { label: "Commits", value: "500+", icon: <GitCommit size={18} /> },
-  { label: "Stars Earned", value: "50+", icon: <Star size={18} /> },
-  { label: "Pull Requests", value: "30+", icon: <GitPullRequest size={18} /> },
-];
+function getLanguageColor(name: string, index: number): string {
+  const key = name.toLowerCase();
+  if (key.includes("typescript") || key.includes("ts")) return "#3b82f6"; // Vibrant Electric TS Blue
+  if (key.includes("javascript") || key.includes("js")) return "#f1e05a"; // Bright JS Yellow
+  if (key.includes("python")) return "#38bdf8"; // Bright Python Sky Blue
+  if (key.includes("html")) return "#f97316"; // Bright HTML Orange
+  if (key.includes("css")) return "#c084fc"; // Bright CSS Purple
+  if (key.includes("shell") || key.includes("bash")) return "#34d399"; // Bright Shell Mint Green
+  if (key.includes("c++") || key.includes("cpp")) return "#f43f5e"; // Bright C++ Pink
+  if (key.includes("go")) return "#22d3ee"; // Bright Go Cyan
+  if (key.includes("rust")) return "#fb923c"; // Bright Rust Orange
 
-const defaultLanguages = [
-  { name: "TypeScript", percentage: 40 },
-  { name: "JavaScript", percentage: 25 },
-  { name: "Python", percentage: 20 },
-  { name: "Other", percentage: 15 },
-];
-
-const defaultContributions = Array.from({ length: 52 }, (_, i) => ({
-  week: i,
-  days: Array.from({ length: 7 }, () => Math.random() > 0.3 ? Math.floor(Math.random() * 4) : 0),
-}));
-
-const getIntensity = (level: number) => {
-  switch (level) {
-    case 0: return "bg-white/5";
-    case 1: return "bg-cyan-900/40";
-    case 2: return "bg-cyan-700/50";
-    case 3: return "bg-cyan-500/60";
-    default: return "bg-cyan-400";
-  }
-};
+  const fallbacks = ["#3b82f6", "#f1e05a", "#38bdf8", "#f97316", "#c084fc", "#34d399"];
+  return fallbacks[index % fallbacks.length];
+}
 
 export function GitHubStats() {
   const [data, setData] = useState<GitHubData | null>(null);
@@ -61,7 +48,6 @@ export function GitHubStats() {
         setData(json);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Unknown error");
-        // Use fallback data on error
       } finally {
         setLoading(false);
       }
@@ -70,161 +56,165 @@ export function GitHubStats() {
     fetchGitHubData();
   }, []);
 
-  const stats = data
-    ? [
-        { label: "Repositories", value: data.stats.repos.toString(), icon: <Code size={18} /> },
-        { label: "Contributions", value: data.contributions.total.toString(), icon: <GitCommit size={18} /> },
-        { label: "Stars Earned", value: data.stats.stars.toString(), icon: <Star size={18} /> },
-        { label: "Forks", value: data.stats.forks.toString(), icon: <GitPullRequest size={18} /> },
-      ]
-    : defaultStats;
-
   const totalLangCount = data ? data.languages.reduce((acc, lang) => acc + lang.count, 0) : 0;
   const languages = data
     ? data.languages.map((lang) => ({
         name: lang.name,
         percentage: Math.round((lang.count / totalLangCount) * 100),
       }))
-    : defaultLanguages;
-
-  // Convert API data to contribution graph format
-  const contributions = data
-    ? data.contributions.weeks.map((week, weekIndex) => ({
-        week: weekIndex,
-        days: week.map((count) => {
-          if (count === 0) return 0;
-          if (count <= 2) return 1;
-          if (count <= 5) return 2;
-          if (count <= 10) return 3;
-          return 4;
-        }),
-      }))
-    : defaultContributions;
+    : [];
 
   return (
-    <section className="py-20 md:py-28 relative overflow-hidden bg-[#09090b]" id="github">
-      <div className="absolute top-1/3 right-0 w-[300px] h-[300px] bg-cyan-500/5 rounded-full blur-[120px] pointer-events-none" />
+    <section className="py-24 md:py-32 relative overflow-hidden bg-background border-t border-hairline" id="github">
+      <div className="absolute top-1/3 right-0 w-[300px] h-[300px] bg-accent/2 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="max-w-5xl mx-auto px-6 md:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.4 }}
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl md:text-4xl font-bold">
-            GitHub <span className="gradient-text">Activity</span>
+          <span className="text-[10px] font-mono tracking-widest text-sky-400 uppercase">
+            telemetry_stream
+          </span>
+          <h2 className="text-3xl md:text-4xl font-bold font-display mt-2">
+            GitHub <span className="text-sky-400">Activity</span>
           </h2>
-          <div className="section_divider mt-4" />
+          <div className="section-divider mt-4" />
         </motion.div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
-          {stats.map((stat, i) => (
-            <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: i * 0.1 }}
-              viewport={{ once: true }}
-              className="glass-card rounded-lg p-4 text-center group"
-            >
-              <div className="flex justify-center mb-2 text-neutral-500 group-hover:text-cyan-400 transition-colors">
-                {loading ? <Loader2 size={18} className="animate-spin" /> : stat.icon}
-              </div>
-              <p className="text-xl font-bold gradient-text">{stat.value}</p>
-              <p className="text-xs text-neutral-600 mt-1">{stat.label}</p>
-            </motion.div>
-          ))}
-        </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-          className="glass-card rounded-xl p-5 mb-6"
-        >
-          <div className="flex items-center gap-2 mb-3">
-            <Github size={14} className="text-neutral-500" />
-            <span className="text-xs text-neutral-500 font-medium">Contribution Graph</span>
-          </div>
-          <div className="overflow-x-auto">
-            <div className="flex gap-0.5 min-w-max">
-              {contributions.map((week) => (
-                <div key={week.week} className="flex flex-col gap-0.5">
-                  {week.days.map((level, day) => (
-                    <motion.div
-                      key={`${week.week}-${day}`}
-                      initial={{ scale: 0 }}
-                      whileInView={{ scale: 1 }}
-                      transition={{ duration: 0.2, delay: (week.week * 0.01) + (day * 0.01) }}
-                      viewport={{ once: true }}
-                      className={`w-2.5 h-2.5 rounded-sm ${getIntensity(level)}`}
-                    />
-                  ))}
+        {loading ? (
+          // ── SKELETON LOADING STATE ──
+          <div className="space-y-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <div key={i} className="glass-card rounded-lg p-5 border border-hairline animate-pulse">
+                  <div className="h-4 w-4 bg-surface-2 rounded mb-3 mx-auto" />
+                  <div className="h-6 w-16 bg-surface-2 rounded mb-2 mx-auto" />
+                  <div className="h-3 w-20 bg-surface-2 rounded mx-auto" />
                 </div>
               ))}
             </div>
+            <div className="glass-card rounded-xl p-6 border border-hairline animate-pulse h-32" />
+            <div className="glass-card rounded-xl p-6 border border-hairline animate-pulse h-28" />
           </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-          className="glass-card rounded-xl p-5"
-        >
-          <span className="text-xs text-neutral-500 font-medium mb-3 block">Most Used Languages</span>
-          <div className="h-1.5 rounded-full overflow-hidden flex mb-3">
-            {languages.map((lang) => (
-              <motion.div
-                key={lang.name}
-                initial={{ scaleX: 0 }}
-                whileInView={{ scaleX: 1 }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-                viewport={{ once: true }}
-                className="bg-cyan-500/60 h-full origin-left"
-                style={{ width: `${lang.percentage}%` }}
-              />
-            ))}
-          </div>
-          <div className="flex flex-wrap gap-4">
-            {languages.map((lang) => (
-              <div key={lang.name} className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-cyan-500/60" />
-                <span className="text-xs text-neutral-400">{lang.name}</span>
-                <span className="text-xs text-neutral-600">{lang.percentage}%</span>
-              </div>
-            ))}
-          </div>
-        </motion.div>
-
-        {error && (
-          <p className="text-xs text-neutral-600 text-center mt-4">
-            Showing demo data. Configure GITHUB_TOKEN in .env.local for real data.
-          </p>
-        )}
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          viewport={{ once: true }}
-          className="text-center mt-6"
-        >
-          <a
-            href="https://github.com/Dakshjain1604"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-xs text-neutral-500 hover:text-white transition-colors group"
+        ) : error || !data ? (
+          // ── TRUTHFUL FAIL GRACEFULLY / UNCONFIGURED STATE (NO FAKE METRICS) ──
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="glass-card rounded-xl p-6 md:p-8 border border-hairline bg-surface max-w-2xl mx-auto text-center"
           >
-            <Github size={14} />
-            <span>View full profile</span>
-            <span className="group-hover:translate-x-1 transition-transform">→</span>
-          </a>
-        </motion.div>
+            <div className="flex justify-center mb-4 text-accent/80">
+              <AlertCircle size={32} />
+            </div>
+            <h3 className="text-base font-mono font-bold text-white mb-2 uppercase tracking-wide">
+              [status: telemetry_offline]
+            </h3>
+            <p className="text-sm text-text-muted leading-relaxed font-sans font-light mb-6 max-w-md mx-auto">
+              Live orchestration activity stats require a secure build token. To maintain strict data integrity, all placeholder or hardcoded metrics have been disabled. Explore the live codebase directly on GitHub:
+            </p>
+            <a
+              href="https://github.com/Dakshjain1604"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center h-11 px-6 rounded-lg bg-accent text-ink text-xs font-mono font-semibold hover:opacity-90 active:scale-98 transition-all cursor-pointer"
+            >
+              explore_github_profile
+              <Github size={14} className="ml-2" />
+            </a>
+          </motion.div>
+        ) : (
+          // ── REAL LIVE DATA STATE ──
+          <div className="space-y-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {[
+                { label: "repositories", value: data.stats.repos.toString(), icon: <Code size={16} /> },
+                { label: "contributions", value: data.contributions.total.toString(), icon: <GitCommit size={16} /> },
+                { label: "stars_earned", value: data.stats.stars.toString(), icon: <Star size={16} /> },
+                { label: "forks_count", value: data.stats.forks.toString(), icon: <GitPullRequest size={16} /> },
+              ].map((stat, i) => (
+                <motion.div
+                  key={stat.label}
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: i * 0.05 }}
+                  viewport={{ once: true }}
+                  className="glass-card rounded-lg p-5 text-center border border-hairline hover:border-accent/30 transition-colors"
+                >
+                  <div className="flex justify-center mb-2 text-text-muted">
+                    {stat.icon}
+                  </div>
+                  <p className="text-2xl font-mono font-bold text-white tracking-tight">{stat.value}</p>
+                  <p className="text-[10px] font-mono uppercase tracking-wider text-text-muted mt-1">{stat.label}</p>
+                </motion.div>
+              ))}
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+              viewport={{ once: true }}
+              className="glass-card rounded-xl p-6 border border-hairline bg-surface"
+            >
+              <span className="text-xs font-mono font-medium text-text-muted mb-4 block">language_compilation_mix</span>
+              <div className="h-3 rounded-full bg-surface-2 overflow-hidden flex mb-5 border border-hairline p-0.5 shadow-inner">
+                {languages.map((lang, idx) => {
+                  const color = getLanguageColor(lang.name, idx);
+                  return (
+                    <motion.div
+                      key={lang.name}
+                      initial={{ width: "0%" }}
+                      whileInView={{ width: `${lang.percentage}%` }}
+                      transition={{ duration: 0.8, delay: idx * 0.08, ease: "easeOut" }}
+                      viewport={{ once: true }}
+                      className="h-full first:rounded-l-full last:rounded-r-full flex-shrink-0"
+                      style={{ backgroundColor: color }}
+                      title={`${lang.name}: ${lang.percentage}%`}
+                    />
+                  );
+                })}
+              </div>
+              <div className="flex flex-wrap gap-x-5 gap-y-2.5">
+                {languages.map((lang, idx) => {
+                  const color = getLanguageColor(lang.name, idx);
+                  return (
+                    <div key={lang.name} className="flex items-center gap-2 font-mono text-xs">
+                      <div
+                        className="w-2.5 h-2.5 rounded-full flex-shrink-0 shadow-sm"
+                        style={{ backgroundColor: color }}
+                      />
+                      <span className="text-white font-medium">{lang.name.toLowerCase()}</span>
+                      <span className="text-accent font-mono">{lang.percentage}%</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.4 }}
+              viewport={{ once: true }}
+              className="text-center mt-6"
+            >
+              <a
+                href="https://github.com/Dakshjain1604"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-xs font-mono text-text-muted hover:text-white transition-colors group cursor-pointer"
+              >
+                <Github size={12} />
+                <span>view_full_github_stream</span>
+                <span className="group-hover:translate-x-0.5 transition-transform text-accent">→</span>
+              </a>
+            </motion.div>
+          </div>
+        )}
       </div>
     </section>
   );

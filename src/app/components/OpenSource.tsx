@@ -62,7 +62,7 @@ export function OpenSource() {
     },
     {
       label: "Repositories",
-      value: data?.repositories.length || "10+",
+      value: data?.repositories?.length || "10+",
       icon: <Github size={20} />,
     },
   ];
@@ -119,7 +119,7 @@ export function OpenSource() {
             Featured Repositories
           </h3>
           <div className="grid md:grid-cols-2 gap-4">
-            {data?.repositories.slice(0, 4).map((repo, i) => (
+            {(data?.repositories || []).slice(0, 4).map((repo, i) => (
               <motion.a
                 key={repo.name}
                 href={repo.url}

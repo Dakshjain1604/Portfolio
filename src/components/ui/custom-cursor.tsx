@@ -2,6 +2,21 @@
 import React, { useEffect, useState } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 
+// Suppress Three.js Clock deprecation warnings originating from @react-three/fiber internals
+if (typeof window !== "undefined") {
+  const originalWarn = console.warn;
+  console.warn = (...args: any[]) => {
+    if (
+      args[0] &&
+      typeof args[0] === "string" &&
+      (args[0].includes("THREE.THREE.Clock") || args[0].includes("THREE.Clock"))
+    ) {
+      return;
+    }
+    originalWarn(...args);
+  };
+}
+
 export function CustomCursor() {
   const [isClient, setIsClient] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
@@ -56,28 +71,29 @@ export function CustomCursor() {
     <>
       {/* Outer trailing ring */}
       <motion.div
-        className="fixed top-0 left-0 z-[100] w-10 h-10 border border-cyan-400/80 rounded-full pointer-events-none shadow-[0_0_15px_rgba(34,211,238,0.5)]"
+        className="fixed top-0 left-0 z-[100] w-10 h-10 border border-white/70 rounded-full pointer-events-none shadow-[0_0_15px_rgba(255,255,255,0.25)]"
         style={{
           x: cursorX,
           y: cursorY,
           translateX: "-50%",
           translateY: "-50%",
+          backgroundColor: "rgba(255, 255, 255, 0)",
         }}
         animate={{
           scale: isHovering ? 1.5 : 1,
-          backgroundColor: isHovering ? "rgba(34, 211, 238, 0.15)" : "transparent",
+          backgroundColor: isHovering ? "rgba(255, 255, 255, 0.08)" : "rgba(255, 255, 255, 0)",
         }}
         transition={{ duration: 0.2 }}
       />
       {/* Inner dot reflecting exact mouse position */}
       <motion.div
-        className="fixed top-0 left-0 z-[100] w-2 h-2 rounded-full pointer-events-none shadow-[0_0_8px_rgba(34,211,238,0.8)]"
+        className="fixed top-0 left-0 z-[100] w-2 h-2 rounded-full pointer-events-none shadow-[0_0_8px_rgba(255,255,255,0.4)]"
         style={{
           x: mouseX,
           y: mouseY,
           translateX: "-50%",
           translateY: "-50%",
-          backgroundColor: isHovering ? "transparent" : "#22d3ee",
+          backgroundColor: isHovering ? "rgba(255, 255, 255, 0)" : "rgba(255, 255, 255, 1)",
         }}
       />
     </>

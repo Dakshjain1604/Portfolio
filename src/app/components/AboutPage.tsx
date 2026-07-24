@@ -1,156 +1,121 @@
 "use client";
-import { motion, useInView } from "framer-motion";
-import { useRef, useEffect, useState } from "react";
-import { Briefcase, FolderGit2, GraduationCap, Award, Code, Rocket, Heart } from "lucide-react";
+import { motion } from "framer-motion";
+import { ExternalLink, Cpu, ShieldCheck, Layers, Zap } from "lucide-react";
 
-const stats = [
-  { icon: <Briefcase size={18} />, value: 2, suffix: "+", label: "Companies" },
-  { icon: <FolderGit2 size={18} />, value: 10, suffix: "+", label: "Projects" },
-  { icon: <GraduationCap size={18} />, value: 8.4, suffix: "", label: "CGPA" },
-  { icon: <Award size={18} />, value: 3, suffix: "+", label: "Certifications" },
+const startupPillars = [
+  { icon: <Cpu size={13} className="text-sky-400" />, label: "Autonomous AI Agents" },
+  { icon: <ShieldCheck size={13} className="text-sky-400" />, label: "Secure MCP Systems" },
+  { icon: <Layers size={13} className="text-sky-400" />, label: "Multi-Agent Orchestration" },
+  { icon: <Zap size={13} className="text-sky-400" />, label: "Production RAG Pipelines" },
 ];
-
-const quickFacts = [
-  { icon: <Rocket size={14} />, text: "Fast Shipper" },
-  { icon: <Code size={14} />, text: "AI Integrations" },
-  { icon: <Briefcase size={14} />, text: "Full-Stack" },
-  { icon: <Heart size={14} />, text: "High Ownership" },
-];
-
-function AnimatedCounter({ value, suffix, inView }: { value: number; suffix: string; inView: boolean }) {
-  const [count, setCount] = useState(0);
-  const isFloat = value % 1 !== 0;
-
-  useEffect(() => {
-    if (!inView) return;
-    const duration = 1500;
-    const steps = 40;
-    const stepValue = value / steps;
-    let current = 0;
-    const timer = setInterval(() => {
-      current += stepValue;
-      if (current >= value) {
-        setCount(value);
-        clearInterval(timer);
-      } else {
-        setCount(isFloat ? Math.round(current * 10) / 10 : Math.floor(current));
-      }
-    }, duration / steps);
-    return () => clearInterval(timer);
-  }, [inView, value, isFloat]);
-
-  return (
-    <span className="text-2xl md:text-3xl font-bold gradient-text">
-      {isFloat ? count.toFixed(1) : count}{suffix}
-    </span>
-  );
-}
 
 const container = {
   hidden: { opacity: 0 },
-  show: { opacity: 1, transition: { staggerChildren: 0.15 } },
+  show: { opacity: 1, transition: { staggerChildren: 0.1 } },
 };
 
 const item = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+  hidden: { opacity: 0, y: 12 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
 };
 
 export function AboutMe() {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-100px" });
-
   return (
-    <section className="py-20 md:py-28 relative overflow-hidden bg-[#09090b]" id="about">
-      <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-cyan-500/5 rounded-full opacity-30 pointer-events-none" />
+    <section className="py-24 md:py-32 relative overflow-hidden bg-background border-t border-hairline" id="about">
+      {/* Subtle grid accent */}
+      <div className="absolute top-0 right-0 w-[350px] h-[350px] bg-sky-500/5 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="max-w-5xl mx-auto px-6 md:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.4 }}
           viewport={{ once: true }}
-          className="text-center mb-12"
+          className="mb-16 text-center"
         >
-          <h2 className="text-3xl md:text-4xl font-bold">
-            About <span className="gradient-text">Me</span>
+          <span className="text-[10px] font-mono tracking-widest text-sky-400 uppercase">
+            system_registry :: profile
+          </span>
+          <h2 className="text-3xl md:text-5xl font-bold font-display mt-2">
+            About <span className="text-sky-400">Me</span>
           </h2>
-          <div className="section-divider mt-4" />
+          <div className="section-divider mt-6" />
         </motion.div>
 
-        <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-14">
+        <div className="max-w-4xl mx-auto">
+          {/* Main Bio Content */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="flex-shrink-0 relative group"
-          >
-            <div className="absolute -inset-1 bg-cyan-500/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <img
-              src="/images/profile.avif"
-              alt="Daksh Jain"
-              className="relative rounded-full w-36 md:w-44 h-36 md:h-44 object-cover border border-white/10"
-            />
-          </motion.div>
-
-          <motion.div
-            ref={ref}
             variants={container}
             initial="hidden"
             whileInView="show"
             viewport={{ once: true }}
-            className="flex-1"
+            className="flex flex-col justify-between"
           >
-            <motion.div variants={item} className="glass-card rounded-xl p-5 md:p-6 mb-6">
-              <div className="space-y-4 text-sm md:text-base text-neutral-400 leading-relaxed">
+            <motion.div variants={item} className="glass-card rounded-xl p-6 md:p-8 border border-hairline bg-surface/90 shadow-xl shadow-black/20">
+              {/* Mono Header Line */}
+              <div className="flex flex-wrap items-center justify-between gap-2 mb-5 pb-3 border-b border-hairline">
+                <div className="font-mono text-[11px] text-sky-400 uppercase tracking-wider flex items-center gap-2">
+                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  [currently: full-stack_&_ai_engineer_at_neo]
+                </div>
+                <span className="font-mono text-[10px] text-text-muted/60 uppercase">
+                  early-stage startup
+                </span>
+              </div>
+
+              {/* Bio Paragraphs */}
+              <div className="space-y-4 text-sm md:text-base text-text-muted leading-relaxed font-sans font-light">
                 <p>
-                  Full-stack engineer who ships AI-powered products fast. Currently a Full-Stack + AI Engineer at{" "}
-                  <span className="text-white font-medium">NEO</span>, where I lead end-to-end feature delivery, from API migrations to building internal LangChain agents.
+                  I am a software engineer focused on the intersection of <strong className="font-semibold text-white">robust full-stack systems</strong> and <strong className="font-semibold text-white">state-of-the-art AI orchestration</strong>. I enjoy building systems that are not just intelligent, but also resilient, performant, and highly reliable under production loads.
                 </p>
+
                 <p>
-                  I specialize in building production-ready systems using{" "}
-                  <span className="text-white font-medium">Next.js, Node.js, and GenAI</span> technologies like RAG and Claude API.
+                  Currently, I am a <strong className="font-semibold text-white">Full-Stack & AI Engineer</strong> at{" "}
+                  <a
+                    href="https://heyneo.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 font-semibold text-white underline decoration-sky-400/40 hover:decoration-sky-400 hover:text-sky-400 transition-all"
+                  >
+                    NEO
+                    <ExternalLink size={12} className="inline opacity-70" />
+                  </a>
+                  , an early-stage startup pioneering autonomous AI engineering agents. Having joined as an intern and stepped into a full-time role within three months, I actively design and ship critical agentic systems. My work here ranges from building <strong className="font-semibold text-white">secure, multi-tenant Model Context Protocol (MCP) servers</strong> to implementing <strong className="font-semibold text-white">advanced RAG pipelines</strong> and <strong className="font-semibold text-white">multi-agent orchestration backends</strong>.
                 </p>
+
                 <p>
-                  Computer Science undergraduate at{" "}
-                  <span className="text-cyan-400 font-medium">JECRC University</span>, bringing a strong foundation in scalable backend architectures and AI-assisted development.
+                  I build production-grade solutions and <strong className="font-semibold text-white">agentic AI systems</strong> using <strong className="font-semibold text-white">Next.js, Node.js, Python, and GenAI</strong> (such as LangChain, Claude API, and custom agent toolsets). I am passionate about <strong className="font-semibold text-white">developer tooling</strong>, automation, and bridging the gap between raw model intelligence and scalable, real-world products.
                 </p>
               </div>
 
-              <motion.div variants={item} className="flex flex-wrap gap-2 mt-4">
-                {quickFacts.map((fact, idx) => (
-                  <motion.div
-                    key={fact.text}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.5 + idx * 0.1 }}
-                    viewport={{ once: true }}
-                    whileHover={{ scale: 1.05 }}
-                    className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/5 text-xs text-neutral-500"
-                  >
-                    <span className="text-cyan-400">{fact.icon}</span>
-                    {fact.text}
-                  </motion.div>
-                ))}
-              </motion.div>
-            </motion.div>
+              {/* Key Impact Metric Strip */}
+              <div className="grid grid-cols-3 gap-3 my-6 py-4 border-y border-hairline/80">
+                <div className="p-3 rounded-lg bg-zinc-950/70 border border-zinc-800 text-center">
+                  <span className="block text-lg sm:text-xl font-bold font-mono text-white">3 Mos</span>
+                  <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider">Intern → Full-Time</span>
+                </div>
+                <div className="p-3 rounded-lg bg-zinc-950/70 border border-zinc-800 text-center">
+                  <span className="block text-lg sm:text-xl font-bold font-mono text-sky-400">MCP Protocol</span>
+                  <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider">Multi-Tenant Servers</span>
+                </div>
+                <div className="p-3 rounded-lg bg-zinc-950/70 border border-zinc-800 text-center">
+                  <span className="block text-lg sm:text-xl font-bold font-mono text-emerald-400">Production</span>
+                  <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider">RAG & AI Agents</span>
+                </div>
+              </div>
 
-            <motion.div variants={item} className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              {stats.map((stat) => (
-                <motion.div
-                  key={stat.label}
-                  variants={item}
-                  whileHover={{ y: -3 }}
-                  className="glass-card rounded-lg p-4 text-center group"
-                >
-                  <div className="flex justify-center mb-2 text-neutral-500 group-hover:text-cyan-400 transition-colors">
-                    {stat.icon}
+              {/* Startup Pillars Badges */}
+              <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
+                {startupPillars.map((pillar, i) => (
+                  <div
+                    key={i}
+                    className="flex items-center gap-2 px-3.5 py-2 rounded-lg bg-zinc-900/90 border border-zinc-800 hover:border-sky-500/50 hover:bg-zinc-900 text-xs font-mono text-zinc-200 whitespace-nowrap transition-all duration-200 shadow-sm"
+                  >
+                    {pillar.icon}
+                    <span>{pillar.label}</span>
                   </div>
-                  <AnimatedCounter value={stat.value} suffix={stat.suffix} inView={inView} />
-                  <p className="text-xs text-neutral-600 mt-1">{stat.label}</p>
-                </motion.div>
-              ))}
+                ))}
+              </div>
             </motion.div>
           </motion.div>
         </div>

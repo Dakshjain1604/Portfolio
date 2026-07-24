@@ -1,255 +1,159 @@
 "use client";
+import React from "react";
 import { motion } from "framer-motion";
-import { AzureIcon } from "../icons/AzureIcon";
+import { Cpu, Server, Layout, FileCode2, Cloud } from "lucide-react";
 
-import { DockerIcon } from "../icons/DockerIcon";
-import { Github } from "../icons/github";
+interface SkillCategory {
+  title: string;
+  icon: React.ReactNode;
+  isAi?: boolean;
+  skills: string[];
+}
 
-import { GraphhQL } from "../icons/GraphQl";
+const skillGroups: SkillCategory[] = [
+  {
+    title: "agentic_ai_&_genai",
+    icon: <Cpu size={16} />,
+    isAi: true,
+    skills: [
+      "Autonomous Agent Workflows",
+      "Multi-Agent Orchestration",
+      "Model Context Protocol (MCP)",
+      "Production RAG & Vector Search",
+      "LLM Tool & Function Calling",
+      "Prompt Engineering & Evals",
+      "LangChain & LangGraph",
+      "Claude & OpenAI APIs",
+    ],
+  },
+  {
+    title: "backend_stack",
+    icon: <Server size={16} />,
+    skills: ["Node.js", "Express", "PostgreSQL", "MongoDB", "Redis", "Prisma"],
+  },
+  {
+    title: "frontend_stack",
+    icon: <Layout size={16} />,
+    skills: ["React", "Next.js", "Tailwind", "Framer Motion"],
+  },
+  {
+    title: "languages",
+    icon: <FileCode2 size={16} />,
+    skills: ["TypeScript", "JavaScript", "Python", "C++", "SQL"],
+  },
+  {
+    title: "cloud_&_tools",
+    icon: <Cloud size={16} />,
+    skills: ["AWS", "Docker", "CI/CD", "Git", "REST", "JWT", "OAuth2", "Zod", "Claude Code", "Cursor"],
+  },
+];
 
-import { JavaScript } from "../icons/JavaScript";
-import { MongoDbIcon } from "../icons/MongoDb";
-import { NextjsIcon } from "../icons/Nextjsicon";
-import { NodejsIcon } from "../icons/nodejs";
-import { PostgreSQL } from "../icons/Postgre";
-import { PrismIcon } from "../icons/primsaicon";
-import { PythonIcon } from "../icons/PythonIcon";
-import { Reactlogo } from "../icons/ReactIcon";
-import { RedisIcon } from "../icons/RedisIcon";
-import { TailwindIcon } from "../icons/Tailwindcss";
-import { TypeScriptIcon } from "../icons/TypeScriptIcon";
-import { 
-  Brain, Link2, Database, Server, Code, Wrench, 
-  TerminalSquare, Sparkles, MessageSquareCode, 
-  Network, DatabaseZap, Globe, MonitorSmartphone
-} from "lucide-react";
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 },
+  },
+};
 
-export function Skills() {
+const item = {
+  hidden: { opacity: 0, y: 12 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.4, ease: "easeOut" },
+  },
+};
+
+interface SkillsProps {
+  selectedSkill: string | null;
+  onSelectSkill: (skill: string) => void;
+}
+
+export function Skills({ selectedSkill, onSelectSkill }: SkillsProps) {
   return (
-    <section className="py-20 md:py-28 relative overflow-hidden bg-[#09090b]" id="skills">
-      {/* Background Glows */}
-      <div className="absolute top-1/4 left-0 w-[400px] h-[400px] bg-cyan-500/5 rounded-full opacity-30 pointer-events-none" />
-      <div className="absolute bottom-1/4 right-0 w-[400px] h-[400px] bg-indigo-500/5 rounded-full opacity-30 pointer-events-none" />
+    <section className="py-24 md:py-32 relative overflow-hidden bg-background border-t border-hairline" id="skills">
+      {/* Subtle background glow for the prominent AI section */}
+      <div className="absolute top-1/4 left-1/4 w-[350px] h-[350px] bg-accent/3 rounded-full blur-[120px] pointer-events-none" />
 
-      <div className="max-w-6xl mx-auto px-6 md:px-8 relative z-10">
+      <div className="max-w-5xl mx-auto px-6 md:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.4 }}
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tight">
-            Technical <span className="gradient-text">Arsenal</span>
+          <span className="text-[10px] font-mono tracking-widest text-sky-400 uppercase">
+            capability_registry
+          </span>
+          <h2 className="text-3xl md:text-5xl font-bold font-display mt-2">
+            Technical <span className="text-sky-400">Arsenal</span>
           </h2>
           <div className="section-divider mt-6" />
         </motion.div>
 
-        {/* BENTO GRID */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 auto-rows-[minmax(180px,auto)] gap-4 md:gap-6">
-          
-          {/* TILE 1: AI & GenAI (Large, 2x2) */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            viewport={{ once: true }}
-            className="col-span-1 md:col-span-2 lg:col-span-2 row-span-1 lg:row-span-2 glass-card p-6 md:p-8 rounded-3xl relative overflow-hidden group border border-white/10 hover:border-cyan-500/50 transition-colors"
-          >
-            <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-transparent to-indigo-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            
-            <div className="relative z-10 flex flex-col h-full">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-3 rounded-2xl bg-cyan-500/20 text-cyan-400">
-                  <Sparkles size={24} />
-                </div>
-                <h3 className="text-xl md:text-2xl font-semibold text-white">AI & GenAI Engineering</h3>
-              </div>
-              
-              <p className="text-sm text-neutral-400 mb-8 leading-relaxed max-w-sm">
-                Building intelligent, production-ready AI systems, RAG pipelines, and autonomous agents.
-              </p>
-
-              <div className="mt-auto grid grid-cols-2 sm:grid-cols-3 gap-4">
-                {[
-                  { name: "LangChain", icon: <Link2 size={24} className="text-blue-400" /> },
-                  { name: "RAG Pipelines", icon: <Network size={24} className="text-purple-400" /> },
-                  { name: "Claude API", icon: <MessageSquareCode size={24} className="text-orange-400" /> },
-                  { name: "OpenAI API", icon: <Brain size={24} className="text-emerald-400" /> },
-                  { name: "AI Agents", icon: <TerminalSquare size={24} className="text-pink-400" /> },
-                  { name: "ChromaDB", icon: <DatabaseZap size={24} className="text-cyan-400" /> },
-                ].map((skill) => (
-                  <div key={skill.name} className="flex flex-col gap-2 items-start p-3 rounded-xl bg-black/20 border border-white/5 hover:bg-white/5 transition-colors">
-                    {skill.icon}
-                    <span className="text-xs md:text-sm font-medium text-neutral-300">{skill.name}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-
-          {/* TILE 2: Backend Architecture (Tall, 1x2) */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="col-span-1 lg:col-span-1 row-span-1 lg:row-span-2 glass-card p-6 rounded-3xl relative overflow-hidden group border border-white/10 hover:border-emerald-500/30 transition-colors"
-          >
-            <div className="absolute inset-0 bg-gradient-to-b from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <div className="relative z-10 flex flex-col h-full">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-400">
-                  <Server size={20} />
-                </div>
-                <h3 className="text-lg font-semibold text-white">Backend</h3>
-              </div>
-              
-              <div className="flex flex-col gap-3 mt-auto">
-                {[
-                  { name: "Node.js", icon: <NodejsIcon /> },
-                  { name: "Express.js", icon: <Server size={18} className="text-neutral-500" /> },
-                  { name: "PostgreSQL", icon: <PostgreSQL /> },
-                  { name: "MongoDB", icon: <MongoDbIcon /> },
-                  { name: "Redis", icon: <RedisIcon /> },
-                  { name: "GraphQL", icon: <GraphhQL /> },
-                  { name: "Prisma", icon: <PrismIcon /> },
-                ].map((skill) => (
-                  <div key={skill.name} className="flex items-center gap-3 p-2.5 rounded-lg hover:bg-white/5 transition-colors border border-transparent hover:border-white/5">
-                    <div className="w-6 h-6 flex items-center justify-center grayscale group-hover:grayscale-0 transition-all">{skill.icon}</div>
-                    <span className="text-sm font-medium text-neutral-400 group-hover:text-neutral-200">{skill.name}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-
-          {/* TILE 3: Cloud & DevOps (Normal, 1x1) */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            viewport={{ once: true }}
-            className="col-span-1 lg:col-span-1 row-span-1 glass-card p-6 rounded-3xl relative overflow-hidden group border border-white/10 hover:border-blue-500/30 transition-colors"
-          >
-            <div className="relative z-10 flex flex-col h-full">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2.5 rounded-xl bg-blue-500/10 text-blue-400">
-                  <Globe size={20} />
-                </div>
-                <h3 className="text-lg font-semibold text-white">Cloud</h3>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-3 mt-auto">
-                {[
-                  { name: "AWS", icon: <Globe size={18} className="text-amber-500" /> },
-                  { name: "Docker", icon: <DockerIcon /> },
-                  { name: "Azure", icon: <AzureIcon /> },
-                  { name: "CI/CD", icon: <Github height={18} width={18} /> },
-                ].map((skill) => (
-                  <div key={skill.name} className="flex flex-col items-center justify-center gap-2 p-3 rounded-xl bg-black/20 hover:bg-white/5 transition-colors border border-white/5">
-                    <div className="w-6 h-6 flex items-center justify-center">{skill.icon}</div>
-                    <span className="text-xs font-medium text-neutral-400">{skill.name}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-
-          {/* TILE 4: Languages (Normal, 1x1) */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            viewport={{ once: true }}
-            className="col-span-1 lg:col-span-1 row-span-1 glass-card p-6 rounded-3xl relative overflow-hidden group border border-white/10 hover:border-yellow-500/30 transition-colors"
-          >
-            <div className="relative z-10 flex flex-col h-full">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2.5 rounded-xl bg-yellow-500/10 text-yellow-400">
-                  <Code size={20} />
-                </div>
-                <h3 className="text-lg font-semibold text-white">Languages</h3>
-              </div>
-              
-              <div className="flex flex-wrap gap-2 mt-auto">
-                {[
-                  { name: "TypeScript", icon: <TypeScriptIcon /> },
-                  { name: "JavaScript", icon: <JavaScript /> },
-                  { name: "Python", icon: <PythonIcon /> },
-                  { name: "C++", icon: <Code size={16} className="text-blue-500" /> },
-                  { name: "SQL", icon: <Database size={16} className="text-neutral-400" /> },
-                ].map((skill) => (
-                  <div key={skill.name} className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-black/20 border border-white/5">
-                    <div className="w-4 h-4 flex items-center justify-center">{skill.icon}</div>
-                    <span className="text-xs font-medium text-neutral-300">{skill.name}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-
-          {/* TILE 5: Frontend Development (Wide, 2x1) */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-            viewport={{ once: true }}
-            className="col-span-1 md:col-span-2 lg:col-span-2 row-span-1 glass-card p-6 md:p-8 rounded-3xl relative overflow-hidden group border border-white/10 hover:border-pink-500/30 transition-colors"
-          >
-            <div className="absolute inset-0 bg-gradient-to-r from-pink-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <div className="relative z-10 flex flex-col h-full justify-between">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-2.5 rounded-xl bg-pink-500/10 text-pink-400">
-                  <MonitorSmartphone size={20} />
-                </div>
-                <h3 className="text-xl font-semibold text-white">Frontend</h3>
-              </div>
-              
-              <div className="flex flex-wrap items-center gap-3 sm:gap-4 mt-auto">
-                {[
-                  { name: "React.js", icon: <Reactlogo /> },
-                  { name: "Next.js (SSR)", icon: <NextjsIcon /> },
-                  { name: "Tailwind CSS", icon: <TailwindIcon /> },
-                  { name: "Redux", icon: <Globe size={20} className="text-purple-500" /> },
-                  { name: "Framer Motion", icon: <Sparkles size={20} className="text-pink-400" /> },
-                ].map((skill) => (
-                  <div key={skill.name} className="flex items-center gap-2.5 p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors group/item">
-                    <div className="w-6 h-6 flex items-center justify-center grayscale group-hover/item:grayscale-0 transition-all">{skill.icon}</div>
-                    <span className="text-sm font-medium text-neutral-300">{skill.name}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-
-          {/* TILE 6: Tools & Practices (Wide, 2x1) */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-            viewport={{ once: true }}
-            className="col-span-1 md:col-span-2 lg:col-span-2 row-span-1 glass-card p-6 md:p-8 rounded-3xl relative overflow-hidden group border border-white/10 hover:border-neutral-500/30 transition-colors"
-          >
-            <div className="relative z-10 flex flex-col h-full justify-between">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-2.5 rounded-xl bg-neutral-500/20 text-neutral-300">
-                  <Wrench size={20} />
-                </div>
-                <h3 className="text-xl font-semibold text-white">Tools & Practices</h3>
-              </div>
-              
-              <div className="flex flex-wrap gap-2 mt-auto">
-                {["REST APIs", "JWT", "OAuth 2.0", "Git", "Swagger", "Postman", "Jest", "Zod", "Claude Code (AI-Assisted Dev)", "Cursor"].map((tool) => (
-                  <span key={tool} className="px-4 py-2 text-xs sm:text-sm font-medium text-neutral-400 bg-black/30 rounded-full border border-white/5 hover:text-white hover:border-white/20 transition-colors tracking-wide">
-                    {tool}
+        {/* Bento/Tidy Grid Layout */}
+        <motion.div
+          variants={container}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-40px" }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
+          {skillGroups.map((group, idx) => (
+            <motion.div
+              key={group.title}
+              variants={item}
+              className={`glass-card rounded-xl p-5 md:p-6 border transition-all duration-350 ${
+                group.isAi
+                  ? "border-sky-500/30 bg-sky-500/5 hover:border-sky-500/50 md:col-span-2 lg:col-span-3 shadow-[0_0_20px_rgba(56,189,248,0.06)]"
+                  : "border-hairline bg-surface hover:border-sky-500/30"
+              }`}
+            >
+              {/* Category Eyebrow Header */}
+              <div className="flex items-center justify-between pb-4 mb-4 border-b border-hairline/60">
+                <div className="flex items-center gap-2.5">
+                  <span className={group.isAi ? "text-sky-400" : "text-text-muted"}>
+                    {group.icon}
                   </span>
-                ))}
+                  <span className={`text-xs font-mono uppercase tracking-wider ${group.isAi ? "text-sky-400 font-bold" : "text-text-primary"}`}>
+                    {group.title}
+                  </span>
+                </div>
+                {group.isAi && (
+                  <span className="text-[8px] font-mono border border-sky-500/30 bg-sky-500/10 px-2 py-0.5 rounded text-sky-300 uppercase tracking-widest animate-pulse">
+                    core_specialization
+                  </span>
+                )}
               </div>
-            </div>
-          </motion.div>
 
-        </div>
+              {/* Skills Tags Area */}
+              <div className="flex flex-wrap gap-2">
+                {group.skills.map((skill) => {
+                  const isSelected = selectedSkill?.toLowerCase() === skill.toLowerCase();
+                  return (
+                    <motion.button
+                      key={skill}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => onSelectSkill(skill)}
+                      className={`px-3 py-1.5 rounded-md text-xs font-mono transition-all duration-200 cursor-pointer ${
+                        isSelected
+                          ? "bg-white text-black border border-white font-semibold shadow-sm"
+                          : group.isAi
+                          ? "bg-sky-500/10 border border-sky-500/20 text-sky-400 hover:bg-sky-500/20 hover:border-sky-500/40"
+                          : "bg-zinc-900/80 border border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700"
+                      }`}
+                    >
+                      {skill.toLowerCase()}
+                    </motion.button>
+                  );
+                })}
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
       </div>
     </section>
   );

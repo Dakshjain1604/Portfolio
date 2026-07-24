@@ -1,61 +1,53 @@
 "use client";
 import { motion } from "framer-motion";
-import dynamic from "next/dynamic";
 import { BottomBar } from "./BottomBar";
 import { FlipWords } from "@/components/ui/flip-words";
-import { MagicButton } from "@/components/ui/magic-button";
-import { ChevronDown, Sparkles } from "lucide-react";
+import { ChevronDown, ArrowUpRight, Code2 } from "lucide-react";
 import BlurText from "../subComponents/Title";
-import { CustomCursor } from "@/components/ui/custom-cursor";
+import dynamic from "next/dynamic";
+import { MagneticButton } from "@/components/ui/magnetic-button";
 
-// Dynamically import Three.js component to avoid SSR issues
-const ThreeSkillsBackground = dynamic(
-  () =>
-    import("@/components/ui/three-skills-background").then(
-      (mod) => mod.ThreeSkillsBackground
-    ),
+const AgentOrchestrationGraph3D = dynamic(
+  () => import("@/components/ui/agent-orchestration-graph-3d").then((mod) => mod.AgentOrchestrationGraph3D),
   { ssr: false }
 );
 
 const roles = [
-  "Full Stack Developer",
-  "AI Engineer",
-  "Cloud Enthusiast",
-  "Problem Solver",
+  "agent_orchestration",
+  "mcp_server_systems",
+  "production_rag_pipelines",
+  "full_stack_engineering",
 ];
 
 const container = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
-    transition: { staggerChildren: 0.15, delayChildren: 0.2 },
+    transition: { staggerChildren: 0.1, delayChildren: 0.1 },
   },
 };
 
 const item = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, y: 12 },
   show: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.5, ease: "easeOut" },
+    transition: { duration: 0.4, ease: "easeOut" },
   },
 };
 
 export function HeroSection() {
   return (
-    <div className="relative w-full min-h-screen bg-[#09090b]" id="home">
-      <CustomCursor />
+    <div className="relative w-full min-h-screen bg-background flex flex-col justify-between overflow-hidden" id="home">
+      {/* Luminous Top Spotlight Ambient Gradient */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[500px] bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(56,189,248,0.18),rgba(99,102,241,0.1),transparent_100%)] pointer-events-none z-0" />
 
-      {/* Three.js 3D Skills Background */}
-      <ThreeSkillsBackground />
+      {/* Ambient agent-orchestration graph behind headline */}
+      <AgentOrchestrationGraph3D />
 
-      {/* Subtle radial gradient overlay for text readability */}
-      <div
-        className="absolute inset-0 z-[1] pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse 55% 45% at 50% 45%, rgba(9,9,11,0.9) 0%, rgba(9,9,11,0.5) 55%, transparent 100%)",
-        }}
+      {/* Coordinate grid overlay */}
+      <div 
+        className="absolute inset-0 z-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_40%,#000_60%,transparent_100%)] pointer-events-none" 
       />
 
       {/* Main Content Area */}
@@ -63,76 +55,98 @@ export function HeroSection() {
         variants={container}
         initial="hidden"
         animate="show"
-        className="p-4 pb-24 relative z-10 w-full max-w-5xl mx-auto flex flex-col items-center justify-center text-center min-h-screen pt-20 md:pt-24"
+        className="p-4 pb-20 relative z-10 w-full max-w-5xl mx-auto flex flex-col items-center justify-center text-center min-h-screen pt-24 md:pt-28"
       >
-        <motion.div variants={item} className="mb-8">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-black/20 backdrop-blur-md">
+        {/* Available Glassmorphism Pill */}
+        <motion.div variants={item} className="mb-6">
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-sky-500/30 bg-sky-500/10 backdrop-blur-xl shadow-[0_0_20px_rgba(56,189,248,0.15)]">
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-400" />
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
             </span>
-            <span className="text-xs font-medium text-neutral-300">
-              Available for opportunities
+            <span className="text-[11px] font-mono tracking-wider text-sky-300 uppercase font-semibold">
+              Full-Stack & AI Engineer @ NEO
             </span>
           </div>
         </motion.div>
 
-        {/* Reliable Title Reveal */}
-        <div className="mb-4 pt-4 drop-shadow-lg">
+        {/* Name Title Reveal */}
+        <h1 className="mb-2 pt-1 drop-shadow-2xl">
           <BlurText
             text="Daksh Jain"
-            delay={60}
+            delay={50}
             animateBy="letters"
             direction="bottom"
-            className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-tighter text-white"
+            className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-extrabold tracking-tight text-white font-display"
           />
-        </div>
+        </h1>
 
-        {/* Rolodex Flipping Subheader */}
+        {/* Role subheader with metallic gradient */}
         <motion.div
           variants={item}
-          className="text-xl md:text-2xl lg:text-4xl text-neutral-300 drop-shadow-md mb-8 h-10 mt-2 flex items-center justify-center space-x-2"
+          className="text-lg sm:text-xl md:text-2xl font-bold font-display uppercase tracking-tight mt-1 mb-3 bg-gradient-to-r from-sky-400 via-indigo-300 to-white bg-clip-text text-transparent"
         >
-          <span>I&apos;m a</span>
+          Full-Stack & AI Engineer
+        </motion.div>
+
+        {/* Observability Console Rolodex */}
+        <motion.div
+          variants={item}
+          className="text-xs md:text-sm text-text-muted mb-6 h-6 mt-1 flex items-center justify-center space-x-2 font-mono"
+        >
+          <span className="text-text-muted/70">console.exec(</span>
           <FlipWords
             words={roles}
             duration={3000}
-            className="text-cyan-400 font-medium"
+            className="text-sky-300 font-semibold"
           />
+          <span className="text-text-muted/70">)</span>
         </motion.div>
 
-        {/* Short Bio */}
+        {/* Short Bio (Thesis) */}
         <motion.p
           variants={item}
-          className="text-base sm:text-lg text-neutral-400 drop-shadow-md max-w-lg mx-auto leading-relaxed mb-12 font-light"
+          className="text-sm sm:text-base text-text-muted max-w-xl mx-auto leading-relaxed mb-8 font-sans font-light"
         >
-          Building modern web applications and AI-powered solutions. Passionate
-          about creating elegant, scalable software that users love.
+          Building production-grade AI systems across autonomous agent orchestration, MCP tooling, and RAG pipelines.
         </motion.p>
 
-        {/* Properly Aligned CTA Buttons */}
+        {/* Control Room Console Buttons */}
         <motion.div
           variants={item}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto mt-4"
+          className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto mt-2"
         >
-          <a href="#projects" className="block w-full sm:w-auto shadow-xl">
-            <MagicButton
-              title="View Projects"
-              icon={<Sparkles className="w-4 h-4" />}
-              position="right"
-            />
-          </a>
+          <MagneticButton
+            href="#projects"
+            className="flex items-center justify-center h-11 px-8 w-full sm:w-44 rounded-lg bg-white text-black text-xs font-mono font-semibold tracking-tight shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_25px_rgba(56,189,248,0.4)] hover:bg-zinc-100 active:scale-98 transition-all duration-300"
+          >
+            view_work
+            <ArrowUpRight size={12} className="ml-1.5" />
+          </MagneticButton>
 
           <a
-            href="#contact"
-            className="flex items-center shadow-xl justify-center h-12 w-full sm:w-44 rounded-lg border border-white/10 bg-black/40 text-sm font-medium text-neutral-200 hover:text-white hover:border-cyan-500/50 hover:bg-cyan-500/20 transition-all duration-300 backdrop-blur-sm"
+            href="/DakshJain_Resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center h-11 px-8 w-full sm:w-44 rounded-lg border border-white/10 bg-surface-2/80 text-white text-xs font-mono hover:bg-surface-2 hover:border-sky-500/40 active:scale-98 transition-all duration-300 cursor-pointer backdrop-blur-md shadow-sm"
           >
-            Get in Touch
+            résumé
+            <Code2 size={12} className="ml-1.5 text-sky-400" />
           </a>
         </motion.div>
 
-        <motion.div variants={item} className="mt-12 md:mt-16">
-          <BottomBar />
+        {/* Social Links Row in Mono */}
+        <motion.div
+          variants={item}
+          className="flex flex-wrap justify-center items-center gap-x-4 gap-y-2 mt-8 font-mono text-[10px] uppercase text-text-muted"
+        >
+          <a href="https://github.com/Dakshjain1604" target="_blank" rel="noopener noreferrer" className="hover:text-sky-400 transition-colors">[github]</a>
+          <span className="text-hairline hidden xs:inline">·</span>
+          <a href="https://www.linkedin.com/in/daksh-jain16/" target="_blank" rel="noopener noreferrer" className="hover:text-sky-400 transition-colors">[linkedin]</a>
+          <span className="text-hairline hidden xs:inline">·</span>
+          <a href="https://leetcode.com/u/Daksh8816/" target="_blank" rel="noopener noreferrer" className="hover:text-sky-400 transition-colors">[leetcode]</a>
+          <span className="text-hairline hidden xs:inline">·</span>
+          <a href="https://huggingface.co/daksh-neo" target="_blank" rel="noopener noreferrer" className="hover:text-sky-400 transition-colors">[huggingface]</a>
         </motion.div>
       </motion.div>
 
@@ -141,18 +155,18 @@ export function HeroSection() {
         href="#about"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 2.5, duration: 1 }}
-        className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 text-neutral-400 hover:text-white transition-colors"
+        transition={{ delay: 1.8, duration: 0.6 }}
+        className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 text-text-muted hover:text-white transition-colors cursor-pointer"
       >
         <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-          className="flex flex-col items-center gap-1 drop-shadow-lg"
+          animate={{ y: [0, 6, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          className="flex flex-col items-center gap-1"
         >
-          <span className="text-xs font-mono tracking-widest uppercase">
-            Scroll
+          <span className="text-[10px] font-mono tracking-widest uppercase text-text-muted">
+            scroll_to_explore
           </span>
-          <ChevronDown size={18} className="mt-1" />
+          <ChevronDown size={14} className="mt-0.5 text-sky-400" />
         </motion.div>
       </motion.a>
     </div>

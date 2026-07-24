@@ -52,7 +52,7 @@ export function MagneticButton({ children, className = "", onClick, href, target
       {children}
       {isHovered && (
         <motion.div
-          className="absolute inset-0 rounded-full bg-cyan-500/10 pointer-events-none"
+          className="absolute inset-0 rounded-full bg-accent/10 pointer-events-none"
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1.5, opacity: 1 }}
           exit={{ scale: 0, opacity: 0 }}

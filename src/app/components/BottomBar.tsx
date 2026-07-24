@@ -10,8 +10,8 @@ const socials = [
     icon: <Linkedin />,
     href: "https://www.linkedin.com/in/daksh-jain16/",
     label: "LinkedIn",
-    hoverColor: "hover:text-blue-400",
-    glowColor: "group-hover:shadow-blue-500/20",
+    hoverColor: "hover:text-white",
+    glowColor: "group-hover:shadow-white/10",
   },
   {
     icon: <Github height={38} width={38} />,
@@ -24,15 +24,15 @@ const socials = [
     icon: <Leetcode />,
     href: "https://leetcode.com/u/Daksh8816/",
     label: "LeetCode",
-    hoverColor: "hover:text-amber-400",
-    glowColor: "group-hover:shadow-amber-500/20",
+    hoverColor: "hover:text-white",
+    glowColor: "group-hover:shadow-white/10",
   },
   {
     icon: <Gmail />,
-    href: "mailto:dakshjain8816@gmail.com",
+    href: "mailto:dakshjain080@gmail.com",
     label: "Email",
-    hoverColor: "hover:text-red-400",
-    glowColor: "group-hover:shadow-red-500/20",
+    hoverColor: "hover:text-white",
+    glowColor: "group-hover:shadow-white/10",
   },
 ];
 

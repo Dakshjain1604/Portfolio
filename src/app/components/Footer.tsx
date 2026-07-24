@@ -4,7 +4,7 @@ import { Github } from "../icons/github";
 import { Gmail } from "../icons/Gmail";
 import { Leetcode } from "../icons/Leetcode";
 import { Linkedin } from "../icons/Linkedin";
-import { ArrowUp, Heart, Code, Sparkles } from "lucide-react";
+import { ArrowUp, Heart, Code, Sparkles, ExternalLink } from "lucide-react";
 import { useState, useEffect } from "react";
 
 const socials = [
@@ -12,34 +12,35 @@ const socials = [
     icon: <Linkedin />,
     href: "https://www.linkedin.com/in/daksh-jain16/",
     label: "LinkedIn",
-    hoverColor: "hover:text-blue-400 hover:border-blue-400/30",
+    hoverColor: "hover:text-accent hover:border-accent/40",
   },
   {
     icon: <Github height={36} width={36} />,
     href: "https://github.com/Dakshjain1604",
     label: "GitHub",
-    hoverColor: "hover:text-white hover:border-white/30",
+    hoverColor: "hover:text-accent hover:border-accent/40",
   },
   {
     icon: <Leetcode />,
     href: "https://leetcode.com/u/Daksh8816/",
     label: "LeetCode",
-    hoverColor: "hover:text-amber-400 hover:border-amber-400/30",
+    hoverColor: "hover:text-accent hover:border-accent/40",
   },
   {
     icon: <Gmail />,
-    href: "mailto:dakshjain8816@gmail.com",
+    href: "mailto:dakshjain080@gmail.com",
     label: "Email",
-    hoverColor: "hover:text-red-400 hover:border-red-400/30",
+    hoverColor: "hover:text-accent hover:border-accent/40",
   },
 ];
 
 const quickLinks = [
-  { name: "Home", href: "#home" },
-  { name: "About", href: "#about" },
-  { name: "Projects", href: "#projects" },
-  { name: "Experience", href: "#experience" },
-  { name: "Contact", href: "#contact" },
+  { name: "home", href: "#home" },
+  { name: "about", href: "#about" },
+  { name: "skills", href: "#skills" },
+  { name: "projects", href: "#projects" },
+  { name: "experience", href: "#experience" },
+  { name: "contact", href: "#contact" },
 ];
 
 export default function Footer() {
@@ -48,7 +49,7 @@ export default function Footer() {
   useEffect(() => {
     const handleScroll = () => {
       const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = (window.scrollY / totalHeight) * 100;
+      const progress = totalHeight > 0 ? (window.scrollY / totalHeight) * 100 : 0;
       setScrollProgress(progress);
     };
     window.addEventListener("scroll", handleScroll);
@@ -61,75 +62,69 @@ export default function Footer() {
 
   return (
     <footer
-      className="relative pt-20 pb-8 overflow-hidden"
-      style={{ background: "#0d0d14" }}
-      id="contacts"
+      className="relative pt-20 pb-8 overflow-hidden bg-background border-t border-hairline"
+      id="footer"
     >
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-hairline to-transparent" />
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-accent/2 rounded-full blur-[120px] pointer-events-none" />
 
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-cyan-600/5 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute top-1/4 right-0 w-[300px] h-[300px] bg-cyan-500/5 rounded-full blur-[100px] pointer-events-none" />
-
-      <div className="max-w-6xl mx-auto px-6 md:px-8 relative z-10">
+      <div className="max-w-5xl mx-auto px-6 md:px-8 relative z-10">
         <div className="grid md:grid-cols-4 gap-12 mb-16">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.4 }}
             viewport={{ once: true }}
             className="md:col-span-2"
           >
-            <motion.div
-              whileHover={{ scale: 1.02 }}
-              className="inline-block"
-            >
-              <h2 className="text-2xl md:text-3xl font-bold gradient-text mb-3">
-                Daksh Jain
-              </h2>
-            </motion.div>
-            <p className="text-sm text-neutral-400 leading-relaxed max-w-xs mb-4">
-              Full-stack developer passionate about building exceptional digital
-              experiences. Let&apos;s create something amazing together.
+            {/* Initials Mark Logo */}
+            <div className="flex items-center gap-2 select-none mb-3">
+              <span className="font-mono text-lg text-accent font-bold tracking-tighter">dj</span>
+              <span className="font-mono text-[9px] text-text-muted/40 uppercase tracking-widest">[sys]</span>
+            </div>
+            
+            <p className="text-sm text-text-muted leading-relaxed max-w-xs mb-4 font-sans font-light">
+              AI System Architect & Full-Stack Engineer. Passionate about orchestrating high-performance systems and deploying production agent workflows.
             </p>
-            <div className="space-y-2">
+            <div className="space-y-2 font-mono text-xs text-text-muted">
               <a
-                href="tel:+917627056978"
-                className="text-sm text-neutral-500 hover:text-white transition-colors flex items-center gap-2"
+                href="mailto:dakshjain080@gmail.com"
+                className="hover:text-accent transition-colors flex items-center gap-2"
               >
-                <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                +91 7627056978
+                <span className="w-1.5 h-1.5 rounded-full bg-text-muted/40" />
+                email: dakshjain080@gmail.com
               </a>
               <a
-                href="mailto:dakshjain8816@gmail.com"
-                className="text-sm text-neutral-500 hover:text-white transition-colors flex items-center gap-2"
+                href="tel:+917627056978"
+                className="hover:text-accent transition-colors flex items-center gap-2"
               >
-                <span className="w-1.5 h-1.5 rounded-full bg-cyan-500" />
-                dakshjain8816@gmail.com
+                <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+                phone: +91 7627056978
               </a>
             </div>
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
+            transition={{ duration: 0.4, delay: 0.1 }}
             viewport={{ once: true }}
           >
-            <h3 className="text-xs uppercase tracking-[0.2em] text-neutral-500 mb-4">
-              Quick Links
+            <h3 className="text-[10px] font-mono uppercase tracking-[0.2em] text-text-muted mb-4">
+              quick_links
             </h3>
             <div className="flex flex-col gap-2">
               {quickLinks.map((link, i) => (
                 <motion.a
                   key={link.name}
                   href={link.href}
-                  initial={{ opacity: 0, x: -10 }}
+                  initial={{ opacity: 0, x: -6 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.1 + i * 0.05 }}
+                  transition={{ delay: 0.1 + i * 0.03 }}
                   viewport={{ once: true }}
-                  className="text-sm text-neutral-400 hover:text-white hover:translate-x-1 transition-all duration-200 flex items-center gap-2 group"
+                  className="text-xs font-mono text-text-muted hover:text-accent hover:translate-x-0.5 transition-all flex items-center gap-2 group cursor-pointer"
                 >
-                  <span className="w-1 h-1 rounded-full bg-neutral-600 group-hover:bg-cyan-500 transition-colors" />
+                  <span className="w-1 h-1 rounded-full bg-hairline group-hover:bg-accent transition-colors" />
                   {link.name}
                 </motion.a>
               ))}
@@ -137,28 +132,28 @@ export default function Footer() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            transition={{ duration: 0.4, delay: 0.2 }}
             viewport={{ once: true }}
           >
-            <h3 className="text-xs uppercase tracking-[0.2em] text-neutral-500 mb-4">
-              Connect
+            <h3 className="text-[10px] font-mono uppercase tracking-[0.2em] text-text-muted mb-4">
+              connect
             </h3>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-2">
               {socials.map((social, i) => (
                 <motion.a
                   key={social.label}
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  initial={{ opacity: 0, scale: 0.8 }}
+                  initial={{ opacity: 0, scale: 0.95 }}
                   whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.2 + i * 0.1 }}
+                  transition={{ delay: 0.2 + i * 0.05 }}
                   viewport={{ once: true }}
-                  whileHover={{ y: -3, scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className={`text-neutral-400 p-2 rounded-lg border border-white/5 bg-white/5 ${social.hoverColor} transition-all duration-300 flex items-center justify-center`}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className={`text-text-muted p-2 rounded border border-hairline bg-surface/50 ${social.hoverColor} transition-all flex items-center justify-center cursor-pointer`}
                   aria-label={social.label}
                 >
                   {social.icon}
@@ -168,46 +163,42 @@ export default function Footer() {
             <motion.div
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
-              transition={{ delay: 0.4 }}
+              transition={{ delay: 0.3 }}
               viewport={{ once: true }}
-              className="mt-4 p-3 rounded-lg bg-cyan-500/5 border border-cyan-500/10"
+              className="mt-4 p-2.5 rounded border border-hairline bg-surface/30"
             >
-              <p className="text-xs text-neutral-400 flex items-center gap-2">
-                <Sparkles size={12} className="text-cyan-400" />
-                Open to opportunities
+              <p className="text-[10px] font-mono text-text-muted flex items-center gap-1.5 uppercase tracking-wide">
+                <Sparkles size={10} className="text-accent" />
+                ready_for_ops
               </p>
             </motion.div>
           </motion.div>
         </div>
 
-        <div className="h-px bg-white/5 mb-6" />
+        <div className="h-px bg-hairline mb-6" />
 
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
           <motion.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="text-xs text-neutral-500 flex items-center gap-1"
+            className="text-[10px] font-mono text-text-muted uppercase tracking-wider"
           >
-            © {new Date().getFullYear()} Daksh Jain. Built with{" "}
-            <Heart size={10} className="text-red-400 fill-red-400 mx-0.5" />{" "}
-            using{" "}
-            <Code size={10} className="text-cyan-400 mx-0.5" />
-            Next.js & Framer Motion
+            © {new Date().getFullYear()} daksh jain. all rights reserved.
           </motion.p>
           
           <motion.button
             onClick={scrollToTop}
-            whileHover={{ y: -2, scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="flex items-center gap-2 text-xs text-neutral-500 hover:text-white transition-colors group relative"
+            className="flex items-center gap-2 text-xs font-mono text-text-muted hover:text-white transition-colors group relative cursor-pointer"
           >
             <div className="relative">
-              <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:border-cyan-500/30 transition-colors">
-                <ArrowUp size={12} className="group-hover:-translate-y-0.5 transition-transform" />
+              <div className="w-8 h-8 rounded-full border border-hairline flex items-center justify-center group-hover:border-accent/40 transition-colors">
+                <ArrowUp size={10} className="group-hover:-translate-y-0.5 transition-transform text-accent" />
               </div>
               <svg className="absolute inset-0 w-8 h-8 -rotate-90">
                 <circle
@@ -215,13 +206,14 @@ export default function Footer() {
                   cy="16"
                   r="14"
                   fill="none"
-                  stroke="rgba(34, 211, 238, 0.3)"
-                  strokeWidth="1"
+                  stroke="var(--accent)"
+                  strokeWidth="1.2"
                   strokeDasharray={`${scrollProgress * 0.88} 100`}
+                  className="opacity-40"
                 />
               </svg>
             </div>
-            <span className="hidden sm:inline">Back to top</span>
+            <span className="hidden sm:inline">back_to_top</span>
           </motion.button>
         </div>
       </div>

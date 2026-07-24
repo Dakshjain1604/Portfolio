@@ -59,21 +59,21 @@ export function InteractiveBackground() {
   return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
       <GlowOrb
-        color="rgba(34, 211, 238, 0.15)"
+        color="rgba(255, 255, 255, 0.02)"
         size={400}
         initialX={typeof window !== "undefined" ? window.innerWidth / 3 : 0}
         initialY={typeof window !== "undefined" ? window.innerHeight / 3 : 0}
         speed={0.02}
       />
       <GlowOrb
-        color="rgba(34, 211, 238, 0.1)"
+        color="rgba(255, 255, 255, 0.015)"
         size={350}
         initialX={typeof window !== "undefined" ? (window.innerWidth * 2) / 3 : 0}
         initialY={typeof window !== "undefined" ? (window.innerHeight * 2) / 3 : 0}
         speed={0.015}
       />
       <GlowOrb
-        color="rgba(236, 72, 153, 0.08)"
+        color="rgba(255, 255, 255, 0.01)"
         size={300}
         initialX={typeof window !== "undefined" ? window.innerWidth / 2 : 0}
         initialY={typeof window !== "undefined" ? window.innerHeight / 2 : 0}

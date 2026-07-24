@@ -1,86 +1,99 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
-import { Briefcase, Calendar, MapPin, ExternalLink, Zap, Settings } from "lucide-react";
+import { Briefcase, Calendar, MapPin, ExternalLink, Zap, Settings, Brain } from "lucide-react";
 
-const experiences = [
+interface ExperienceItem {
+  title: string;
+  company: string;
+  location: string;
+  period: string; // Mono dates, flagged as [VERIFY] if unconfirmed
+  description: string;
+  bullets: string[];
+  tech: string[];
+  logo: React.ReactNode;
+}
+
+const experiences: ExperienceItem[] = [
   {
-    title: "Full-Stack + AI Engineer",
+    title: "Full-Stack & AI Engineer",
     company: "NEO",
     location: "Remote",
-    period: "Feb 2025 – Present",
+    period: "Oct 2025 – Present",
     description:
-      "Engineering comprehensive AI solutions, migrating monolithic infrastructures to Next.js + Node.js ecosystems, and deploying intelligent RAG pipelines using LangChain & Claude API.",
-    highlights: [
-      "Next.js & Node.js Ecosystems",
-      "LangChain & Claude API",
-      "RAG Pipelines",
+      "Responsible for end-to-end feature delivery, migrating system modules, and integrating advanced orchestration pipelines at NEO.",
+    bullets: [
+      "Built production-ready MCP servers solo to enable secure, multi-tenant agent tool invocation.",
+      "Developed RAG pipelines utilizing LangChain and the Claude API for complex contextual question answering.",
+      "Engineered multi-channel agent orchestration systems and internal developer utilities.",
     ],
     tech: ["Next.js", "Node.js", "LangChain", "Claude API", "PostgreSQL"],
-    logo: <Zap size={20} className="text-white" />,
-    color: "from-indigo-500 to-purple-500",
+    logo: <Zap size={15} className="text-sky-400" />,
   },
   {
-    title: "Backend Development Intern",
+    title: "Data Science Intern",
     company: "Celebal Technologies",
-    location: "Remote",
-    period: "June 2024 – Aug 2024",
+    location: "Jaipur",
+    period: "Oct 2024 – Feb 2025",
     description:
-      "Built robust backend systems for an e-commerce platform using Node.js and Express, significantly improving API performance. Integrated JWT authentication, implemented GraphQL APIs, and documented REST APIs with Swagger UI. Containerized the application with Docker for seamless streamlined deployment.",
-    highlights: [
-      "Node.js & Express API",
-      "JWT & GraphQL Auth",
-      "Docker Containerization",
+      "Explored machine learning systems, natural language processing (NLP), and generative AI applications.",
+    bullets: [
+      "Built and evaluated ML models and NLP pipelines for semantic analysis and text processing tasks.",
+      "Worked with prompt engineering, LLM embeddings, and vector similarity search for AI workflows.",
+      "Preprocessed complex datasets, performed feature extraction, and benchmarked model performance.",
+    ],
+    tech: ["Python", "Machine Learning", "NLP", "Generative AI", "PyTorch", "Pandas"],
+    logo: <Brain size={15} className="text-text-muted" />,
+  },
+  {
+    title: "Backend Intern",
+    company: "Celebal Technologies",
+    location: "Jaipur",
+    period: "Jun 2024 – Aug 2024",
+    description:
+      "Built scalability modules and optimized REST interfaces for a high-traffic e-commerce platform.",
+    bullets: [
+      "Developed Node.js and Express backend API layers with robust CRUD routes.",
+      "Integrated JWT authentication and designed GraphQL schema queries.",
+      "Documented payment and user APIs using Swagger UI, and containerized the workspace with Docker.",
     ],
     tech: ["Node.js", "Express", "GraphQL", "MongoDB", "Docker"],
-    logo: <Settings size={20} className="text-white" />,
-    color: "from-cyan-500 to-blue-500",
+    logo: <Settings size={15} className="text-text-muted" />,
   },
 ];
 
 const container = {
   hidden: { opacity: 0 },
-  show: { opacity: 1, transition: { staggerChildren: 0.3 } },
+  show: { opacity: 1, transition: { staggerChildren: 0.2 } },
 };
 
 const item = {
-  hidden: { opacity: 0, x: -30 },
-  show: { opacity: 1, x: 0, transition: { duration: 0.5 } },
+  hidden: { opacity: 0, x: -12 },
+  show: { opacity: 1, x: 0, transition: { duration: 0.4, ease: "easeOut" } },
 };
 
 export function Experience() {
   return (
     <section
-      className="py-24 md:py-32 relative overflow-hidden"
-      style={{ background: "#0a0a0f" }}
+      className="py-24 md:py-32 relative overflow-hidden bg-background border-t border-hairline"
       id="experience"
     >
-      <div className="absolute top-0 left-1/3 w-[400px] h-[400px] bg-cyan-600/5 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-0 right-1/3 w-[300px] h-[300px] bg-cyan-500/5 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute top-0 left-1/4 w-[400px] h-[400px] bg-accent/2 rounded-full blur-[120px] pointer-events-none" />
 
-      <div className="max-w-5xl mx-auto px-6 md:px-8">
+      <div className="max-w-3xl mx-auto px-6 md:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.4 }}
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <motion.span
-            initial={{ opacity: 0, scale: 0.5 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2 }}
-            viewport={{ once: true }}
-            className="inline-block px-4 py-1 rounded-full text-xs font-medium text-green-300 bg-green-500/10 border border-green-500/20 mb-4"
-          >
-            Career journey
-          </motion.span>
-          <h2 className="text-3xl md:text-5xl font-bold">
-            Professional <span className="gradient-text">Experience</span>
+          <span className="text-[10px] font-mono tracking-widest text-accent uppercase">
+            activity_log
+          </span>
+          <h2 className="text-3xl md:text-5xl font-bold font-display mt-2">
+            Professional <span className="text-accent">Experience</span>
           </h2>
-          <p className="text-neutral-400 text-sm mt-3 max-w-md mx-auto">
-            My journey in the tech industry and key milestones
-          </p>
           <div className="section-divider mt-4" />
         </motion.div>
 
@@ -88,16 +101,17 @@ export function Experience() {
           variants={container}
           initial="hidden"
           whileInView="show"
-          viewport={{ once: true, margin: "-50px" }}
+          viewport={{ once: true, margin: "-40px" }}
           className="relative"
         >
-          <div className="absolute left-[19px] md:left-[27px] top-0 bottom-0 w-[2px]">
+          {/* Vertical connecting line */}
+          <div className="absolute left-[19px] md:left-[23px] top-0 bottom-0 w-[1px]">
             <motion.div
               initial={{ height: 0 }}
               whileInView={{ height: "100%" }}
-              transition={{ duration: 1, ease: "easeOut" }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
               viewport={{ once: true }}
-              className="w-full bg-gradient-to-b from-cyan-500/50 via-cyan-500/30 to-transparent"
+              className="w-full bg-gradient-to-b from-accent/30 via-hairline to-transparent"
             />
           </div>
 
@@ -107,105 +121,104 @@ export function Experience() {
               variants={item}
               className="relative pl-14 md:pl-16 pb-12 last:pb-0"
             >
+              {/* Timeline Indicator Node */}
               <motion.div
                 initial={{ scale: 0 }}
                 whileInView={{ scale: 1 }}
-                transition={{ delay: 0.2, type: "spring" }}
+                transition={{ delay: 0.1, type: "spring", stiffness: 150 }}
                 viewport={{ once: true }}
-                className="absolute left-0 md:left-1.5 top-1 z-10"
+                className="absolute left-0 md:left-1 top-1 z-10"
               >
                 <div className="relative">
-                  <div className={`w-10 h-10 md:w-12 md:h-12 rounded-xl bg-gradient-to-br ${exp.color} flex items-center justify-center text-xl shadow-lg`}>
+                  <div className="w-10 h-10 rounded-lg bg-surface border border-hairline flex items-center justify-center shadow-md">
                     {exp.logo}
                   </div>
-                  <motion.div
-                    animate={{
-                      scale: [1, 1.5, 1],
-                      opacity: [0.5, 0, 0.5],
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      delay: idx * 0.5,
-                    }}
-                    className={`absolute inset-0 rounded-xl border border-cyan-500/30`}
-                  />
+                  {idx === 0 && (
+                    <motion.div
+                      animate={{
+                        scale: [1, 1.2, 1],
+                        opacity: [0.3, 0, 0.3],
+                      }}
+                      transition={{
+                        duration: 2.5,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                      }}
+                      className="absolute inset-0 rounded-lg border border-accent/40"
+                    />
+                  )}
                 </div>
               </motion.div>
 
-              <motion.div
-                whileHover={{ x: 5 }}
-                className="glass-card rounded-2xl p-5 md:p-6 group hover:border-cyan-500/20 transition-all duration-500 relative overflow-hidden"
-              >
-                <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${exp.color} opacity-50 group-hover:opacity-100 transition-opacity`} />
-                
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-4">
+              {/* Card Body */}
+              <div className="glass-card rounded-xl p-5 md:p-6 border border-hairline hover:border-sky-500/30 transition-all duration-350 bg-surface">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
                   <div>
-                    <h3 className="text-lg md:text-xl font-semibold text-white group-hover:text-cyan-400 transition-colors">
+                    <h3 className="text-base md:text-lg font-bold font-sans text-white">
                       {exp.title}
                     </h3>
-                    <div className="flex items-center gap-2 mt-1">
-                      <p className="text-sm text-cyan-400 font-medium">{exp.company}</p>
-                      <span className="text-neutral-600">•</span>
-                      <p className="text-xs text-neutral-500 flex items-center gap-1">
+                    <div className="flex items-center gap-2 mt-1 text-xs font-mono">
+                      <p className="text-sky-400 font-semibold">{exp.company}</p>
+                      <span className="text-hairline">•</span>
+                      <p className="text-text-muted flex items-center gap-1">
                         <MapPin size={10} />
                         {exp.location}
                       </p>
                     </div>
                   </div>
-                  <span className="text-xs text-neutral-400 font-mono bg-white/5 px-3 py-1.5 rounded-full flex items-center gap-1.5 w-fit">
-                    <Calendar size={10} />
+                  <span className="text-[10px] font-mono text-text-muted bg-zinc-900 border border-zinc-800 px-3 py-1 rounded w-fit flex items-center gap-1.5 h-fit">
+                    <Calendar size={10} className="text-sky-400" />
                     {exp.period}
                   </span>
                 </div>
 
-                <p className="text-sm text-neutral-400 leading-relaxed mb-4">
+                <p className="text-xs md:text-sm text-text-muted leading-relaxed mb-4 font-sans font-light">
                   {exp.description}
                 </p>
 
-                <div className="flex flex-wrap gap-2 mb-4">
+                {/* Bullets List */}
+                <ul className="space-y-2 mb-5 pl-4 border-l-2 border-hairline/60">
+                  {exp.bullets.map((bullet, bIdx) => (
+                    <li key={bIdx} className="text-xs text-text-muted leading-relaxed font-sans font-light list-none relative">
+                      <span className="absolute -left-4 text-sky-400 font-mono text-[9px]">&gt;</span>
+                      {bullet}
+                    </li>
+                  ))}
+                </ul>
+
+                {/* Tech Tags */}
+                <div className="flex flex-wrap gap-1.5">
                   {exp.tech.map((t) => (
                     <span
                       key={t}
-                      className="px-2.5 py-1 rounded-lg text-[10px] font-medium bg-white/5 border border-white/10 text-neutral-400"
+                      className="px-2.5 py-1 rounded bg-surface-2 border border-hairline text-[9px] font-mono text-text-muted"
                     >
-                      {t}
+                      {t.toLowerCase()}
                     </span>
                   ))}
                 </div>
-
-                <div className="flex flex-wrap gap-2">
-                  {exp.highlights.map((highlight) => (
-                    <motion.span
-                      key={highlight}
-                      whileHover={{ scale: 1.05 }}
-                      className={`px-3 py-1 rounded-full text-[10px] font-medium bg-gradient-to-r ${exp.color} bg-opacity-10 border border-cyan-500/20 text-cyan-300 uppercase tracking-wider`}
-                    >
-                      {highlight}
-                    </motion.span>
-                  ))}
-                </div>
-              </motion.div>
+              </div>
             </motion.div>
           ))}
         </motion.div>
 
+        {/* Footer Link */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
+          transition={{ duration: 0.4, delay: 0.2 }}
           viewport={{ once: true }}
-          className="text-center mt-8"
+          className="text-center mt-12"
         >
           <a
             href="https://www.linkedin.com/in/daksh-jain16/"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-sm text-neutral-400 hover:text-white transition-colors group"
+            className="inline-flex items-center gap-2 text-xs font-mono text-text-muted hover:text-accent transition-colors group cursor-pointer"
           >
-            <Briefcase size={16} />
-            <span>View full experience on LinkedIn</span>
-            <ExternalLink size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            <Briefcase size={12} />
+            <span>query_linkedin_career_log</span>
+            <ExternalLink size={10} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform text-accent" />
           </a>
         </motion.div>
       </div>
