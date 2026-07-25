@@ -334,11 +334,11 @@ export function TerminalSection() {
           onClick={handleTerminalClick}
         >
           {/* Top Header bar */}
-          <div className="flex items-center gap-2 px-4 py-3 bg-surface-2 border-b border-hairline select-none">
-            <div className="w-2.5 h-2.5 rounded-full bg-red-500/20 border border-red-500/40" />
-            <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/20 border border-yellow-500/40" />
-            <div className="w-2.5 h-2.5 rounded-full bg-green-500/20 border border-green-500/40" />
-            <span className="ml-4 text-[10px] text-text-muted font-mono uppercase tracking-wider">
+          <div className="flex items-center gap-2 px-3.5 sm:px-4 py-2.5 sm:py-3 bg-surface-2 border-b border-hairline select-none overflow-hidden">
+            <div className="w-2.5 h-2.5 rounded-full bg-red-500/20 border border-red-500/40 shrink-0" />
+            <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/20 border border-yellow-500/40 shrink-0" />
+            <div className="w-2.5 h-2.5 rounded-full bg-green-500/20 border border-green-500/40 shrink-0" />
+            <span className="ml-2 sm:ml-4 text-[9px] sm:text-[10px] text-text-muted font-mono uppercase tracking-wider truncate">
               daksh@orchestration-server:~ {isActive ? "%" : "~ [paused]"}
             </span>
           </div>
@@ -346,7 +346,7 @@ export function TerminalSection() {
           {/* Terminal input/output log body */}
           <div
             ref={terminalRef}
-            className="p-6 font-mono text-xs md:text-sm min-h-[300px] max-h-[400px] overflow-y-auto bg-surface/40 text-text-primary leading-relaxed"
+            className="p-4 sm:p-6 font-mono text-[11px] sm:text-xs md:text-sm min-h-[260px] sm:min-h-[300px] max-h-[400px] overflow-y-auto bg-surface/40 text-text-primary leading-relaxed break-words"
           >
             {phase === "typing" ? (
               <>
@@ -358,16 +358,16 @@ export function TerminalSection() {
                     transition={{ duration: 0.2 }}
                     className="mb-4"
                   >
-                    <div className="flex items-center gap-2 text-text-muted">
+                    <div className="flex items-center gap-1.5 sm:gap-2 text-text-muted flex-wrap">
                       <span className="text-accent">&gt;</span>
                       <span className="text-text-muted">$</span>
-                      <span className="text-text-primary">{cmd.command}</span>
+                      <span className="text-text-primary break-all">{cmd.command}</span>
                     </div>
                     <motion.div
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ delay: 0.1 }}
-                      className="ml-5 text-text-muted mt-1"
+                      className="ml-3 sm:ml-5 text-text-muted mt-1 break-words"
                     >
                       {cmd.output}
                     </motion.div>
@@ -376,10 +376,10 @@ export function TerminalSection() {
 
                 {/* Currently animated loading line */}
                 {animIndex < initialCommands.length && (
-                  <div className="flex items-center gap-2 text-text-muted">
+                  <div className="flex items-center gap-1.5 sm:gap-2 text-text-muted flex-wrap">
                     <span className="text-accent">&gt;</span>
                     <span className="text-text-muted">$</span>
-                    <span className="text-text-primary">{currentText}</span>
+                    <span className="text-text-primary break-all">{currentText}</span>
                     <span className="text-accent animate-pulse">▋</span>
                   </div>
                 )}
@@ -397,34 +397,34 @@ export function TerminalSection() {
 
                 {displayedCommands.map((cmd, i) => (
                   <div key={i} className="mb-4">
-                    <div className="flex items-center gap-2 text-text-muted">
+                    <div className="flex items-center gap-1.5 sm:gap-2 text-text-muted flex-wrap">
                       <span className="text-accent">&gt;</span>
                       <span className="text-text-muted">$</span>
-                      <span className="text-text-primary">{cmd.command}</span>
+                      <span className="text-text-primary break-all">{cmd.command}</span>
                     </div>
-                    <div className="ml-5 text-text-muted mt-1 leading-relaxed">{cmd.output}</div>
+                    <div className="ml-3 sm:ml-5 text-text-muted mt-1 leading-relaxed break-words">{cmd.output}</div>
                   </div>
                 ))}
 
                 {/* Input line */}
                 {isActive ? (
-                  <div className="flex items-center gap-2 text-text-muted">
-                    <span className="text-accent">&gt;</span>
-                    <span className="text-text-muted">$</span>
+                  <div className="flex items-center gap-1.5 sm:gap-2 text-text-muted">
+                    <span className="text-accent shrink-0">&gt;</span>
+                    <span className="text-text-muted shrink-0">$</span>
                     <input
                       ref={inputRef}
                       type="text"
                       value={input}
                       onChange={(e) => setInput(e.target.value)}
                       onKeyDown={handleKeyDown}
-                      className="flex-1 bg-transparent border-none outline-none text-text-primary focus:ring-0 caret-accent font-mono text-xs md:text-sm p-0"
+                      className="flex-1 min-w-0 bg-transparent border-none outline-none text-text-primary focus:ring-0 caret-accent font-mono text-[11px] sm:text-xs md:text-sm p-0"
                       autoComplete="off"
                       spellCheck={false}
                       placeholder="describe_query..."
                     />
                   </div>
                 ) : (
-                  <div className="text-[10px] text-text-muted/40 font-mono select-none uppercase tracking-wider py-1 border-t border-hairline/60">
+                  <div className="text-[10px] text-text-muted/40 font-mono select-none uppercase tracking-wider py-1 border-t border-hairline/60 truncate">
                     [session_inactive: click_inside_or_press_enter_to_resume_focus]
                   </div>
                 )}

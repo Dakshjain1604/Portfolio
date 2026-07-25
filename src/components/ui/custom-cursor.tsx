@@ -32,6 +32,10 @@ export function CustomCursor() {
   useEffect(() => {
     setIsClient(true);
     
+    // Only activate custom cursor on fine pointer devices (mouse/trackpad)
+    const hasFinePointer = window.matchMedia("(pointer: fine)").matches;
+    if (!hasFinePointer) return;
+
     // Add a class to body to hide default cursor
     document.body.classList.add("custom-cursor-active");
 

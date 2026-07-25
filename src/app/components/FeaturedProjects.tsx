@@ -142,7 +142,7 @@ def create_vector_store(chunks):
 
 function NeoBadge() {
   return (
-    <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-surface/80 border border-hairline text-text-muted text-[10px] font-mono uppercase tracking-wider backdrop-blur-sm flex items-center gap-1.5">
+    <div className="px-2 py-0.5 rounded-full bg-accent/10 border border-accent/20 text-accent text-[9px] font-mono font-medium flex items-center gap-1">
       <Bot size={11} className="text-accent" />
       built w/ neo
     </div>
@@ -180,7 +180,7 @@ function HeroProjectCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6 }}
-      className="group relative rounded-3xl overflow-hidden bg-surface border border-hairline"
+      className="group relative rounded-2xl md:rounded-3xl overflow-hidden bg-surface border border-hairline"
     >
       <div
         className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
@@ -190,7 +190,7 @@ function HeroProjectCard({
       />
 
       <div className="grid md:grid-cols-2 gap-0">
-        <div className="relative overflow-hidden aspect-[16/10] bg-surface-2 p-3 md:p-4 flex items-center justify-center">
+        <div className="relative overflow-hidden aspect-[16/10] bg-surface-2 p-2.5 sm:p-3 md:p-4 flex items-center justify-center">
           <div className="w-full h-full rounded-xl overflow-hidden border border-hairline/80 bg-surface shadow-2xl flex flex-col relative group/shell">
             {/* Browser Control Bar */}
             <div className="h-7 px-3 bg-surface-2/95 border-b border-hairline flex items-center justify-between gap-2 flex-shrink-0 z-20">
@@ -199,7 +199,7 @@ function HeroProjectCard({
                 <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/70" />
                 <span className="w-2.5 h-2.5 rounded-full bg-green-500/70" />
               </div>
-              <div className="h-4 px-3 rounded-full bg-background/80 border border-hairline/50 text-[9px] font-mono text-text-muted/80 truncate max-w-[200px] hidden xs:block">
+              <div className="h-4 px-3 rounded-full bg-background/80 border border-hairline/50 text-[9px] font-mono text-text-muted/80 truncate max-w-[140px] xs:max-w-[200px] hidden xs:block">
                 {project.live || project.github || project.id}
               </div>
               <div className="flex items-center gap-1">
@@ -230,12 +230,12 @@ function HeroProjectCard({
                     style={vscDarkPlus}
                     customStyle={{
                       margin: 0,
-                      padding: "1rem",
+                      padding: "0.75rem",
                       background: "transparent",
-                      fontSize: "0.7rem",
+                      fontSize: "0.65rem",
                       lineHeight: "1.4",
                       height: "100%",
-                      overflow: "hidden",
+                      overflow: "auto",
                     }}
                     showLineNumbers
                   >
@@ -269,20 +269,20 @@ function HeroProjectCard({
           </div>
         </div>
 
-        <div className="p-6 md:p-8 flex flex-col justify-center relative z-10">
+        <div className="p-5 sm:p-6 md:p-8 flex flex-col justify-center relative z-10">
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
             viewport={{ once: true }}
           >
-            <h3 className="text-2xl md:text-3xl font-bold font-display text-text-primary mb-2">
+            <h3 className="text-xl sm:text-2xl md:text-3xl font-bold font-display text-text-primary mb-2">
               {project.title}
             </h3>
             <p className="text-xs text-accent font-mono mb-4 font-semibold leading-relaxed">
               {project.outcome}
             </p>
-            <p className="text-text-muted leading-relaxed mb-6 font-sans font-light">
+            <p className="text-xs sm:text-sm text-text-muted leading-relaxed mb-6 font-sans font-light">
               {project.description}
             </p>
 
@@ -298,7 +298,7 @@ function HeroProjectCard({
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}
                     onClick={() => onSelectSkill(t)}
-                    className={`px-3 py-1 rounded-full text-[10px] font-mono transition-all duration-200 cursor-pointer ${
+                    className={`px-2.5 py-1 rounded-full text-[10px] font-mono transition-all duration-200 cursor-pointer ${
                       isMatching
                         ? "bg-white text-black border border-white font-semibold shadow-sm"
                         : "bg-zinc-900/80 border border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700"
@@ -310,7 +310,7 @@ function HeroProjectCard({
               })}
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex flex-wrap items-center gap-3">
               {project.github && (
                 <motion.a
                   href={project.github}
@@ -318,9 +318,9 @@ function HeroProjectCard({
                   rel="noopener noreferrer"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-surface-2 border border-hairline text-text-muted hover:text-text-primary hover:border-accent/40 transition-all cursor-pointer"
+                  className="flex items-center justify-center gap-2 px-3.5 py-2 rounded-lg bg-surface-2 border border-hairline text-text-muted hover:text-text-primary hover:border-accent/40 transition-all cursor-pointer text-xs font-mono"
                 >
-                  <Github size={16} />
+                  <Github size={14} />
                   Source Code
                 </motion.a>
               )}
@@ -331,9 +331,9 @@ function HeroProjectCard({
                   rel="noopener noreferrer"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-accent-dim border border-accent/30 text-accent hover:brightness-110 transition-all cursor-pointer"
+                  className="flex items-center justify-center gap-2 px-3.5 py-2 rounded-lg bg-accent-dim border border-accent/30 text-accent hover:brightness-110 transition-all cursor-pointer text-xs font-mono"
                 >
-                  <ExternalLink size={16} />
+                  <ExternalLink size={14} />
                   Live Demo
                 </motion.a>
               )}
@@ -343,7 +343,7 @@ function HeroProjectCard({
       </div>
 
       <motion.div
-        className="absolute bottom-4 right-4 text-text-muted/50 group-hover:text-accent transition-colors pointer-events-none"
+        className="absolute bottom-4 right-4 text-text-muted/50 group-hover:text-accent transition-colors pointer-events-none hidden sm:block"
         animate={{ x: [0, 5, 0] }}
         transition={{ duration: 1.5, repeat: Infinity }}
       >
@@ -404,7 +404,7 @@ function CompactProjectCard({
         </div>
       </div>
 
-      <div className="p-5">
+      <div className="p-4 sm:p-5">
         <h4 className="text-base font-bold font-display text-text-primary mb-1">{project.title}</h4>
         <p className="text-[11px] text-accent font-mono mb-2 font-semibold leading-relaxed">
           {project.outcome}
@@ -413,7 +413,7 @@ function CompactProjectCard({
           {project.description}
         </p>
 
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col xs:flex-row items-start xs:items-center justify-between gap-3">
           <div className="flex flex-wrap gap-1.5">
             {project.tech.map((t) => {
               const isMatching = selectedSkill && (
@@ -437,7 +437,7 @@ function CompactProjectCard({
               );
             })}
           </div>
-          <div className="flex items-center gap-1.5 shrink-0">
+          <div className="flex items-center gap-1.5 shrink-0 self-end xs:self-auto">
             {project.github && (
               <a
                 href={project.github}

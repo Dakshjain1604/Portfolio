@@ -2,10 +2,16 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Headerbar } from "./components/topBar";
 import Footer from "./components/Footer";
-import { Metadata } from "next";
+import { Metadata, Viewport } from "next";
 import { LoadingScreen } from "@/components/ui/loading-screen";
 import { CustomCursor } from "@/components/ui/custom-cursor";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#05050A",
+};
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

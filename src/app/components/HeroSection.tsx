@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 import { BottomBar } from "./BottomBar";
 import { FlipWords } from "@/components/ui/flip-words";
-import { ChevronDown, ArrowUpRight, Code2 } from "lucide-react";
+import { ChevronDown, ArrowUpRight, FileText } from "lucide-react";
 import BlurText from "../subComponents/Title";
 import dynamic from "next/dynamic";
 import { MagneticButton } from "@/components/ui/magnetic-button";
@@ -55,36 +55,36 @@ export function HeroSection() {
         variants={container}
         initial="hidden"
         animate="show"
-        className="p-4 pb-20 relative z-10 w-full max-w-5xl mx-auto flex flex-col items-center justify-center text-center min-h-screen pt-24 md:pt-28"
+        className="px-4 pb-16 relative z-10 w-full max-w-5xl mx-auto flex flex-col items-center justify-center text-center min-h-screen pt-20 md:pt-28"
       >
         {/* Available Glassmorphism Pill */}
-        <motion.div variants={item} className="mb-6">
-          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-sky-500/30 bg-sky-500/10 backdrop-blur-xl shadow-[0_0_20px_rgba(56,189,248,0.15)]">
-            <span className="relative flex h-2 w-2">
+        <motion.div variants={item} className="mb-5 max-w-full">
+          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full border border-sky-500/30 bg-sky-500/10 backdrop-blur-xl shadow-[0_0_20px_rgba(56,189,248,0.15)] max-w-full">
+            <span className="relative flex h-2 w-2 shrink-0">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
             </span>
-            <span className="text-[11px] font-mono tracking-wider text-sky-300 uppercase font-semibold">
+            <span className="text-[10px] sm:text-[11px] font-mono tracking-wider text-sky-300 uppercase font-semibold truncate sm:whitespace-normal">
               Full-Stack & AI Engineer @ NEO
             </span>
           </div>
         </motion.div>
 
         {/* Name Title Reveal */}
-        <h1 className="mb-2 pt-1 drop-shadow-2xl">
+        <h1 className="mb-2 pt-1 drop-shadow-2xl w-full flex justify-center">
           <BlurText
             text="Daksh Jain"
             delay={50}
             animateBy="letters"
             direction="bottom"
-            className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-extrabold tracking-tight text-white font-display"
+            className="text-4xl xs:text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-extrabold tracking-tight text-white font-display"
           />
         </h1>
 
         {/* Role subheader with metallic gradient */}
         <motion.div
           variants={item}
-          className="text-lg sm:text-xl md:text-2xl font-bold font-display uppercase tracking-tight mt-1 mb-3 bg-gradient-to-r from-sky-400 via-indigo-300 to-white bg-clip-text text-transparent"
+          className="text-base xs:text-lg sm:text-xl md:text-2xl font-bold font-display uppercase tracking-tight mt-1 mb-3 bg-gradient-to-r from-sky-400 via-indigo-300 to-white bg-clip-text text-transparent"
         >
           Full-Stack & AI Engineer
         </motion.div>
@@ -92,7 +92,7 @@ export function HeroSection() {
         {/* Observability Console Rolodex */}
         <motion.div
           variants={item}
-          className="text-xs md:text-sm text-text-muted mb-6 h-6 mt-1 flex items-center justify-center space-x-2 font-mono"
+          className="text-[11px] xs:text-xs md:text-sm text-text-muted mb-6 min-h-6 mt-1 flex flex-wrap items-center justify-center gap-1 font-mono max-w-full px-2"
         >
           <span className="text-text-muted/70">console.exec(</span>
           <FlipWords
@@ -106,7 +106,7 @@ export function HeroSection() {
         {/* Short Bio (Thesis) */}
         <motion.p
           variants={item}
-          className="text-sm sm:text-base text-text-muted max-w-xl mx-auto leading-relaxed mb-8 font-sans font-light"
+          className="text-xs sm:text-base text-text-muted max-w-xl mx-auto leading-relaxed mb-8 font-sans font-light px-2"
         >
           Building production-grade AI systems across autonomous agent orchestration, MCP tooling, and RAG pipelines.
         </motion.p>
@@ -114,31 +114,30 @@ export function HeroSection() {
         {/* Control Room Console Buttons */}
         <motion.div
           variants={item}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto mt-2"
+          className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto px-4"
         >
           <MagneticButton
             href="#projects"
-            className="flex items-center justify-center h-11 px-8 w-full sm:w-44 rounded-lg bg-white text-black text-xs font-mono font-semibold tracking-tight shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_25px_rgba(56,189,248,0.4)] hover:bg-zinc-100 active:scale-98 transition-all duration-300"
+            className="flex items-center justify-center h-12 px-8 w-full sm:w-48 rounded-xl bg-white text-black text-xs font-mono font-bold tracking-tight shadow-[0_0_25px_rgba(255,255,255,0.25)] hover:shadow-[0_0_30px_rgba(56,189,248,0.5)] hover:bg-sky-50 active:scale-98 transition-all duration-300"
           >
             view_work
-            <ArrowUpRight size={12} className="ml-1.5" />
+            <ArrowUpRight size={14} className="ml-1.5" />
           </MagneticButton>
 
-          <a
+          <MagneticButton
             href="/DakshJain_Resume.pdf"
             target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-center h-11 px-8 w-full sm:w-44 rounded-lg border border-white/10 bg-surface-2/80 text-white text-xs font-mono hover:bg-surface-2 hover:border-sky-500/40 active:scale-98 transition-all duration-300 cursor-pointer backdrop-blur-md shadow-sm"
+            className="flex items-center justify-center h-12 px-8 w-full sm:w-48 rounded-xl border border-sky-400/30 bg-surface-2/90 text-white text-xs font-mono font-semibold tracking-tight hover:bg-surface-2 hover:border-sky-400/80 hover:text-sky-300 hover:shadow-[0_0_25px_rgba(56,189,248,0.25)] active:scale-98 transition-all duration-300 backdrop-blur-xl"
           >
-            résumé
-            <Code2 size={12} className="ml-1.5 text-sky-400" />
-          </a>
+            view_résumé
+            <FileText size={14} className="ml-1.5 text-sky-400" />
+          </MagneticButton>
         </motion.div>
 
         {/* Social Links Row in Mono */}
         <motion.div
           variants={item}
-          className="flex flex-wrap justify-center items-center gap-x-4 gap-y-2 mt-8 font-mono text-[10px] uppercase text-text-muted"
+          className="flex flex-wrap justify-center items-center gap-x-3 gap-y-2 mt-8 font-mono text-[10px] uppercase text-text-muted px-2"
         >
           <a href="https://github.com/Dakshjain1604" target="_blank" rel="noopener noreferrer" className="hover:text-sky-400 transition-colors">[github]</a>
           <span className="text-hairline hidden xs:inline">·</span>

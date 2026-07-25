@@ -69,13 +69,13 @@ export default function Footer() {
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-accent/2 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="max-w-5xl mx-auto px-6 md:px-8 relative z-10">
-        <div className="grid md:grid-cols-4 gap-12 mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mb-12 sm:mb-16">
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
             viewport={{ once: true }}
-            className="md:col-span-2"
+            className="sm:col-span-2"
           >
             {/* Initials Mark Logo */}
             <div className="flex items-center gap-2 select-none mb-3">
@@ -83,22 +83,22 @@ export default function Footer() {
               <span className="font-mono text-[9px] text-text-muted/40 uppercase tracking-widest">[sys]</span>
             </div>
             
-            <p className="text-sm text-text-muted leading-relaxed max-w-xs mb-4 font-sans font-light">
+            <p className="text-xs sm:text-sm text-text-muted leading-relaxed max-w-xs mb-4 font-sans font-light">
               AI System Architect & Full-Stack Engineer. Passionate about orchestrating high-performance systems and deploying production agent workflows.
             </p>
-            <div className="space-y-2 font-mono text-xs text-text-muted">
+            <div className="space-y-2 font-mono text-[11px] sm:text-xs text-text-muted">
               <a
                 href="mailto:dakshjain080@gmail.com"
-                className="hover:text-accent transition-colors flex items-center gap-2"
+                className="hover:text-accent transition-colors flex items-center gap-2 break-all"
               >
-                <span className="w-1.5 h-1.5 rounded-full bg-text-muted/40" />
+                <span className="w-1.5 h-1.5 rounded-full bg-text-muted/40 shrink-0" />
                 email: dakshjain080@gmail.com
               </a>
               <a
                 href="tel:+917627056978"
                 className="hover:text-accent transition-colors flex items-center gap-2"
               >
-                <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+                <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0" />
                 phone: +91 7627056978
               </a>
             </div>

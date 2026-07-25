@@ -51,20 +51,20 @@ export function AboutMe() {
             viewport={{ once: true }}
             className="flex flex-col justify-between"
           >
-            <motion.div variants={item} className="glass-card rounded-xl p-6 md:p-8 border border-hairline bg-surface/90 shadow-xl shadow-black/20">
+            <motion.div variants={item} className="glass-card rounded-xl p-5 sm:p-6 md:p-8 border border-hairline bg-surface/90 shadow-xl shadow-black/20">
               {/* Mono Header Line */}
-              <div className="flex flex-wrap items-center justify-between gap-2 mb-5 pb-3 border-b border-hairline">
-                <div className="font-mono text-[11px] text-sky-400 uppercase tracking-wider flex items-center gap-2">
-                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  [currently: full-stack_&_ai_engineer_at_neo]
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-5 pb-3 border-b border-hairline">
+                <div className="font-mono text-[10px] sm:text-[11px] text-sky-400 uppercase tracking-wider flex items-center gap-2 max-w-full overflow-hidden">
+                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+                  <span className="truncate sm:whitespace-normal">[currently: full-stack_&_ai_engineer_at_neo]</span>
                 </div>
-                <span className="font-mono text-[10px] text-text-muted/60 uppercase">
+                <span className="font-mono text-[9px] sm:text-[10px] text-text-muted/60 uppercase shrink-0">
                   early-stage startup
                 </span>
               </div>
 
               {/* Bio Paragraphs */}
-              <div className="space-y-4 text-sm md:text-base text-text-muted leading-relaxed font-sans font-light">
+              <div className="space-y-4 text-xs sm:text-sm md:text-base text-text-muted leading-relaxed font-sans font-light">
                 <p>
                   I am a software engineer focused on the intersection of <strong className="font-semibold text-white">robust full-stack systems</strong> and <strong className="font-semibold text-white">state-of-the-art AI orchestration</strong>. I enjoy building systems that are not just intelligent, but also resilient, performant, and highly reliable under production loads.
                 </p>
@@ -89,27 +89,27 @@ export function AboutMe() {
               </div>
 
               {/* Key Impact Metric Strip */}
-              <div className="grid grid-cols-3 gap-3 my-6 py-4 border-y border-hairline/80">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 my-6 py-4 border-y border-hairline/80">
                 <div className="p-3 rounded-lg bg-zinc-950/70 border border-zinc-800 text-center">
-                  <span className="block text-lg sm:text-xl font-bold font-mono text-white">3 Mos</span>
-                  <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider">Intern → Full-Time</span>
+                  <span className="block text-base sm:text-lg md:text-xl font-bold font-mono text-white">3 Mos</span>
+                  <span className="text-[9px] sm:text-[10px] font-mono text-zinc-400 uppercase tracking-wider">Intern → Full-Time</span>
                 </div>
                 <div className="p-3 rounded-lg bg-zinc-950/70 border border-zinc-800 text-center">
-                  <span className="block text-lg sm:text-xl font-bold font-mono text-sky-400">MCP Protocol</span>
-                  <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider">Multi-Tenant Servers</span>
+                  <span className="block text-base sm:text-lg md:text-xl font-bold font-mono text-sky-400">MCP Protocol</span>
+                  <span className="text-[9px] sm:text-[10px] font-mono text-zinc-400 uppercase tracking-wider">Multi-Tenant Servers</span>
                 </div>
                 <div className="p-3 rounded-lg bg-zinc-950/70 border border-zinc-800 text-center">
-                  <span className="block text-lg sm:text-xl font-bold font-mono text-emerald-400">Production</span>
-                  <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider">RAG & AI Agents</span>
+                  <span className="block text-base sm:text-lg md:text-xl font-bold font-mono text-emerald-400">Production</span>
+                  <span className="text-[9px] sm:text-[10px] font-mono text-zinc-400 uppercase tracking-wider">RAG & AI Agents</span>
                 </div>
               </div>
 
               {/* Startup Pillars Badges */}
-              <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                 {startupPillars.map((pillar, i) => (
                   <div
                     key={i}
-                    className="flex items-center gap-2 px-3.5 py-2 rounded-lg bg-zinc-900/90 border border-zinc-800 hover:border-sky-500/50 hover:bg-zinc-900 text-xs font-mono text-zinc-200 whitespace-nowrap transition-all duration-200 shadow-sm"
+                    className="flex items-center gap-2 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-lg bg-zinc-900/90 border border-zinc-800 hover:border-sky-500/50 hover:bg-zinc-900 text-[11px] sm:text-xs font-mono text-zinc-200 transition-all duration-200 shadow-sm"
                   >
                     {pillar.icon}
                     <span>{pillar.label}</span>

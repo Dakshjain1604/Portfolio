@@ -105,7 +105,7 @@ export function Experience() {
           className="relative"
         >
           {/* Vertical connecting line */}
-          <div className="absolute left-[19px] md:left-[23px] top-0 bottom-0 w-[1px]">
+          <div className="absolute left-[15px] sm:left-[19px] md:left-[23px] top-0 bottom-0 w-[1px]">
             <motion.div
               initial={{ height: 0 }}
               whileInView={{ height: "100%" }}
@@ -119,7 +119,7 @@ export function Experience() {
             <motion.div
               key={idx}
               variants={item}
-              className="relative pl-14 md:pl-16 pb-12 last:pb-0"
+              className="relative pl-11 sm:pl-14 md:pl-16 pb-10 sm:pb-12 last:pb-0"
             >
               {/* Timeline Indicator Node */}
               <motion.div
@@ -127,10 +127,10 @@ export function Experience() {
                 whileInView={{ scale: 1 }}
                 transition={{ delay: 0.1, type: "spring", stiffness: 150 }}
                 viewport={{ once: true }}
-                className="absolute left-0 md:left-1 top-1 z-10"
+                className="absolute -left-1 sm:left-0 md:left-1 top-1 z-10"
               >
                 <div className="relative">
-                  <div className="w-10 h-10 rounded-lg bg-surface border border-hairline flex items-center justify-center shadow-md">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-surface border border-hairline flex items-center justify-center shadow-md">
                     {exp.logo}
                   </div>
                   {idx === 0 && (
@@ -151,13 +151,13 @@ export function Experience() {
               </motion.div>
 
               {/* Card Body */}
-              <div className="glass-card rounded-xl p-5 md:p-6 border border-hairline hover:border-sky-500/30 transition-all duration-350 bg-surface">
+              <div className="glass-card rounded-xl p-4 sm:p-5 md:p-6 border border-hairline hover:border-sky-500/30 transition-all duration-350 bg-surface">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
                   <div>
-                    <h3 className="text-base md:text-lg font-bold font-sans text-white">
+                    <h3 className="text-sm sm:text-base md:text-lg font-bold font-sans text-white">
                       {exp.title}
                     </h3>
-                    <div className="flex items-center gap-2 mt-1 text-xs font-mono">
+                    <div className="flex items-center gap-2 mt-1 text-[11px] sm:text-xs font-mono">
                       <p className="text-sky-400 font-semibold">{exp.company}</p>
                       <span className="text-hairline">•</span>
                       <p className="text-text-muted flex items-center gap-1">
@@ -166,7 +166,7 @@ export function Experience() {
                       </p>
                     </div>
                   </div>
-                  <span className="text-[10px] font-mono text-text-muted bg-zinc-900 border border-zinc-800 px-3 py-1 rounded w-fit flex items-center gap-1.5 h-fit">
+                  <span className="text-[9px] sm:text-[10px] font-mono text-text-muted bg-zinc-900 border border-zinc-800 px-2.5 py-1 rounded w-fit flex items-center gap-1.5 h-fit">
                     <Calendar size={10} className="text-sky-400" />
                     {exp.period}
                   </span>

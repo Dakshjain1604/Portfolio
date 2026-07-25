@@ -95,8 +95,54 @@ const BlurText: React.FC<BlurTextProps> = ({
     stepCount === 1 ? 0 : i / (stepCount - 1)
   );
 
+  if (animateBy === "letters") {
+    const words = text.split(" ");
+    let letterIndex = 0;
+
+    return (
+      <span ref={ref} className={`blur-text ${className} flex flex-wrap justify-center`}>
+        {words.map((word, wordIdx) => {
+          const wordLetters = word.split("");
+          return (
+            <span key={wordIdx} className="inline-block whitespace-nowrap">
+              {wordLetters.map((char) => {
+                const currentIndex = letterIndex++;
+                const animateKeyframes = buildKeyframes(fromSnapshot, toSnapshots);
+                const spanTransition: Transition & { ease?: (t: number) => number } = {
+                  duration: totalDuration,
+                  times,
+                  delay: (currentIndex * delay) / 1000,
+                };
+                spanTransition.ease = easing;
+
+                return (
+                  <motion.span
+                    key={currentIndex}
+                    initial={fromSnapshot}
+                    animate={inView ? animateKeyframes : fromSnapshot}
+                    transition={spanTransition}
+                    onAnimationComplete={
+                      currentIndex === text.replace(/ /g, "").length - 1 ? onAnimationComplete : undefined
+                    }
+                    style={{
+                      display: "inline-block",
+                      willChange: "transform, filter, opacity",
+                    }}
+                  >
+                    {char}
+                  </motion.span>
+                );
+              })}
+              {wordIdx < words.length - 1 && <span className="inline-block">&nbsp;</span>}
+            </span>
+          );
+        })}
+      </span>
+    );
+  }
+
   return (
-    <p ref={ref} className={`blur-text ${className} flex flex-wrap`}>
+    <span ref={ref} className={`blur-text ${className} flex flex-wrap justify-center`}>
       {elements.map((segment, index) => {
         const animateKeyframes = buildKeyframes(fromSnapshot, toSnapshots);
 
@@ -120,14 +166,13 @@ const BlurText: React.FC<BlurTextProps> = ({
               display: "inline-block",
               willChange: "transform, filter, opacity",
             }}
-            className="font-serif "
           >
             {segment === " " ? "\u00A0" : segment}
             {animateBy === "words" && index < elements.length - 1 && "\u00A0"}
           </motion.span>
         );
       })}
-    </p>
+    </span>
   );
 };
 
