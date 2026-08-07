@@ -2,7 +2,7 @@ import type { AppId } from "@/data/apps"
 
 export type Rect = { x: number; y: number; w: number; h: number }
 
-export type WindowStatus = "open" | "minimized" | "maximized"
+type WindowStatus = "open" | "minimized" | "maximized"
 
 export type WindowState = {
   id: AppId

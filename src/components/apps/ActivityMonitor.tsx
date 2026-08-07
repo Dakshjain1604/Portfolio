@@ -145,15 +145,15 @@ export function ActivityMonitor() {
             <div className="mb-4 flex gap-6 font-mono text-sm" style={{ fontVariantNumeric: "tabular-nums" }}>
               <div>
                 <p className="text-lg text-text">{data.contributions.total}</p>
-                <p className="text-[10px] uppercase tracking-wide text-text-3">Contributions</p>
+                <p className="text-[10px] uppercase tracking-wide text-text-2">Contributions</p>
               </div>
               <div>
                 <p className="text-lg text-text">{streaks.current}</p>
-                <p className="text-[10px] uppercase tracking-wide text-text-3">Current streak</p>
+                <p className="text-[10px] uppercase tracking-wide text-text-2">Current streak</p>
               </div>
               <div>
                 <p className="text-lg text-text">{streaks.longest}</p>
-                <p className="text-[10px] uppercase tracking-wide text-text-3">Longest streak</p>
+                <p className="text-[10px] uppercase tracking-wide text-text-2">Longest streak</p>
               </div>
             </div>
             <div

@@ -37,8 +37,10 @@ export function MissionControl() {
     if (!active) return
     previouslyFocused.current = document.activeElement as HTMLElement
     // scoped to card buttons specifically - the backdrop's own close
-    // button is also a <button> and precedes the cards in DOM order
-    containerRef.current?.querySelector<HTMLElement>('button[aria-label^="Show "]')?.focus()
+    // button is a real <button> and precedes the cards in DOM order;
+    // cards themselves are [role="button"] divs, not <button> elements
+    // (see the comment at the card markup for why)
+    containerRef.current?.querySelector<HTMLElement>('[role="button"][aria-label^="Show "]')?.focus()
 
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -46,7 +48,7 @@ export function MissionControl() {
         return
       }
       const buttons = Array.from(
-        containerRef.current?.querySelectorAll<HTMLElement>('button[aria-label^="Show "]') ?? []
+        containerRef.current?.querySelectorAll<HTMLElement>('[role="button"][aria-label^="Show "]') ?? []
       )
       const idx = buttons.indexOf(document.activeElement as HTMLElement)
       if (idx === -1) return
@@ -113,11 +115,27 @@ export function MissionControl() {
                   }}
                   whileHover={reducedMotion ? undefined : { z: 40, rotateX: -4 }}
                 >
-                  <button
-                    type="button"
+                  {/* A real <button> cannot contain interactive descendants
+                      per the HTML spec (no nested buttons/forms/inputs) -
+                      live cards render a full app (Mail's Send button,
+                      Finder's option buttons, ...) inside, which a native
+                      button element rejects outright (invalid nesting,
+                      hydration error). role="button" on a div is the ARIA-
+                      equivalent that does not have that restriction; Enter
+                      and Space are wired manually since a div does not get
+                      them for free the way a real button does. */}
+                  <div
+                    role="button"
+                    tabIndex={0}
                     aria-label={`Show ${meta.title}`}
                     onClick={() => selectAndExit(id)}
-                    className="group w-full text-left"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault()
+                        selectAndExit(id)
+                      }
+                    }}
+                    className="group w-full cursor-pointer text-left"
                   >
                     <div className="aspect-[4/3] w-full overflow-hidden rounded-[--r-window] border border-edge bg-panel shadow-[var(--shadow-focused)]">
                       <div aria-hidden className="pointer-events-none h-full w-full origin-top-left" style={{ transform: "scale(0.42)", width: "238%", height: "238%" }}>
@@ -128,7 +146,7 @@ export function MissionControl() {
                       <meta.icon size={12} weight="light" />
                       {meta.title}
                     </span>
-                  </button>
+                  </div>
                 </motion.li>
               )
             })}

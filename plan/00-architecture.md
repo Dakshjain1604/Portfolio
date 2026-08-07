@@ -85,6 +85,19 @@ src/
 
 **50 files.** Nothing else. If implementation wants a 51st, it needs a reason recorded here first.
 
+### Recorded additions (implementation, phases 2-6)
+
+Five files beyond the 50 above, each a genuine need this document did not anticipate at planning time:
+
+| File | Why |
+|---|---|
+| `os/useDockMagnify.ts` | The magnification math (distance-to-scale/lift/depth transform) is identical for app icons and the GitHub/LinkedIn external-link tiles in the same Dock row. Splitting it into its own hook avoids duplicating the same `useTransform`/`useSpring` chain in `DockIcon.tsx` and `Dock.tsx`'s external-tile component. |
+| `os/dockIconRects.ts` | Section 6 already specifies the concept ("Dock.tsx writes each icon's center into a ref map keyed by AppId; Window.tsx reads it") but did not name it as its own module. Given two unrelated files (`Dock`/`DockIcon` writing, `Window` reading) share this map, a tiny standalone module is cleaner than attaching it to either side. |
+| `os/useMediaQuery.ts` | A generic `(min-width) => boolean \| null` hook backing `DesktopShell`'s desktop/Springboard branch. Section 8 describes the behavior (`useMediaQuery('(min-width: 1024px)')`, null until resolved) without naming where it lives. |
+| `components/reader/ReaderReturnBar.tsx` | `ReaderView` is a server component and cannot read `mode` from the store or call `setMode`. The "Back to desktop" bar needs `'use client'`, so it is a separate file rather than inline in `ReaderView.tsx`. |
+
+50 (planned) + 5 (above) + 1 (`app/favicon.ico`, a pre-existing static asset never counted in either tally) = 56 files, ~92 LOC/file average. All five new modules are genuinely used - `npx knip` reports zero unused files, dependencies, or exports across the whole build.
+
 The current `src/` holds 85 files and 7,535 LOC. The target is 50 files and roughly 3,400 LOC, which is an average of about 68 lines per file. The win is not fewer files, it is that every file is small, focused, and reachable. Today 78 of the 85 are deleted outright and 52% of the component LOC has no importer at all.
 
 ---

@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react"
 import { motion } from "framer-motion"
 import { Check } from "@phosphor-icons/react/dist/ssr"
 import { useReducedMotion } from "@/os/ReducedMotionContext"
+import { cn } from "@/lib/utils"
 
 export type MenuItemDef =
   | { kind: "action"; label: string; shortcut?: string; disabled?: boolean; onSelect: () => void }
@@ -140,9 +141,10 @@ export function Menu({
           exit={reducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.96 }}
           transition={{ duration: 0.14, ease: [0.32, 0.72, 0, 1] }}
           style={{ transformOrigin: align === "left" ? "top left" : "top right" }}
-          className={`os-glass absolute top-full z-[1100] mt-1 min-w-[200px] rounded-[--r-card] p-1 ${
+          className={cn(
+            "os-glass absolute top-full z-[1100] mt-1 min-w-[200px] rounded-[--r-card] p-1",
             align === "left" ? "left-0" : "right-0"
-          }`}
+          )}
         >
           {items.map((item, i) => {
             if (item.kind === "separator") {

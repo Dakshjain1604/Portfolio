@@ -240,20 +240,22 @@ Seven phases. Each unlocks the next.
 
 Phase 2 is the risk concentration. If the drag rule is violated there, everything downstream feels worse and no amount of later optimization fully recovers it. Verify the Profiler check before moving on.
 
-### Expected shape at the end
+### Shape at the end (as shipped)
 
-| | Before | After |
-|---|---|---|
-| Source files | 85 | ~50 |
-| LOC in `src/` | 7,535 | ~3,400 |
-| Average LOC per file | 89 | ~68 |
-| Dead code | ~52% | 0% |
-| Runtime dependencies | 17 | 12 |
-| Font families | 4, across 3 loading paths | 2, one path |
-| Remote font requests | 2 blocking | 0 |
-| Server-rendered content | none | the full document |
+| | Before | Planned | Shipped |
+|---|---|---|---|
+| Source files | 85 | ~50 | 56 |
+| LOC in `src/` | 7,535 | ~3,400 | 5,191 |
+| Average LOC per file | 89 | ~68 | ~93 |
+| Dead code (`npx knip`) | ~52% | 0% | 0% - zero unused files, deps, or exports |
+| Runtime dependencies | 17 | 12 | 11 |
+| Font families | 4, across 3 loading paths | 2, one path | 2, one path |
+| Remote font requests | 2 blocking | 0 | 0 |
+| Server-rendered content | none | the full document | the full document, verified via `curl` with zero JS executed |
 
-The file count barely halves while the line count drops by more than half. That is the shape you want: the win is not fewer files, it is that every remaining file is small, focused, and actually reachable.
+Six files over plan, each recorded with a reason in `plan/00-architecture.md` (`useDockMagnify`, `dockIconRects`, `useMediaQuery`, `ReaderReturnBar`, plus the pre-existing `favicon.ico` never counted in either tally). The LOC estimate ran higher than planned, mostly in the nine apps, which each carry more real interaction logic (Finder's search and container-query collapse, Terminal's command resolver, Mail's validation) than the planning-time estimate assumed. The dependency count landed one below plan: the original build-order table's "12" was simply an arithmetic slip against its own listed packages.
+
+The file count barely moves while the line count still drops by nearly a third. That is the shape that mattered: the win was never fewer files, it was that every remaining file is small, focused, and actually reachable - confirmed mechanically, not just asserted.
 
 ---
 

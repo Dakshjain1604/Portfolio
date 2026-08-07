@@ -43,13 +43,21 @@ export function DockIcon({ id, mouseX }: { id: AppId; mouseX: MotionValue<number
       const r = el.getBoundingClientRect()
       setDockIconCenter(id, { x: r.x + r.width / 2, y: r.y })
     }
+    // ResizeObserver catches magnification changing this icon's own size
+    // (which shifts its screen position); window resize catches the
+    // bottom-anchored Dock's position moving with the viewport. Neither
+    // the desktop nor Springboard root ever actually scrolls (both are
+    // `fixed inset-0 overflow-hidden`), so a scroll listener here would
+    // only ever fire from an app's own internal scroll bubbling up - a
+    // real cost for zero benefit, and the pattern plan/18-preflight.md's
+    // mechanical check bans outright.
     report()
     const ro = new ResizeObserver(report)
     ro.observe(el)
-    window.addEventListener("scroll", report, true)
+    window.addEventListener("resize", report)
     return () => {
       ro.disconnect()
-      window.removeEventListener("scroll", report, true)
+      window.removeEventListener("resize", report)
     }
   }, [id])
 

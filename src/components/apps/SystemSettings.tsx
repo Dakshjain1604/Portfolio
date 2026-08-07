@@ -128,7 +128,7 @@ export function SystemSettings() {
               { caption: "Developer tools", items: cloudTools },
             ].map(({ caption, items }) => (
               <div key={caption}>
-                <h4 className="mb-1 px-1 text-[11px] font-medium uppercase tracking-wide text-text-3">{caption}</h4>
+                <h4 className="mb-1 px-1 text-[11px] font-medium uppercase tracking-wide text-text-2">{caption}</h4>
                 <ul className="divide-y divide-divider rounded-[--r-card] bg-panel-2">
                   {items.map((s) => (
                     <SkillRow key={s.name} skill={s} />

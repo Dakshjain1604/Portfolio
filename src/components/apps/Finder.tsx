@@ -50,9 +50,16 @@ export function Finder() {
   }
 
   return (
-    <div className="flex h-full">
-      <nav aria-label="Project categories" className="w-[176px] shrink-0 border-r border-divider bg-panel-2 p-2">
-        <h3 className="px-2 pb-1 pt-1 text-[10px] font-medium uppercase tracking-wide text-text-3">Favorites</h3>
+    <div className="flex h-full @container">
+      {/* @container query, not a viewport media query: this window can be
+          resized narrower than 560/720px while the browser stays wide,
+          and a viewport-based breakpoint would miss that entirely.
+          See plan/07-app-finder.md and plan/18-preflight.md section D. */}
+      <nav
+        aria-label="Project categories"
+        className="hidden w-[176px] shrink-0 border-r border-divider bg-panel-2 p-2 @[560px]:block"
+      >
+        <h3 className="px-2 pb-1 pt-1 text-[10px] font-medium uppercase tracking-wide text-text-2">Favorites</h3>
         {SOURCES.map((s) => (
           <button
             key={s.id}
@@ -82,7 +89,7 @@ export function Finder() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search"
-            className="w-full bg-transparent text-xs text-text placeholder:text-text-3 focus:outline-none"
+            className="w-full bg-transparent text-xs text-text placeholder:text-text-2 focus:outline-none"
           />
         </div>
 
@@ -129,11 +136,11 @@ export function Finder() {
       </div>
 
       {selected && (
-        <aside aria-live="polite" className="hidden w-[280px] shrink-0 overflow-auto border-l border-divider bg-panel-2 p-4 min-[720px]:block">
+        <aside aria-live="polite" className="hidden w-[280px] shrink-0 overflow-auto border-l border-divider bg-panel-2 p-4 @[720px]:block">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={selected.image} alt={`${selected.title} screenshot`} className="mb-3 w-full rounded-[--r-card] object-cover" />
           <h3 className="mb-1 text-sm font-medium text-text">{selected.title}</h3>
-          <p className="mb-3 text-xs text-text-2">{selected.description}</p>
+          <p className="mb-3 max-w-[46ch] text-xs text-text-2">{selected.description}</p>
           <div className="mb-4 flex flex-wrap gap-1.5">
             {selected.tech.map((t) => (
               <Chip key={t}>{t}</Chip>
@@ -167,11 +174,11 @@ export function Finder() {
           </div>
           <dl className="space-y-1 text-[11px]">
             <div className="flex justify-between">
-              <dt className="text-text-3">Kind</dt>
+              <dt className="text-text-2">Kind</dt>
               <dd className="text-text-2">{selected.tags.includes("ai") ? "AI System" : "Web App"}</dd>
             </div>
             <div className="flex justify-between">
-              <dt className="text-text-3">Tech</dt>
+              <dt className="text-text-2">Tech</dt>
               <dd className="text-text-2">{selected.tech.length} technologies</dd>
             </div>
           </dl>
