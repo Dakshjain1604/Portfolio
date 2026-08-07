@@ -1,47 +1,28 @@
-"use client";
-import { useState } from "react";
-import { HeroSection } from "./components/HeroSection";
-import { AboutMe } from "./components/AboutPage";
-import { Skills } from "./components/Skills";
-import { FeaturedProjects as Projects } from "./components/FeaturedProjects";
-import { Experience } from "./components/Experience";
-import { GitHubStats } from "./components/GitHubStats";
-import { TerminalSection } from "./components/TerminalSection";
-import { ContactSection } from "./components/ContactSection";
+import { profile } from "@/data/profile"
 
-export default function Home() {
-  const [selectedSkill, setSelectedSkill] = useState<string | null>(null);
-
-  const handleSelectSkill = (skill: string) => {
-    if (selectedSkill?.toLowerCase() === skill.toLowerCase()) {
-      setSelectedSkill(null);
-    } else {
-      setSelectedSkill(skill);
-      // Smooth scroll to projects section
-      setTimeout(() => {
-        document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
-      }, 50);
-    }
-  };
-
-  const handleClearSkill = () => {
-    setSelectedSkill(null);
-  };
-
+/**
+ * Foundation-phase placeholder. Replaced in Phase 6 (plan/17-reader-view.md) by:
+ *
+ *   export default function Page() {
+ *     return (
+ *       <>
+ *         <ReaderView />
+ *         <DesktopShell />
+ *       </>
+ *     )
+ *   }
+ *
+ * Kept as a server component so the client/server boundary decided in
+ * plan/00-architecture.md section 9 is never violated, even mid-build.
+ */
+export default function Page() {
   return (
-    <div className="flex flex-col relative overflow-hidden bg-background">
-      <HeroSection />
-      <AboutMe />
-      <Skills selectedSkill={selectedSkill} onSelectSkill={handleSelectSkill} />
-      <Projects 
-        selectedSkill={selectedSkill} 
-        onClearSkill={handleClearSkill} 
-        onSelectSkill={handleSelectSkill} 
-      />
-      <Experience />
-      <GitHubStats />
-      <TerminalSection />
-      <ContactSection />
-    </div>
-  );
+    <main className="flex min-h-[100dvh] flex-col items-center justify-center gap-2 bg-void px-6 text-center text-text">
+      <p className="font-mono text-xs uppercase tracking-[0.14em] text-text-2">
+        Under construction
+      </p>
+      <h1 className="text-2xl font-semibold tracking-[-0.02em]">{profile.name}</h1>
+      <p className="max-w-[46ch] text-sm text-text-2">{profile.tagline}</p>
+    </main>
+  )
 }

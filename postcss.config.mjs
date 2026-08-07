@@ -1,14 +1,5 @@
 const config = {
-  plugins: {"@tailwindcss/postcss":{
-    theme: {
-      extend: {
-        fontFamily: {
-          'regalia': ['Regalia Monarch', 'sans-serif'], // Or include other fallbacks
-        },
-      },
-    },
-  }
-  },
+  plugins: { "@tailwindcss/postcss": {} },
 };
 
 export default config;

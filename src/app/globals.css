@@ -1,225 +1,168 @@
-@import url('https://api.fontshare.com/v2/css?f[]=clash-display@200,300,400,500,600,700&f[]=satoshi@300,400,500,700,900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap');
-
-@plugin 'tailwindcss-animate';
 @import "tailwindcss";
 
-@custom-variant dark (&:is(.dark *));
+/* ---------------------------------------------------------------
+   TOKENS. The naming contract lives in plan/00-architecture.md.
+   Dark-locked. There is no light mode and no `dark:` variant.
+   --------------------------------------------------------------- */
 
 :root {
-  --ink: #05050A;
-  --surface: #0C0D12;
-  --surface-2: #121520;
-  --hairline: rgba(255, 255, 255, 0.08);
-  --text: #FFFFFF;
-  --text-muted: #A1A1AA;
-  --accent: #38BDF8;
-  --accent-dim: rgba(56, 189, 248, 0.1);
+  /* surfaces */
+  --os-void: #0b0b0e;
+  --os-chrome: rgb(40 40 44 / 0.72);
+  --os-panel: #1c1c1f;
+  --os-panel-2: #232326;
+  --os-panel-3: #2a2a2e;
 
-  --background: var(--ink);
-  --background-alt: var(--surface);
-  --foreground: var(--text);
+  /* edges: outer hairline + inner top highlight = the macOS double-edge */
+  --os-edge: rgb(255 255 255 / 0.1);
+  --os-edge-inner: rgb(255 255 255 / 0.14);
+  --os-divider: rgb(255 255 255 / 0.06);
 
-  --card: var(--surface);
-  --card-foreground: var(--text);
-  --card-hover: var(--surface-2);
+  /* text: Apple's warm-neutral grays. not cool slate. */
+  --os-text: #f5f5f7;
+  --os-text-2: #98989d;
+  --os-text-3: #6e6e73; /* decoration only. never body copy. */
 
-  --popover: var(--surface);
-  --popover-foreground: var(--text);
+  /* the one accent */
+  --os-accent: #3e7bfa;
+  --os-accent-soft: rgb(62 123 250 / 0.16);
 
-  --primary: var(--accent);
-  --primary-foreground: #000000;
-  --primary-muted: var(--accent-dim);
+  /* traffic lights. the only other color on the page. */
+  --tl-red: #ff5f57;
+  --tl-amber: #febc2e;
+  --tl-green: #28c840;
 
-  --secondary: var(--text-muted);
-  --secondary-foreground: var(--text);
+  /* radii */
+  --r-window: 12px;
+  --r-card: 10px;
+  --r-control: 6px;
+  --r-chip: 999px;
 
-  --muted: var(--surface-2);
-  --muted-foreground: var(--text-muted);
+  /* motion */
+  --ease-os: cubic-bezier(0.32, 0.72, 0, 1);
+  --dur-fast: 140ms;
+  --dur-base: 240ms;
+  --dur-slow: 420ms;
 
-  --border: var(--hairline);
-  --border-hover: rgba(255, 255, 255, 0.15);
-  --input: var(--surface);
-  --ring: var(--accent);
-
-  --radius: 0.75rem;
+  /* window elevation, indexed by depth. see plan/02. */
+  --shadow-rest: 0 8px 24px rgb(0 0 0 / 0.38);
+  --shadow-focused: 0 24px 64px rgb(0 0 0 / 0.52);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-dim: var(--accent-dim);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
+  --color-void: var(--os-void);
+  --color-chrome: var(--os-chrome);
+  --color-panel: var(--os-panel);
+  --color-panel-2: var(--os-panel-2);
+  --color-panel-3: var(--os-panel-3);
+  --color-edge: var(--os-edge);
+  --color-divider: var(--os-divider);
+  --color-text: var(--os-text);
+  --color-text-2: var(--os-text-2);
+  --color-text-3: var(--os-text-3);
+  --color-accent: var(--os-accent);
+  --color-accent-soft: var(--os-accent-soft);
 
-  /* Control-room panel tokens */
-  --color-ink: var(--ink);
-  --color-surface: var(--surface);
-  --color-surface-2: var(--surface-2);
-  --color-hairline: var(--hairline);
-  --color-text-primary: var(--text);
-  --color-text-muted: var(--text-muted);
+  --radius-window: var(--r-window);
+  --radius-card: var(--r-card);
+  --radius-control: var(--r-control);
 
-  --font-display: 'Clash Display', var(--font-geist-sans), sans-serif;
-  --font-sans: 'Satoshi', var(--font-geist-sans), sans-serif;
-  --font-mono: 'JetBrains Mono', var(--font-geist-mono), monospace;
-
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --radius-2xl: calc(var(--radius) + 8px);
-
-  --animate-float: float 6s ease-in-out infinite;
-  --animate-shimmer: shimmer 2s linear infinite;
-  --animate-slide-up: slide-up 0.6s ease-out;
-  --animate-pulse-soft: pulse-soft 3s ease-in-out infinite;
-
-  @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-15px); }
-  }
-
-  @keyframes shimmer {
-    0% { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
-  }
-
-  @keyframes slide-up {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  @keyframes pulse-soft {
-    0%, 100% { opacity: 0.6; }
-    50% { opacity: 1; }
-  }
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 }
 
+/* ---------------------------------------------------------------
+   BASE
+   --------------------------------------------------------------- */
+
 html {
-  scroll-behavior: smooth;
-  touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
 
 body {
-  background-color: var(--background);
-  color: var(--foreground);
+  background: var(--os-void);
+  color: var(--os-text);
   font-family: var(--font-sans);
-  overflow-x: hidden;
-  width: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow: hidden; /* the desktop does not scroll. windows scroll. */
 }
 
-@media (pointer: fine) {
-  .custom-cursor-active,
-  .custom-cursor-active * {
-    cursor: none !important;
-  }
+/* reader mode restores document scrolling */
+body[data-mode="reader"] {
+  overflow: auto;
 }
 
 ::selection {
-  background: rgba(56, 189, 248, 0.25);
-  color: #ffffff;
+  background: var(--os-accent-soft);
+  color: var(--os-text);
 }
 
-::-webkit-scrollbar {
-  width: 5px;
+/* thin overlay scrollbars, macOS style. applies inside window bodies. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(255 255 255 / 0.18) transparent;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: rgb(255 255 255 / 0.18);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: rgb(255 255 255 / 0.3);
+  background-clip: content-box;
 }
 
-::-webkit-scrollbar-track {
-  background: var(--background);
+/* one visible focus ring, everywhere, no exceptions */
+:focus-visible {
+  outline: 2px solid var(--os-accent);
+  outline-offset: 2px;
+  border-radius: var(--r-control);
 }
 
-::-webkit-scrollbar-thumb {
-  background: #1e293b;
-  border-radius: 3px;
+/* ---------------------------------------------------------------
+   GLASS
+   Web frosted-glass approximation. NOT Apple Liquid Glass, which is
+   an Apple-platform material with no public web CSS package.
+   The double box-shadow is what sells it: outer depth + inner top edge.
+   --------------------------------------------------------------- */
+
+.os-glass {
+  background: var(--os-chrome);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid var(--os-edge);
+  box-shadow:
+    inset 0 1px 0 var(--os-edge-inner),
+    var(--shadow-rest);
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: #334155;
-}
+/* ---------------------------------------------------------------
+   ACCESSIBILITY OVERRIDES
+   --------------------------------------------------------------- */
 
-.glass {
-  background: rgba(15, 20, 32, 0.75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--hairline);
-}
-
-.glass-card {
-  background: var(--surface);
-  border: 1px solid var(--hairline);
-  transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.glass-card:hover {
-  border-color: rgba(56, 189, 248, 0.3);
-  background: var(--surface-2);
-}
-
-.gradient-text {
-  background: linear-gradient(135deg, var(--text) 0%, var(--text-muted) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.section-divider {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--hairline), transparent);
-  margin: 0 auto;
-  width: 50%;
-  max-width: 500px;
-}
-
-.text-muted {
-  color: var(--text-muted);
-}
-
-.text-subtle {
-  color: rgba(138, 147, 166, 0.6);
-}
-
-.border-subtle {
-  border-color: rgba(255, 255, 255, 0.06);
-}
-
-.bg-subtle {
-  background: rgba(255, 255, 255, 0.02);
-}
-
-.line-clamp-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
+@media (prefers-reduced-transparency: reduce) {
+  .os-glass {
+    background: var(--os-panel);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 }
 
-@media (max-width: 768px) {
-  .section-divider {
-    width: 80%;
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

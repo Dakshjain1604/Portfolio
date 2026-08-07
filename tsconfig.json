@@ -33,7 +33,6 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "tailwind.config.js",
     ".next/dev/types/**/*.ts"
   ],
   "exclude": [
