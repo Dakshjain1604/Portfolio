@@ -14,6 +14,7 @@ import {
 import type { IconProps } from "@phosphor-icons/react"
 import type { ComponentType } from "react"
 import { socials } from "./socials"
+import type { Rect } from "@/os/types"
 
 export type AppId =
   | "finder"
@@ -25,8 +26,6 @@ export type AppId =
   | "preview"
   | "terminal"
   | "orchestrator"
-
-export type Rect = { x: number; y: number; w: number; h: number }
 
 export type AppMeta = {
   id: AppId
