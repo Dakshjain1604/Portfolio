@@ -101,6 +101,12 @@ export function Window({ id }: WindowProps) {
         height: resize.h,
         rotateX: drag.rotateX,
         rotateY: drag.rotateY,
+        // explicit per plan/00-architecture.md's z-index scale (100 + depth,
+        // capped at 799): DesktopIcons carries an explicit z-10, and CSS
+        // treats z-index:auto siblings as z-0 for stacking purposes
+        // regardless of DOM order, so an unset z-index here would let
+        // desktop icons paint over every window.
+        zIndex: 100 + Math.min(stackIndex, 699),
         pointerEvents: minimized ? "none" : "auto",
         willChange: interacting ? "transform" : "auto",
       }}
