@@ -7,6 +7,46 @@ import { MENUBAR_H, DOCK_H, TITLEBAR_H, type Rect, type WindowState, type OSMode
 const CASCADE_STEP = 28
 const CASCADE_MOD = 6
 const MODE_KEY = "os-mode"
+const MENUBAR_SOLID_KEY = "os-menubar-solid"
+const ACCENT_TINT_KEY = "os-accent-tint"
+const GLASS_CLEAR_KEY = "os-glass-clear"
+
+// Unlike `mode` below, these three are safe to read synchronously here at
+// store-creation time: nothing ReaderView or any other server-rendered
+// component depends on menuBarSolid/accentTint/glassClear, and MenuBar
+// itself never renders during SSR or the client's first paint (it lives
+// under DesktopShellInner, which returns null until isDesktop resolves
+// post-mount, regardless of these values) - so there is no server/client
+// first-render disagreement possible, which is the specific failure mode
+// that made `mode`'s synchronous read a real bug.
+function initialMenuBarSolid(): boolean {
+  if (typeof window === "undefined") return false
+  return localStorage.getItem(MENUBAR_SOLID_KEY) === "1"
+}
+function initialAccentTint(): AccentTint {
+  if (typeof window === "undefined") return "blue"
+  const saved = localStorage.getItem(ACCENT_TINT_KEY)
+  return saved && saved in ACCENT_TINTS ? (saved as AccentTint) : "blue"
+}
+function initialGlassClear(): boolean {
+  if (typeof window === "undefined") return false
+  return localStorage.getItem(GLASS_CLEAR_KEY) === "1"
+}
+
+/** Exported so DesktopShellInner can re-apply the restored preference in a
+ *  post-mount effect - see the comment there for why this must not run at
+ *  module-evaluation time (it did, briefly, and caused a real hydration
+ *  mismatch on <html>'s style attribute, a stricter check than "does any
+ *  component render different output"). */
+export function applyAccentTint(tint: AccentTint) {
+  if (typeof document === "undefined") return
+  document.documentElement.style.setProperty("--os-accent", ACCENT_TINTS[tint])
+}
+export function applyGlassClear(clear: boolean) {
+  if (typeof document === "undefined") return
+  if (clear) document.documentElement.dataset.glass = "clear"
+  else delete document.documentElement.dataset.glass
+}
 
 // Deliberately always "desktop" here, on both server and client, even
 // though this module only ever runs in the browser. The tempting
@@ -36,12 +76,31 @@ export function clampToViewport(rect: Rect): Rect {
   }
 }
 
+/** Preset accent tints for System Settings > Appearance, per
+ *  plan/19-liquid-glass-modernization.md phase D - Tahoe's cited
+ *  "personalize icons and widgets... tinted... clear look." */
+export const ACCENT_TINTS = {
+  blue: "#3e7bfa",
+  purple: "#a374ff",
+  pink: "#ff6fb0",
+  orange: "#ff9f43",
+  green: "#34c77b",
+  graphite: "#98989d",
+} as const
+export type AccentTint = keyof typeof ACCENT_TINTS
+
 type OSStore = {
   windows: Partial<Record<AppId, WindowState>>
   stack: AppId[]
   mode: OSMode
   booted: boolean
   wallpaper: string
+  /** Liquid Glass modernization, phase B: real Tahoe defaults to a
+   *  transparent menu bar; this mirrors its actual Settings toggle,
+   *  "Show menu bar background." */
+  menuBarSolid: boolean
+  accentTint: AccentTint
+  glassClear: boolean
 
   open: (id: AppId) => void
   close: (id: AppId) => void
@@ -56,6 +115,9 @@ type OSStore = {
   setMode: (mode: OSMode) => void
   setBooted: (booted: boolean) => void
   setWallpaper: (src: string) => void
+  setMenuBarSolid: (solid: boolean) => void
+  setAccentTint: (tint: AccentTint) => void
+  setGlassClear: (clear: boolean) => void
   cycleFocus: (dir: 1 | -1) => void
 }
 
@@ -65,6 +127,9 @@ export const useOS = create<OSStore>((set, get) => ({
   mode: initialMode,
   booted: false,
   wallpaper: "mesh",
+  menuBarSolid: initialMenuBarSolid(),
+  accentTint: initialAccentTint(),
+  glassClear: initialGlassClear(),
 
   open: (id) => {
     const { windows, stack } = get()
@@ -184,6 +249,21 @@ export const useOS = create<OSStore>((set, get) => ({
   },
   setBooted: (booted) => set({ booted }),
   setWallpaper: (wallpaper) => set({ wallpaper }),
+
+  setMenuBarSolid: (solid) => {
+    localStorage.setItem(MENUBAR_SOLID_KEY, solid ? "1" : "0")
+    set({ menuBarSolid: solid })
+  },
+  setAccentTint: (tint) => {
+    localStorage.setItem(ACCENT_TINT_KEY, tint)
+    applyAccentTint(tint)
+    set({ accentTint: tint })
+  },
+  setGlassClear: (clear) => {
+    localStorage.setItem(GLASS_CLEAR_KEY, clear ? "1" : "0")
+    applyGlassClear(clear)
+    set({ glassClear: clear })
+  },
 
   cycleFocus: (dir) => {
     const { stack, windows } = get()

@@ -27,8 +27,9 @@ function DockExternalIcon({ link, mouseX }: { link: DockLink; mouseX: ReturnType
           translateY: lift,
           translateZ: depth,
           borderRadius: "22.5%",
-          background: "linear-gradient(135deg, #3a3a3e, #232326)",
-          boxShadow: "inset 0 1px 0 rgb(255 255 255 / .16)",
+          background:
+            "linear-gradient(135deg, rgb(255 255 255 / .18) 0%, transparent 32%, transparent 68%, rgb(255 255 255 / .06) 100%), linear-gradient(135deg, #3a3a3e, #232326)",
+          boxShadow: "inset 0 1px 0 rgb(255 255 255 / .24), inset 0 -1px 0 rgb(0 0 0 / .12)",
         }}
         className="flex shrink-0 items-center justify-center focus-visible:outline-offset-4"
       >

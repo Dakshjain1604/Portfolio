@@ -60,7 +60,7 @@ export function AppSheet({ id, onClose }: { id: AppId; onClose: () => void }) {
     >
       <header
         onPointerDown={(e) => dragControls.start(e)}
-        className="relative flex h-12 shrink-0 items-center justify-center"
+        className="os-glass relative flex h-12 shrink-0 items-center justify-center rounded-none"
         style={{ touchAction: "none" }}
       >
         <div aria-hidden className="absolute top-2 h-[5px] w-9 rounded-full bg-panel-3" />

@@ -8,6 +8,7 @@ import { socials } from "@/data/socials"
 import { MENUBAR_H } from "@/os/types"
 import { Menu, type MenuItemDef } from "./Menu"
 import { WALLPAPERS } from "./Wallpaper"
+import { cn } from "@/lib/utils"
 
 function useClock() {
   const [now, setNow] = useState<Date | null>(null)
@@ -44,6 +45,8 @@ export function MenuBar() {
   const focus = useOS((s) => s.focus)
   const setMode = useOS((s) => s.setMode)
   const setWallpaper = useOS((s) => s.setWallpaper)
+  const menuBarSolid = useOS((s) => s.menuBarSolid)
+  const setMenuBarSolid = useOS((s) => s.setMenuBarSolid)
 
   const [openMenu, setOpenMenu] = useState<null | "id" | "file" | "view" | "window">(null)
   const now = useClock()
@@ -96,6 +99,12 @@ export function MenuBar() {
         setWallpaper(WALLPAPERS[(idx + 1) % WALLPAPERS.length])
       },
     },
+    {
+      kind: "checkbox",
+      label: "Show Menu Bar Background",
+      checked: menuBarSolid,
+      onSelect: () => setMenuBarSolid(!menuBarSolid),
+    },
     { kind: "separator" },
     { kind: "action", label: "Reader view", onSelect: () => setMode("reader") },
   ]
@@ -132,8 +141,17 @@ export function MenuBar() {
 
   return (
     <header
-      className="os-glass fixed inset-x-0 top-0 z-[1000] flex items-center justify-between rounded-none px-2"
-      style={{ height: MENUBAR_H }}
+      className={cn(
+        "fixed inset-x-0 top-0 z-[1000] flex items-center justify-between rounded-none px-2 transition-[background,backdrop-filter] duration-200",
+        menuBarSolid ? "os-glass" : "os-glass-clear"
+      )}
+      style={{
+        height: MENUBAR_H,
+        // Real Tahoe's transparent bar is text floating on the wallpaper -
+        // the shadow is what keeps it legible over bright regions instead
+        // of a filled surface. Not needed once there's real glass behind it.
+        textShadow: menuBarSolid ? undefined : "0 1px 3px rgb(0 0 0 / 0.45)",
+      }}
       role="menubar"
     >
       <div className="flex items-center gap-1">

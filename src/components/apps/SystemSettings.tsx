@@ -17,11 +17,13 @@ import {
   Ruler,
   ArrowsLeftRight,
   ArrowsClockwise,
+  PaintBrush,
+  Check,
 } from "@phosphor-icons/react/dist/ssr"
 import type { IconProps } from "@phosphor-icons/react"
 import { skills, type Skill } from "@/data/skills"
 import { projects } from "@/data/projects"
-import { useOS } from "@/os/store"
+import { useOS, ACCENT_TINTS, type AccentTint } from "@/os/store"
 
 const GROUP_ICON: Record<string, ComponentType<IconProps>> = {
   ai: Sparkle,
@@ -86,16 +88,99 @@ function SkillRow({ skill }: { skill: Skill }) {
   )
 }
 
-export function SystemSettings() {
-  const [groupId, setGroupId] = useState(skills[0].id)
-  const group = skills.find((g) => g.id === groupId) ?? skills[0]
+/** Phase 19D: personalization, not portfolio content - deliberately kept
+ *  out of src/data/skills.ts and handled as a sentinel category id here,
+ *  first in the sidebar per plan/19-liquid-glass-modernization.md. */
+const APPEARANCE_ID = "appearance"
 
-  const cloudInfra = group.id === "cloud" ? group.skills.filter((s) => CLOUD_INFRA.has(s.name)) : []
-  const cloudTools = group.id === "cloud" ? group.skills.filter((s) => !CLOUD_INFRA.has(s.name)) : []
+function AppearancePane() {
+  const accentTint = useOS((s) => s.accentTint)
+  const setAccentTint = useOS((s) => s.setAccentTint)
+  const glassClear = useOS((s) => s.glassClear)
+  const setGlassClear = useOS((s) => s.setGlassClear)
+
+  return (
+    <div className="space-y-5">
+      <div>
+        <h4 className="mb-1 px-1 text-[11px] font-medium uppercase tracking-wide text-text-2">Accent color</h4>
+        <div role="radiogroup" aria-label="Accent color" className="flex items-center gap-3 rounded-[--r-card] bg-panel-2 p-4">
+          {(Object.keys(ACCENT_TINTS) as AccentTint[]).map((tint) => {
+            const selected = accentTint === tint
+            return (
+              <button
+                key={tint}
+                type="button"
+                role="radio"
+                aria-checked={selected}
+                aria-label={tint}
+                onClick={() => setAccentTint(tint)}
+                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full"
+                style={{
+                  background: ACCENT_TINTS[tint],
+                  boxShadow: selected
+                    ? "0 0 0 2px var(--os-panel-2), 0 0 0 4px var(--os-text)"
+                    : "inset 0 1px 0 rgb(255 255 255 / .25)",
+                }}
+              >
+                {selected && <Check size={14} weight="bold" color="white" />}
+              </button>
+            )
+          })}
+        </div>
+      </div>
+
+      <div>
+        <h4 className="mb-1 px-1 text-[11px] font-medium uppercase tracking-wide text-text-2">Glass</h4>
+        <div className="flex items-center justify-between gap-4 rounded-[--r-card] bg-panel-2 px-4 py-3">
+          <div>
+            <p className="text-[13px] text-text">Clear</p>
+            <p className="text-xs text-text-2">Maximizes transparency across windows, menus, and the Dock.</p>
+          </div>
+          <button
+            type="button"
+            role="switch"
+            aria-checked={glassClear}
+            aria-label="Clear glass"
+            onClick={() => setGlassClear(!glassClear)}
+            className="relative h-[22px] w-[38px] shrink-0 rounded-full transition-colors"
+            style={{ background: glassClear ? "var(--os-accent)" : "var(--os-panel-3)" }}
+          >
+            <span
+              className="absolute top-[2px] h-[18px] w-[18px] rounded-full bg-white transition-[left]"
+              style={{ left: glassClear ? 18 : 2 }}
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export function SystemSettings() {
+  const [groupId, setGroupId] = useState<string>(APPEARANCE_ID)
+  const group = skills.find((g) => g.id === groupId)
+
+  const cloudInfra = group?.id === "cloud" ? group.skills.filter((s) => CLOUD_INFRA.has(s.name)) : []
+  const cloudTools = group?.id === "cloud" ? group.skills.filter((s) => !CLOUD_INFRA.has(s.name)) : []
 
   return (
     <div className="flex h-full">
-      <nav aria-label="Skill categories" className="w-[196px] shrink-0 border-r border-divider bg-panel-2 p-2">
+      <nav aria-label="Settings categories" className="w-[196px] shrink-0 border-r border-divider bg-panel-2 p-2">
+        <button
+          type="button"
+          aria-pressed={groupId === APPEARANCE_ID}
+          aria-controls="settings-pane"
+          onClick={() => setGroupId(APPEARANCE_ID)}
+          className="flex w-full items-center gap-2.5 rounded-[--r-control] px-2 py-2 text-left text-xs"
+          style={{
+            background: groupId === APPEARANCE_ID ? "var(--os-accent-soft)" : "transparent",
+            color: groupId === APPEARANCE_ID ? "var(--os-text)" : "var(--os-text-2)",
+          }}
+        >
+          <PaintBrush size={15} weight="light" />
+          Appearance
+        </button>
+        <div className="my-2 h-px bg-divider" aria-hidden />
         {skills.map((g) => {
           const Icon = GROUP_ICON[g.id]
           return (
@@ -119,30 +204,40 @@ export function SystemSettings() {
       </nav>
 
       <div id="settings-pane" aria-live="polite" className="flex-1 overflow-auto px-6 py-5">
-        <h3 className="mb-4 text-sm font-medium text-text">{group.label}</h3>
-
-        {group.id === "cloud" ? (
-          <div className="space-y-5">
-            {[
-              { caption: "Infrastructure", items: cloudInfra },
-              { caption: "Developer tools", items: cloudTools },
-            ].map(({ caption, items }) => (
-              <div key={caption}>
-                <h4 className="mb-1 px-1 text-[11px] font-medium uppercase tracking-wide text-text-2">{caption}</h4>
-                <ul className="divide-y divide-divider rounded-[--r-card] bg-panel-2">
-                  {items.map((s) => (
-                    <SkillRow key={s.name} skill={s} />
-                  ))}
-                </ul>
+        {group ? (
+          <>
+            <h3 className="mb-4 text-sm font-medium text-text">{group.label}</h3>
+            {group.id === "cloud" ? (
+              <div className="space-y-5">
+                {[
+                  { caption: "Infrastructure", items: cloudInfra },
+                  { caption: "Developer tools", items: cloudTools },
+                ].map(({ caption, items }) => (
+                  <div key={caption}>
+                    <h4 className="mb-1 px-1 text-[11px] font-medium uppercase tracking-wide text-text-2">
+                      {caption}
+                    </h4>
+                    <ul className="divide-y divide-divider rounded-[--r-card] bg-panel-2">
+                      {items.map((s) => (
+                        <SkillRow key={s.name} skill={s} />
+                      ))}
+                    </ul>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            ) : (
+              <ul className="divide-y divide-divider rounded-[--r-card] bg-panel-2">
+                {group.skills.map((s) => (
+                  <SkillRow key={s.name} skill={s} />
+                ))}
+              </ul>
+            )}
+          </>
         ) : (
-          <ul className="divide-y divide-divider rounded-[--r-card] bg-panel-2">
-            {group.skills.map((s) => (
-              <SkillRow key={s.name} skill={s} />
-            ))}
-          </ul>
+          <>
+            <h3 className="mb-4 text-sm font-medium text-text">Appearance</h3>
+            <AppearancePane />
+          </>
         )}
       </div>
     </div>

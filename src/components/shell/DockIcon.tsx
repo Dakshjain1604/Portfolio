@@ -104,8 +104,12 @@ export function DockIcon({ id, mouseX }: { id: AppId; mouseX: MotionValue<number
           translateY: lift,
           translateZ: depth,
           borderRadius: "22.5%",
-          background: `linear-gradient(135deg, ${meta.tint[0]}, ${meta.tint[1]})`,
-          boxShadow: "inset 0 1px 0 rgb(255 255 255 / .22)",
+          // Same specular-sheen layering as Squircle.tsx - see the comment
+          // there. DockIcon can't use the Squircle component directly
+          // because the magnification motion values (size/lift/depth) need
+          // to bind to this element's own style, not a child's.
+          background: `linear-gradient(135deg, rgb(255 255 255 / .22) 0%, transparent 32%, transparent 68%, rgb(255 255 255 / .08) 100%), linear-gradient(135deg, ${meta.tint[0]}, ${meta.tint[1]})`,
+          boxShadow: "inset 0 1px 0 rgb(255 255 255 / .3), inset 0 -1px 0 rgb(0 0 0 / .12)",
         }}
         className="flex shrink-0 items-center justify-center focus-visible:outline-offset-4"
       >

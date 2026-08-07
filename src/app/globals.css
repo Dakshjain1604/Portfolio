@@ -23,18 +23,26 @@
   --os-text-2: #98989d;
   --os-text-3: #6e6e73; /* decoration only. never body copy. */
 
-  /* the one accent */
+  /* the one accent. Overridable at runtime (System Settings > Appearance,
+     plan/19-liquid-glass-modernization.md phase D) via a `style` attribute
+     on :root - --os-accent-soft is derived with color-mix() rather than
+     hardcoded so a tint change never needs a second variable updated
+     alongside it. */
   --os-accent: #3e7bfa;
-  --os-accent-soft: rgb(62 123 250 / 0.16);
+  --os-accent-soft: color-mix(in srgb, var(--os-accent) 16%, transparent);
 
-  /* traffic lights. the only other color on the page. */
-  --tl-red: #ff5f57;
-  --tl-amber: #febc2e;
-  --tl-green: #28c840;
+  /* traffic lights. the only other color on the page. Phase 19C: richer,
+     more saturated dots, matching Tahoe's deeper jewel-toned glass dots
+     rather than the flatter classic-macOS values. */
+  --tl-red: #fb4b44;
+  --tl-amber: #fcb31f;
+  --tl-green: #1fb646;
 
-  /* radii */
-  --r-window: 12px;
-  --r-card: 10px;
+  /* radii. Bumped for phase 19: Tahoe-era macOS reads rounder ("continuous
+     curves... inspired by visionOS") than the classic 12px window frame
+     this build shipped with initially. */
+  --r-window: 20px;
+  --r-card: 14px;
   --r-control: 6px;
   --r-chip: 999px;
 
@@ -134,19 +142,54 @@ body[data-mode="desktop"] {
 
 /* ---------------------------------------------------------------
    GLASS
-   Web frosted-glass approximation. NOT Apple Liquid Glass, which is
-   an Apple-platform material with no public web CSS package.
-   The double box-shadow is what sells it: outer depth + inner top edge.
+   Web frosted-glass approximation of macOS Tahoe's Liquid Glass, per
+   plan/19-liquid-glass-modernization.md. NOT Apple Liquid Glass itself,
+   which is an Apple-platform material with no public web CSS package -
+   Apple deliberately does not publish exact blur/shadow values since the
+   real material is adaptive, so every number here is a reasoned
+   approximation, not a spec.
+
+   The specular sheen is a second `background-image` layer, not a
+   pseudo-element: backgrounds always paint beneath an element's real
+   children with zero z-index bookkeeping, where a positioned ::before
+   would need explicit stacking-order care to avoid covering content.
    --------------------------------------------------------------- */
 
 .os-glass {
-  background: var(--os-chrome);
-  backdrop-filter: blur(28px) saturate(180%);
-  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  background:
+    linear-gradient(
+      135deg,
+      rgb(255 255 255 / 0.14) 0%,
+      transparent 35%,
+      transparent 65%,
+      rgb(255 255 255 / 0.05) 100%
+    ),
+    var(--os-chrome);
+  backdrop-filter: blur(28px) saturate(200%);
   border: 1px solid var(--os-edge);
   box-shadow:
     inset 0 1px 0 var(--os-edge-inner),
     var(--shadow-rest);
+}
+
+/* The menu bar's default state - "no longer a traditional bar... no
+   visible background." Text sits on the wallpaper directly; the drop
+   shadow (applied per-element, not here) is what keeps it legible over
+   bright wallpaper regions instead of a filled surface. */
+.os-glass-clear {
+  background: transparent;
+  backdrop-filter: none;
+  border: none;
+  box-shadow: none;
+}
+
+/* System Settings > Appearance > Clear, phase D: pushes every glass
+   surface toward maximum transparency, mirroring Tahoe's "elegant new
+   clear look." Scoped under a root attribute so components need no
+   conditional className logic - the cascade does it. */
+[data-glass="clear"] .os-glass {
+  background: linear-gradient(135deg, rgb(255 255 255 / 0.1) 0%, transparent 50%, rgb(255 255 255 / 0.03) 100%), rgb(20 20 23 / 0.32);
+  backdrop-filter: blur(36px) saturate(220%);
 }
 
 /* ---------------------------------------------------------------
@@ -154,10 +197,16 @@ body[data-mode="desktop"] {
    --------------------------------------------------------------- */
 
 @media (prefers-reduced-transparency: reduce) {
-  .os-glass {
+  /* Accessibility wins over the aesthetic choice: this overrides both the
+     menu bar's default transparent state and System Settings > Appearance
+     > Clear, not just the base .os-glass. */
+  .os-glass,
+  .os-glass-clear,
+  [data-glass="clear"] .os-glass {
     background: var(--os-panel);
     backdrop-filter: none;
-    -webkit-backdrop-filter: none;
+    border: 1px solid var(--os-edge);
+    box-shadow: var(--shadow-rest);
   }
 }
 

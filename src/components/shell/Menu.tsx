@@ -9,6 +9,10 @@ import { cn } from "@/lib/utils"
 export type MenuItemDef =
   | { kind: "action"; label: string; shortcut?: string; disabled?: boolean; onSelect: () => void }
   | { kind: "radio"; label: string; checked: boolean; onSelect: () => void }
+  /** A standalone on/off toggle (e.g. "Show Menu Bar Background"), distinct
+   *  from "radio": radio implies mutual exclusivity among sibling items
+   *  (the Window menu's open-window list), a checkbox does not. */
+  | { kind: "checkbox"; label: string; checked: boolean; onSelect: () => void }
   | { kind: "separator" }
 
 type MenuProps = {
@@ -151,12 +155,14 @@ export function Menu({
               return <div key={i} role="separator" className="my-1 h-px bg-divider" />
             }
             const isRadio = item.kind === "radio"
+            const isCheckbox = item.kind === "checkbox"
+            const hasCheckState = isRadio || isCheckbox
             return (
               <button
                 key={i}
                 type="button"
-                role={isRadio ? "menuitemradio" : "menuitem"}
-                aria-checked={isRadio ? item.checked : undefined}
+                role={isRadio ? "menuitemradio" : isCheckbox ? "menuitemcheckbox" : "menuitem"}
+                aria-checked={hasCheckState ? item.checked : undefined}
                 aria-disabled={item.kind === "action" && item.disabled ? true : undefined}
                 disabled={item.kind === "action" && item.disabled}
                 tabIndex={-1}
@@ -167,7 +173,7 @@ export function Menu({
                 className="flex h-[22px] w-full items-center justify-between gap-4 rounded-[--r-control] px-[10px] text-left text-xs text-text hover:bg-accent hover:text-white disabled:text-text-3 disabled:hover:bg-transparent disabled:hover:text-text-3"
               >
                 <span className="flex items-center gap-2">
-                  {isRadio && (
+                  {hasCheckState && (
                     <span className="flex w-3 justify-center">
                       {item.checked && <Check size={11} weight="bold" />}
                     </span>

@@ -67,7 +67,7 @@ export function Springboard() {
 
       <nav
         aria-label="Dock"
-        className="os-glass fixed inset-x-3 z-10 flex items-center justify-around rounded-[26px] py-3"
+        className="os-glass fixed inset-x-3 z-10 flex items-center justify-around rounded-[--r-chip] py-3"
         style={{ bottom: "max(24px, env(safe-area-inset-bottom))" }}
       >
         {PINNED.map((id) => (
