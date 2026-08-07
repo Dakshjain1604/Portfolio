@@ -6,6 +6,22 @@ import { MENUBAR_H, DOCK_H, TITLEBAR_H, type Rect, type WindowState, type OSMode
 
 const CASCADE_STEP = 28
 const CASCADE_MOD = 6
+const MODE_KEY = "os-mode"
+
+// Deliberately always "desktop" here, on both server and client, even
+// though this module only ever runs in the browser. The tempting
+// shortcut - read localStorage synchronously at store-creation time - was
+// tried and produced a real hydration mismatch: 'use client' components
+// still render on the server for the initial HTML, where localStorage
+// does not exist, so the server always sees "desktop" while the client's
+// first render would see the real saved value. DesktopShellInner itself
+// tolerates that fine (it gates on isDesktop resolving first regardless),
+// but ReaderReturnBar reads `mode` too and renders actual content only
+// when it is 'reader' - server null vs. client content is exactly a
+// hydration mismatch. The saved preference is restored instead via a
+// post-mount effect in DesktopShellInner, the same pattern already used
+// for isDesktop and the clock. See plan/17-reader-view.md.
+const initialMode: OSMode = "desktop"
 
 export function clampToViewport(rect: Rect): Rect {
   if (typeof window === "undefined") return rect
@@ -46,7 +62,7 @@ type OSStore = {
 export const useOS = create<OSStore>((set, get) => ({
   windows: {},
   stack: [],
-  mode: "desktop",
+  mode: initialMode,
   booted: false,
   wallpaper: "mesh",
 
@@ -158,7 +174,14 @@ export const useOS = create<OSStore>((set, get) => ({
     set({ windows: next })
   },
 
-  setMode: (mode) => set({ mode }),
+  setMode: (mode) => {
+    // Only 'desktop' and 'reader' are a persistent choice; missionControl
+    // is a transient overlay and is deliberately never written here.
+    if (mode === "desktop" || mode === "reader") {
+      localStorage.setItem(MODE_KEY, mode)
+    }
+    set({ mode })
+  },
   setBooted: (booted) => set({ booted }),
   setWallpaper: (wallpaper) => set({ wallpaper }),
 

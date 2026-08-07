@@ -85,12 +85,16 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow: hidden; /* the desktop does not scroll. windows scroll. */
+  /* Reader-friendly by default (auto), not hidden: this is what a no-JS
+     visitor and the brief pre-hydration window both get, and ReaderView
+     must be scrollable in both. Only flips to hidden once a desktop or
+     springboard shell branch actually mounts and paints over it - see
+     the effect in DesktopShell.tsx. */
+  overflow: auto;
 }
 
-/* reader mode restores document scrolling */
-body[data-mode="reader"] {
-  overflow: auto;
+body[data-mode="desktop"] {
+  overflow: hidden;
 }
 
 ::selection {

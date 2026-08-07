@@ -1,28 +1,18 @@
-import { profile } from "@/data/profile"
+import { ReaderView } from "@/components/reader/ReaderView"
+import { DesktopShell } from "@/components/shell/DesktopShell"
 
 /**
- * Foundation-phase placeholder. Replaced in Phase 6 (plan/17-reader-view.md) by:
- *
- *   export default function Page() {
- *     return (
- *       <>
- *         <ReaderView />
- *         <DesktopShell />
- *       </>
- *     )
- *   }
- *
- * Kept as a server component so the client/server boundary decided in
- * plan/00-architecture.md section 9 is never violated, even mid-build.
+ * Server component. ReaderView is real semantic HTML, always in the DOM,
+ * server-rendered - the SEO payload and the no-JS path. DesktopShell is
+ * the client-only OS simulation that paints over it once JS runs on a
+ * desktop-width viewport. See plan/00-architecture.md section 4 and
+ * plan/17-reader-view.md.
  */
 export default function Page() {
   return (
-    <main className="flex min-h-[100dvh] flex-col items-center justify-center gap-2 bg-void px-6 text-center text-text">
-      <p className="font-mono text-xs uppercase tracking-[0.14em] text-text-2">
-        Under construction
-      </p>
-      <h1 className="text-2xl font-semibold tracking-[-0.02em]">{profile.name}</h1>
-      <p className="max-w-[46ch] text-sm text-text-2">{profile.tagline}</p>
-    </main>
+    <>
+      <ReaderView />
+      <DesktopShell />
+    </>
   )
 }
