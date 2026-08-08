@@ -137,7 +137,7 @@ export function MissionControl() {
                     }}
                     className="group w-full cursor-pointer text-left"
                   >
-                    <div className="aspect-[4/3] w-full overflow-hidden rounded-[--r-window] border border-edge bg-panel shadow-[var(--shadow-focused)]">
+                    <div className="aspect-[4/3] w-full overflow-hidden rounded-(--r-window) border border-edge bg-panel shadow-[var(--shadow-focused)]">
                       <div aria-hidden className="pointer-events-none h-full w-full origin-top-left" style={{ transform: "scale(0.42)", width: "238%", height: "238%" }}>
                         <AppContent windowId={id} />
                       </div>

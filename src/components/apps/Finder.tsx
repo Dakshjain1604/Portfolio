@@ -50,7 +50,7 @@ export function Finder() {
   }
 
   return (
-    <div className="flex h-full @container">
+    <div className="os-plate flex h-full overflow-hidden rounded-(--r-float) @container">
       {/* @container query, not a viewport media query: this window can be
           resized narrower than 560/720px while the browser stays wide,
           and a viewport-based breakpoint would miss that entirely.
@@ -66,7 +66,7 @@ export function Finder() {
             type="button"
             aria-pressed={source === s.id}
             onClick={() => setSource(s.id)}
-            className="flex w-full items-center justify-between rounded-[--r-control] px-2 py-1.5 text-left text-xs"
+            className="flex w-full items-center justify-between rounded-(--r-control) px-2 py-1.5 text-left text-xs"
             style={{
               background: source === s.id ? "var(--os-accent-soft)" : "transparent",
               color: source === s.id ? "var(--os-text)" : "var(--os-text-2)",
@@ -102,7 +102,7 @@ export function Finder() {
               <button
                 type="button"
                 onClick={() => setQuery("")}
-                className="rounded-[--r-control] bg-panel-3 px-3 py-1.5 text-xs text-text"
+                className="rounded-(--r-control) bg-panel-3 px-3 py-1.5 text-xs text-text"
               >
                 Clear
               </button>
@@ -118,7 +118,7 @@ export function Finder() {
                   aria-selected={selected?.id === p.id}
                   onClick={() => setSelectedId(p.id)}
                   onDoubleClick={() => window.open(p.live ?? p.github, "_blank", "noopener,noreferrer")}
-                  className="flex w-full items-center gap-3 rounded-[--r-control] px-2 py-1.5 text-left"
+                  className="flex w-full items-center gap-3 rounded-(--r-control) px-2 py-1.5 text-left"
                   style={{ background: selected?.id === p.id ? "var(--os-accent-soft)" : "transparent" }}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -138,7 +138,7 @@ export function Finder() {
       {selected && (
         <aside aria-live="polite" className="hidden w-[280px] shrink-0 overflow-auto border-l border-divider bg-panel-2 p-4 @[720px]:block">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={selected.image} alt={`${selected.title} screenshot`} className="mb-3 w-full rounded-[--r-card] object-cover" />
+          <img src={selected.image} alt={`${selected.title} screenshot`} className="mb-3 w-full rounded-(--r-card) object-cover" />
           <h3 className="mb-1 text-sm font-medium text-text">{selected.title}</h3>
           <p className="mb-3 max-w-[46ch] text-xs text-text-2">{selected.description}</p>
           <div className="mb-4 flex flex-wrap gap-1.5">
@@ -153,7 +153,7 @@ export function Finder() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`${selected.title} source on GitHub, opens in a new tab`}
-                className="flex items-center gap-1.5 rounded-[--r-control] bg-panel-3 px-2.5 py-1.5 text-xs text-text"
+                className="flex items-center gap-1.5 rounded-(--r-control) bg-panel-3 px-2.5 py-1.5 text-xs text-text"
               >
                 <GithubLogo size={13} weight="light" />
                 Source
@@ -165,7 +165,7 @@ export function Finder() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`${selected.title} live demo, opens in a new tab`}
-                className="flex items-center gap-1.5 rounded-[--r-control] bg-accent-soft px-2.5 py-1.5 text-xs text-accent"
+                className="flex items-center gap-1.5 rounded-(--r-control) bg-accent-soft px-2.5 py-1.5 text-xs text-accent"
               >
                 <ArrowSquareOut size={13} weight="light" />
                 Live

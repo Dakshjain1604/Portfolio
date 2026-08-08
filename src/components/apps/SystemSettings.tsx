@@ -103,7 +103,7 @@ function AppearancePane() {
     <div className="space-y-5">
       <div>
         <h4 className="mb-1 px-1 text-[11px] font-medium uppercase tracking-wide text-text-2">Accent color</h4>
-        <div role="radiogroup" aria-label="Accent color" className="flex items-center gap-3 rounded-[--r-card] bg-panel-2 p-4">
+        <div role="radiogroup" aria-label="Accent color" className="flex items-center gap-3 rounded-(--r-card) bg-panel-2 p-4">
           {(Object.keys(ACCENT_TINTS) as AccentTint[]).map((tint) => {
             const selected = accentTint === tint
             return (
@@ -131,7 +131,7 @@ function AppearancePane() {
 
       <div>
         <h4 className="mb-1 px-1 text-[11px] font-medium uppercase tracking-wide text-text-2">Glass</h4>
-        <div className="flex items-center justify-between gap-4 rounded-[--r-card] bg-panel-2 px-4 py-3">
+        <div className="flex items-center justify-between gap-4 rounded-(--r-card) bg-panel-2 px-4 py-3">
           <div>
             <p className="text-[13px] text-text">Clear</p>
             <p className="text-xs text-text-2">Maximizes transparency across windows, menus, and the Dock.</p>
@@ -164,14 +164,14 @@ export function SystemSettings() {
   const cloudTools = group?.id === "cloud" ? group.skills.filter((s) => !CLOUD_INFRA.has(s.name)) : []
 
   return (
-    <div className="flex h-full">
+    <div className="os-plate flex h-full overflow-hidden rounded-(--r-float)">
       <nav aria-label="Settings categories" className="w-[196px] shrink-0 border-r border-divider bg-panel-2 p-2">
         <button
           type="button"
           aria-pressed={groupId === APPEARANCE_ID}
           aria-controls="settings-pane"
           onClick={() => setGroupId(APPEARANCE_ID)}
-          className="flex w-full items-center gap-2.5 rounded-[--r-control] px-2 py-2 text-left text-xs"
+          className="flex w-full items-center gap-2.5 rounded-(--r-control) px-2 py-2 text-left text-xs"
           style={{
             background: groupId === APPEARANCE_ID ? "var(--os-accent-soft)" : "transparent",
             color: groupId === APPEARANCE_ID ? "var(--os-text)" : "var(--os-text-2)",
@@ -190,7 +190,7 @@ export function SystemSettings() {
               aria-pressed={groupId === g.id}
               aria-controls="settings-pane"
               onClick={() => setGroupId(g.id)}
-              className="flex w-full items-center gap-2.5 rounded-[--r-control] px-2 py-2 text-left text-xs"
+              className="flex w-full items-center gap-2.5 rounded-(--r-control) px-2 py-2 text-left text-xs"
               style={{
                 background: groupId === g.id ? "var(--os-accent-soft)" : "transparent",
                 color: groupId === g.id ? "var(--os-text)" : "var(--os-text-2)",
@@ -217,7 +217,7 @@ export function SystemSettings() {
                     <h4 className="mb-1 px-1 text-[11px] font-medium uppercase tracking-wide text-text-2">
                       {caption}
                     </h4>
-                    <ul className="divide-y divide-divider rounded-[--r-card] bg-panel-2">
+                    <ul className="divide-y divide-divider rounded-(--r-card) bg-panel-2">
                       {items.map((s) => (
                         <SkillRow key={s.name} skill={s} />
                       ))}
@@ -226,7 +226,7 @@ export function SystemSettings() {
                 ))}
               </div>
             ) : (
-              <ul className="divide-y divide-divider rounded-[--r-card] bg-panel-2">
+              <ul className="divide-y divide-divider rounded-(--r-card) bg-panel-2">
                 {group.skills.map((s) => (
                   <SkillRow key={s.name} skill={s} />
                 ))}

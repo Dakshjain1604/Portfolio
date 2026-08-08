@@ -9,7 +9,7 @@ export function Notes() {
   const selected = experience.find((r) => r.id === selectedId) ?? experience[0]
 
   return (
-    <div className="flex h-full">
+    <div className="os-plate flex h-full overflow-hidden rounded-(--r-float)">
       <ul role="listbox" aria-label="Roles" className="w-[260px] shrink-0 overflow-auto border-r border-divider bg-panel-2 p-1">
         {experience.map((role) => (
           <li key={role.id}>
@@ -18,7 +18,7 @@ export function Notes() {
               role="option"
               aria-selected={selectedId === role.id}
               onClick={() => setSelectedId(role.id)}
-              className="flex h-14 w-full flex-col justify-center gap-0.5 rounded-[--r-control] px-3 text-left"
+              className="flex h-14 w-full flex-col justify-center gap-0.5 rounded-(--r-control) px-3 text-left"
               style={{ background: selectedId === role.id ? "var(--os-accent-soft)" : "transparent" }}
             >
               <span className="truncate text-xs font-medium text-text">{role.title}</span>

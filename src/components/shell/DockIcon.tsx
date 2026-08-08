@@ -84,7 +84,7 @@ export function DockIcon({ id, mouseX }: { id: AppId; mouseX: MotionValue<number
       {showTooltip && (
         <div
           role="tooltip"
-          className="os-glass pointer-events-none absolute bottom-full mb-2 whitespace-nowrap rounded-[--r-control] px-2 py-1 text-xs text-text"
+          className="os-glass pointer-events-none absolute bottom-full mb-2 whitespace-nowrap rounded-(--r-control) px-2 py-1 text-xs text-text"
         >
           {meta.title}
         </div>

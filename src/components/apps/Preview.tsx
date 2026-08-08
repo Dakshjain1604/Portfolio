@@ -9,30 +9,32 @@ import { EmptyState } from "@/components/primitives/EmptyState"
 function MissingResume() {
   const open = useOS((s) => s.open)
   return (
-    <EmptyState
-      icon={FileX}
-      title="Resume not available"
-      body="The PDF is not published yet. Reach out and Daksh will send it directly."
-      actions={
-        <>
-          <button
-            type="button"
-            onClick={() => open("mail")}
-            className="rounded-[--r-control] bg-accent-soft px-3 py-1.5 text-xs text-accent"
-          >
-            Contact
-          </button>
-          <a
-            href={socials.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-[--r-control] bg-panel-3 px-3 py-1.5 text-xs text-text"
-          >
-            View GitHub
-          </a>
-        </>
-      }
-    />
+    <div className="os-plate h-full overflow-hidden rounded-(--r-float)">
+      <EmptyState
+        icon={FileX}
+        title="Resume not available"
+        body="The PDF is not published yet. Reach out and Daksh will send it directly."
+        actions={
+          <>
+            <button
+              type="button"
+              onClick={() => open("mail")}
+              className="rounded-(--r-control) bg-accent-soft px-3 py-1.5 text-xs text-accent"
+            >
+              Contact
+            </button>
+            <a
+              href={socials.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-(--r-control) bg-panel-3 px-3 py-1.5 text-xs text-text"
+            >
+              View GitHub
+            </a>
+          </>
+        }
+      />
+    </div>
   )
 }
 
@@ -48,7 +50,7 @@ export function Preview() {
   }, [])
 
   return (
-    <div className="flex h-full flex-col" style={{ background: "#141416" }}>
+    <div className="flex h-full flex-col overflow-hidden rounded-(--r-float)" style={{ background: "#141416" }}>
       <div className="flex h-9 shrink-0 items-center justify-between border-b border-divider px-3">
         <span className="truncate text-xs text-text-2">DakshJain_Resume.pdf</span>
         <div className="flex gap-3">

@@ -38,12 +38,12 @@ export function Mail() {
   }
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="os-plate flex h-full flex-col overflow-auto rounded-(--r-float)">
       <form onSubmit={onSubmit} className="flex flex-1 flex-col gap-3 p-4">
         <div className="space-y-2">
           <div>
             <label className="mb-1 block text-[11px] text-text-2">To</label>
-            <div aria-readonly className="rounded-[--r-control] bg-panel-2 px-2.5 py-1.5 text-xs text-text">
+            <div aria-readonly className="rounded-(--r-control) bg-panel-2 px-2.5 py-1.5 text-xs text-text">
               {profile.name} <span className="text-text-2">&lt;{socials.email}&gt;</span>
             </div>
           </div>
@@ -59,7 +59,7 @@ export function Mail() {
               placeholder="you@company.com"
               aria-invalid={!!errors.from}
               aria-describedby={errors.from ? "mail-from-error" : undefined}
-              className="w-full rounded-[--r-control] bg-panel-2 px-2.5 py-1.5 text-xs text-text outline-none focus:border-accent"
+              className="w-full rounded-(--r-control) bg-panel-2 px-2.5 py-1.5 text-xs text-text outline-none focus:border-accent"
               style={{ border: "1px solid var(--os-edge)" }}
             />
             {errors.from && (
@@ -77,7 +77,7 @@ export function Mail() {
               value={subject}
               onFocus={(e) => e.target.select()}
               onChange={(e) => setSubject(e.target.value)}
-              className="w-full rounded-[--r-control] bg-panel-2 px-2.5 py-1.5 text-xs text-text outline-none"
+              className="w-full rounded-(--r-control) bg-panel-2 px-2.5 py-1.5 text-xs text-text outline-none"
               style={{ border: "1px solid var(--os-edge)" }}
             />
           </div>
@@ -93,7 +93,7 @@ export function Mail() {
             onChange={(e) => setBody(e.target.value)}
             aria-invalid={!!errors.body}
             aria-describedby={errors.body ? "mail-body-error" : undefined}
-            className="h-full min-h-[140px] w-full resize-none rounded-[--r-control] bg-panel-2 p-2.5 text-xs text-text outline-none"
+            className="h-full min-h-[140px] w-full resize-none rounded-(--r-control) bg-panel-2 p-2.5 text-xs text-text outline-none"
             style={{ border: "1px solid var(--os-edge)" }}
           />
           {errors.body && (
@@ -107,7 +107,7 @@ export function Mail() {
           <button
             type="submit"
             aria-describedby="mail-send-hint"
-            className="group flex items-center gap-1.5 rounded-[--r-chip] bg-accent px-4 py-1.5 text-xs text-white"
+            className="group flex items-center gap-1.5 rounded-(--r-chip) bg-accent px-4 py-1.5 text-xs text-white"
           >
             Send
             <PaperPlaneTilt size={13} weight="light" className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />

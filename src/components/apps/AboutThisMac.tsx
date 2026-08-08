@@ -9,7 +9,7 @@ export function AboutThisMac() {
   const open = useOS((s) => s.open)
 
   return (
-    <article className="h-full overflow-auto p-8">
+    <article className="os-plate h-full overflow-auto rounded-(--r-float) p-8">
       <div className="flex flex-col items-center gap-4 min-[520px]:flex-row min-[520px]:items-start min-[520px]:gap-7">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={profile.avatar} alt={profile.name} className="h-[100px] w-[100px] shrink-0 rounded-full object-cover min-[520px]:h-[120px] min-[520px]:w-[120px]" />
@@ -64,14 +64,14 @@ export function AboutThisMac() {
         <button
           type="button"
           onClick={() => open("activity")}
-          className="rounded-[--r-control] bg-panel-3 px-3 py-1.5 text-xs text-text"
+          className="rounded-(--r-control) bg-panel-3 px-3 py-1.5 text-xs text-text"
         >
           System Report
         </button>
         <button
           type="button"
           onClick={() => open("settings")}
-          className="rounded-[--r-control] bg-panel-3 px-3 py-1.5 text-xs text-text"
+          className="rounded-(--r-control) bg-panel-3 px-3 py-1.5 text-xs text-text"
         >
           Skills
         </button>
@@ -81,7 +81,7 @@ export function AboutThisMac() {
             e.preventDefault()
             open("preview")
           }}
-          className="rounded-[--r-control] bg-accent-soft px-3 py-1.5 text-xs text-accent"
+          className="rounded-(--r-control) bg-accent-soft px-3 py-1.5 text-xs text-accent"
         >
           Resume
         </a>

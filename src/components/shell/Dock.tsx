@@ -52,7 +52,7 @@ export function Dock() {
       onPointerLeave={() => mouseX.set(Infinity)}
     >
       <motion.ul
-        className="os-glass flex items-end gap-1 rounded-[--r-chip] px-2 pb-1 pt-2"
+        className="os-glass flex items-end gap-1 rounded-(--r-chip) px-2 pb-1 pt-2"
         initial={reducedMotion ? false : "hidden"}
         animate={reducedMotion || booted ? "show" : "hidden"}
         variants={{ hidden: {}, show: { transition: { staggerChildren: 0.04 } } }}

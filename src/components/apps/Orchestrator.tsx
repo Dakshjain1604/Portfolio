@@ -27,7 +27,7 @@ export function Orchestrator({ windowId }: { windowId: AppId }) {
   const active = AGENTS.find((a) => a.id === selected) ?? AGENTS[0]
 
   return (
-    <div className="relative h-full" style={{ background: "#0A0A0D" }}>
+    <div className="relative h-full overflow-hidden rounded-(--r-float)" style={{ background: "#0A0A0D" }}>
       {visible && (
         <Scene selected={selected} onSelect={setSelected} focused={focused} reducedMotion={reducedMotion} />
       )}

@@ -17,15 +17,20 @@ const EDGE_CURSOR: Record<Edge, string> = {
   sw: "nesw-resize",
 }
 
+// Corner boxes are sized to --r-window (20px) so they cover the whole
+// curve, and the edge handles start exactly where the corners end. At the
+// old 14px sizing the two left a 4px dead strip on each side that looked
+// like a broken hit target. The frame clips overflow, so the negative
+// offsets only widen the grab area inward.
 const EDGE_STYLE: Record<Edge, React.CSSProperties> = {
-  n: { top: -3, left: 14, right: 14, height: 6 },
-  s: { bottom: -3, left: 14, right: 14, height: 6 },
-  e: { right: -3, top: 14, bottom: 14, width: 6 },
-  w: { left: -3, top: 14, bottom: 14, width: 6 },
-  nw: { top: -4, left: -4, width: 14, height: 14 },
-  ne: { top: -4, right: -4, width: 14, height: 14 },
-  sw: { bottom: -4, left: -4, width: 14, height: 14 },
-  se: { bottom: -4, right: -4, width: 14, height: 14 },
+  n: { top: -3, left: 18, right: 18, height: 6 },
+  s: { bottom: -3, left: 18, right: 18, height: 6 },
+  e: { right: -3, top: 18, bottom: 18, width: 6 },
+  w: { left: -3, top: 18, bottom: 18, width: 6 },
+  nw: { top: -2, left: -2, width: 20, height: 20 },
+  ne: { top: -2, right: -2, width: 20, height: 20 },
+  sw: { bottom: -2, left: -2, width: 20, height: 20 },
+  se: { bottom: -2, right: -2, width: 20, height: 20 },
 }
 
 const EDGES: Edge[] = ["n", "s", "e", "w", "nw", "ne", "sw", "se"]

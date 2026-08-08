@@ -27,10 +27,18 @@ export function Wallpaper() {
         <div
           className="absolute inset-0"
           style={{
+            // Phase 20: brightened hard. A glass material only exists
+            // relative to what is behind it, and the previous mesh sat at
+            // .25-.35 alpha over a near-black void, so every window's
+            // blur, sheen and rim were sampling almost nothing. These are
+            // the same three hues, pushed to a luminance where the glass
+            // actually has something to refract. Still dark enough that
+            // white chrome text clears 4.5:1 everywhere.
             backgroundImage: [
-              "radial-gradient(ellipse 900px 700px at 15% 10%, rgb(45 90 85 / .35), transparent 60%)",
-              "radial-gradient(ellipse 800px 900px at 85% 30%, rgb(60 55 90 / .30), transparent 60%)",
-              "radial-gradient(ellipse 1000px 800px at 50% 100%, rgb(70 70 65 / .25), transparent 60%)",
+              "radial-gradient(ellipse 1100px 850px at 12% 4%, rgb(28 118 126 / .55), transparent 62%)",
+              "radial-gradient(ellipse 950px 1000px at 88% 22%, rgb(58 74 168 / .5), transparent 62%)",
+              "radial-gradient(ellipse 900px 700px at 72% 92%, rgb(150 92 58 / .34), transparent 60%)",
+              "radial-gradient(ellipse 1200px 900px at 34% 108%, rgb(40 96 92 / .42), transparent 62%)",
             ].join(", "),
           }}
         />
@@ -47,7 +55,7 @@ export function Wallpaper() {
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
-        style={{ boxShadow: "inset 0 0 200px rgb(0 0 0 / .35)" }}
+        style={{ boxShadow: "inset 0 0 260px rgb(0 0 0 / .3)" }}
       />
     </div>
   )

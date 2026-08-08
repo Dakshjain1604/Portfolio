@@ -142,8 +142,8 @@ export function MenuBar() {
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-[1000] flex items-center justify-between rounded-none px-2 transition-[background,backdrop-filter] duration-200",
-        menuBarSolid ? "os-glass" : "os-glass-clear"
+        "fixed inset-x-0 top-0 z-[1000] flex items-center justify-between rounded-none border-x-0 border-t-0 px-2 transition-[background,backdrop-filter] duration-200",
+        menuBarSolid ? "os-glass" : "os-glass-none"
       )}
       style={{
         height: MENUBAR_H,
@@ -195,7 +195,7 @@ export function MenuBar() {
           type="button"
           onClick={() => setMode("reader")}
           aria-label="Switch to Reader view"
-          className="flex items-center gap-1 rounded-[--r-control] px-2 py-0.5 text-xs text-text-2 hover:bg-panel-3 hover:text-text"
+          className="flex items-center gap-1 rounded-(--r-control) px-2 py-0.5 text-xs text-text-2 hover:bg-panel-3 hover:text-text"
         >
           <BookOpen size={13} weight="light" />
           Reader view

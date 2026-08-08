@@ -252,7 +252,7 @@ export function Terminal() {
 
   return (
     <div
-      className="h-full overflow-auto p-3 font-mono text-[13px] leading-[1.55]"
+      className="h-full overflow-auto rounded-(--r-float) p-3 font-mono text-[13px] leading-[1.55]"
       style={{ background: "#0E0E11" }}
       onClick={() => inputRef.current?.focus()}
       ref={scrollRef}

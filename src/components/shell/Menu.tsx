@@ -129,7 +129,7 @@ export function Menu({
           }
         }}
         onMouseEnter={() => onRequestNeighbor && isOpen && onOpenChange(true)}
-        className={triggerClassName ?? "rounded-[--r-control] px-2 py-1 text-xs text-text hover:bg-panel-3"}
+        className={triggerClassName ?? "rounded-(--r-control) px-2 py-1 text-xs text-text hover:bg-panel-3"}
       >
         {label}
       </button>
@@ -146,7 +146,7 @@ export function Menu({
           transition={{ duration: 0.14, ease: [0.32, 0.72, 0, 1] }}
           style={{ transformOrigin: align === "left" ? "top left" : "top right" }}
           className={cn(
-            "os-glass absolute top-full z-[1100] mt-1 min-w-[200px] rounded-[--r-card] p-1",
+            "os-glass absolute top-full z-[1100] mt-1 min-w-[200px] rounded-(--r-card) p-1",
             align === "left" ? "left-0" : "right-0"
           )}
         >
@@ -170,7 +170,7 @@ export function Menu({
                   item.onSelect()
                   closeAndReturnFocus()
                 }}
-                className="flex h-[22px] w-full items-center justify-between gap-4 rounded-[--r-control] px-[10px] text-left text-xs text-text hover:bg-accent hover:text-white disabled:text-text-3 disabled:hover:bg-transparent disabled:hover:text-text-3"
+                className="flex h-[22px] w-full items-center justify-between gap-4 rounded-(--r-control) px-[10px] text-left text-xs text-text hover:bg-accent hover:text-white disabled:text-text-3 disabled:hover:bg-transparent disabled:hover:text-text-3"
               >
                 <span className="flex items-center gap-2">
                   {hasCheckState && (

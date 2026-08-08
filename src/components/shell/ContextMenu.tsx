@@ -93,7 +93,7 @@ export function ContextMenu({ state, onClose }: { state: ContextMenuState; onClo
         top: flip.y ? undefined : state.y,
         bottom: flip.y ? window.innerHeight - state.y : undefined,
       }}
-      className="os-glass fixed z-[1100] min-w-[200px] rounded-[--r-card] p-1"
+      className="os-glass fixed z-[1100] min-w-[200px] rounded-(--r-card) p-1"
       onKeyDown={(e) => {
         const focusables = Array.from(
           panelRef.current?.querySelectorAll<HTMLElement>('[role="menuitem"]:not([aria-disabled="true"])') ?? []
@@ -123,7 +123,7 @@ export function ContextMenu({ state, onClose }: { state: ContextMenuState; onClo
               item.onSelect()
               onClose()
             }}
-            className="flex h-[22px] w-full items-center rounded-[--r-control] px-[10px] text-left text-xs text-text hover:bg-accent hover:text-white disabled:text-text-3 disabled:hover:bg-transparent disabled:hover:text-text-3"
+            className="flex h-[22px] w-full items-center rounded-(--r-control) px-[10px] text-left text-xs text-text hover:bg-accent hover:text-white disabled:text-text-3 disabled:hover:bg-transparent disabled:hover:text-text-3"
           >
             {item.label}
           </button>

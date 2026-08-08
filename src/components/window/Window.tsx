@@ -1,11 +1,12 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { motion } from "framer-motion"
 import { apps, type AppId } from "@/data/apps"
 import { useOS } from "@/os/store"
 import { useWindowDrag } from "@/os/useWindowDrag"
 import { useWindowResize } from "@/os/useWindowResize"
+import { useGlassPointer } from "@/os/useGlassPointer"
 import { useReducedMotion } from "@/os/ReducedMotionContext"
 import { getDockIconCenter } from "@/os/dockIconRects"
 import { appRegistry } from "@/components/apps/registry"
@@ -30,6 +31,14 @@ type WindowProps = { id: AppId }
  * rounded clipping) plus the discrete genie open/close/minimize transition
  * via `initial`/`animate`/`exit`, using scale + opacity rather than the
  * spec's compound rotateX so it never collides with the outer's tilt.
+ *
+ * Phase 20B: the inner element is now real glass rather than an opaque
+ * panel, and the app's content sits on a separate near-opaque plate
+ * floating inside it - Tahoe's layered window, and the reason body copy
+ * stays legible over a bright wallpaper. The title bar keeps no material
+ * of its own because Apple's rule is that glass never samples glass; it
+ * is simply a transparent region of the frame with a scroll edge blur
+ * below it. See plan/20-tahoe-refinement.md.
  */
 export function Window({ id }: WindowProps) {
   const meta = apps[id]
@@ -49,6 +58,9 @@ export function Window({ id }: WindowProps) {
 
   const drag = useWindowDrag(id, rect, reducedMotion)
   const resize = useWindowResize(id, rect, meta.minSize, drag.x, drag.y)
+
+  const frameRef = useRef<HTMLDivElement>(null)
+  useGlassPointer(frameRef)
 
   // will-change is set only while actively dragging or resizing, per
   // plan/02-window-manager.md section 6: leaving it on for nine persistent
@@ -74,6 +86,14 @@ export function Window({ id }: WindowProps) {
   const depth = reducedMotion ? 0 : stackIndex * 3
   const shadow = focused ? "var(--shadow-focused)" : "var(--shadow-rest)"
   const shadowTransition = "box-shadow 140ms cubic-bezier(0.32, 0.72, 0, 1)"
+
+  // Unfocused windows pull their blur back rather than only dimming the
+  // title. It is Tahoe's real depth cue and it doubles as the performance
+  // lever: with nine windows open only the focused one pays for a 30px
+  // backdrop blur. Written as an inline pair rather than in globals.css
+  // because React emits both keys itself, so the Lightning CSS prefix
+  // dedup that bit phase 19 cannot apply here.
+  const blur = focused ? undefined : "blur(12px) saturate(140%)"
 
   // boxShadow deliberately does NOT go through framer's `animate` - framer
   // cannot interpolate a box-shadow value that is a var(...) reference (it
@@ -114,12 +134,14 @@ export function Window({ id }: WindowProps) {
       transition={{ duration: 0.14, ease: [0.32, 0.72, 0, 1] }}
     >
       <motion.div
-        className="h-full w-full overflow-hidden rounded-[--r-window] bg-panel"
+        ref={frameRef}
+        className="os-glass h-full w-full overflow-hidden rounded-(--r-window)"
         style={{
           transformOrigin: genieOrigin,
-          border: "1px solid var(--os-edge)",
-          boxShadow: shadow,
+          boxShadow: `inset 0 1px 0 var(--os-edge-inner), ${shadow}`,
           transition: shadowTransition,
+          backdropFilter: blur,
+          WebkitBackdropFilter: blur,
         }}
         initial={genieHidden}
         animate={minimized ? genieHidden : genieRest}
@@ -131,13 +153,15 @@ export function Window({ id }: WindowProps) {
           className="flex h-full flex-col"
           style={{ pointerEvents: minimized ? "none" : "auto" }}
         >
+          {/* No material of its own: the frame's glass shows straight
+              through, which is what stops two blurs stacking here. */}
           <header
             onPointerDown={(e) => {
               setInteracting(true)
               drag.onPointerDown(e)
             }}
-            className="os-glass relative flex h-[38px] shrink-0 items-center justify-center px-3"
-            style={{ cursor: "grab", borderRadius: 0 }}
+            className="relative flex h-[38px] shrink-0 items-center justify-center px-3"
+            style={{ cursor: "grab" }}
           >
             <div className="absolute left-3">
               <TrafficLights
@@ -156,11 +180,22 @@ export function Window({ id }: WindowProps) {
             </h2>
           </header>
 
-          <div className="flex-1 overflow-auto">
+          {/* The gutter is what makes the plate read as floating inside
+              the frame, and --r-inset is the same value --r-float is
+              derived from, so the two curves stay concentric at any
+              --r-window. Apps own their own surface tier: content apps
+              use .os-plate, while Terminal, Preview and Orchestrator
+              keep their deliberately opaque backgrounds. */}
+          <div className="relative min-h-0 flex-1 px-(--r-inset) pb-(--r-inset)">
             {(() => {
               const AppContent = appRegistry[id]
               return <AppContent windowId={id} />
             })()}
+            <div
+              aria-hidden
+              className="os-scroll-edge os-scroll-edge-top absolute top-0 h-6 rounded-t-(--r-float)"
+              style={{ left: "var(--r-inset)", right: "var(--r-inset)" }}
+            />
           </div>
         </div>
 

@@ -61,7 +61,7 @@ function intensity(count: number) {
 
 function Skeleton() {
   return (
-    <div className="animate-pulse space-y-4 p-5" aria-busy="true">
+    <div className="os-plate h-full animate-pulse space-y-4 overflow-hidden rounded-(--r-float) p-5" aria-busy="true">
       <div className="flex gap-4">
         {[0, 1, 2].map((i) => (
           <div key={i} className="h-10 w-24 rounded bg-panel-3" />
@@ -88,23 +88,25 @@ export function ActivityMonitor() {
 
   if ("error" in data) {
     return (
-      <EmptyState
-        icon={CloudSlash}
-        title="GitHub data unavailable"
-        body="The connection failed. Repository activity is on GitHub."
-        live
-        actions={
-          <a
-            href={socials.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1.5 rounded-[--r-control] bg-panel-3 px-3 py-1.5 text-xs text-text"
-          >
-            <GithubLogo size={13} weight="light" />
-            View on GitHub
-          </a>
-        }
-      />
+      <div className="os-plate h-full overflow-hidden rounded-(--r-float)">
+        <EmptyState
+          icon={CloudSlash}
+          title="GitHub data unavailable"
+          body="The connection failed. Repository activity is on GitHub."
+          live
+          actions={
+            <a
+              href={socials.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 rounded-(--r-control) bg-panel-3 px-3 py-1.5 text-xs text-text"
+            >
+              <GithubLogo size={13} weight="light" />
+              View on GitHub
+            </a>
+          }
+        />
+      </div>
     )
   }
 
@@ -112,7 +114,7 @@ export function ActivityMonitor() {
   const totalLangCount = data.languages.reduce((a, l) => a + l.count, 0)
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="os-plate flex h-full flex-col overflow-hidden rounded-(--r-float)">
       <div role="tablist" className="flex gap-1 border-b border-divider px-3 pt-2">
         {(["contributions", "repositories", "languages"] as const).map((t) => (
           <button
@@ -128,7 +130,7 @@ export function ActivityMonitor() {
               if (e.key === "ArrowRight") setTab(order[(idx + 1) % 3])
               if (e.key === "ArrowLeft") setTab(order[(idx - 1 + 3) % 3])
             }}
-            className="rounded-t-[--r-control] px-3 py-1.5 text-xs capitalize"
+            className="rounded-t-(--r-control) px-3 py-1.5 text-xs capitalize"
             style={{
               color: tab === t ? "var(--os-text)" : "var(--os-text-2)",
               borderBottom: tab === t ? "2px solid var(--os-accent)" : "2px solid transparent",
@@ -190,7 +192,7 @@ export function ActivityMonitor() {
                   href={repo.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-between gap-3 rounded-[--r-control] px-2 py-2 hover:bg-panel-3"
+                  className="flex items-center justify-between gap-3 rounded-(--r-control) px-2 py-2 hover:bg-panel-3"
                 >
                   <div className="min-w-0">
                     <p className="truncate text-xs font-medium text-text">{repo.name}</p>
@@ -220,7 +222,7 @@ export function ActivityMonitor() {
             <div
               role="img"
               aria-label={data.languages.map((l) => `${l.name} ${Math.round((l.count / totalLangCount) * 100)}%`).join(", ")}
-              className="mb-4 flex h-2 overflow-hidden rounded-[--r-chip]"
+              className="mb-4 flex h-2 overflow-hidden rounded-(--r-chip)"
             >
               {data.languages.map((l, i) => (
                 <div

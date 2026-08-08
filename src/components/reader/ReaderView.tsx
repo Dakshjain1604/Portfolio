@@ -17,7 +17,7 @@ export function ReaderView() {
     <div id="reader" className="relative min-h-[100dvh] bg-void">
       <a
         href="#main"
-        className="sr-only rounded-[--r-control] bg-accent px-3 py-2 text-xs text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50"
+        className="sr-only rounded-(--r-control) bg-accent px-3 py-2 text-xs text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50"
       >
         Skip to content
       </a>
@@ -114,7 +114,7 @@ export function ReaderView() {
                   alt={`${p.title} screenshot`}
                   width={1200}
                   height={750}
-                  className="mb-3 w-full rounded-[--r-card] object-cover"
+                  className="mb-3 w-full rounded-(--r-card) object-cover"
                 />
                 <h3 className="text-lg font-medium text-text">{p.title}</h3>
                 <p className="text-sm text-text-2">{p.outcome}</p>

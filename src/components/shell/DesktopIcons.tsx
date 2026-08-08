@@ -51,7 +51,7 @@ export function DesktopIcons() {
             type="button"
             onClick={() => setSelected(i)}
             onDoubleClick={() => open(item.opens)}
-            className="flex w-[76px] flex-col items-center gap-1 rounded-[--r-control] p-1.5"
+            className="flex w-[76px] flex-col items-center gap-1 rounded-(--r-control) p-1.5"
             style={{ background: selected === i ? "var(--os-accent-soft)" : "transparent" }}
           >
             <item.icon size={32} weight="light" color="white" />
