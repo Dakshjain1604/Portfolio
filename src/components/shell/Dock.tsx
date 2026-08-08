@@ -1,11 +1,14 @@
 "use client"
 
 import { useRef } from "react"
+
 import { motion, useMotionValue } from "framer-motion"
 import { appOrder, dockLinks, type DockLink } from "@/data/apps"
 import { useOS } from "@/os/store"
 import { useReducedMotion } from "@/os/ReducedMotionContext"
 import { useDockMagnify, DOCK_ICON_VARIANTS } from "@/os/useDockMagnify"
+import { squircleBase, SQUIRCLE_GLASS, SQUIRCLE_GLYPH } from "@/components/primitives/Squircle"
+import { useGlassPointer } from "@/os/useGlassPointer"
 import { DockIcon } from "./DockIcon"
 
 function DockExternalIcon({ link, mouseX }: { link: DockLink; mouseX: ReturnType<typeof useMotionValue<number>> }) {
@@ -26,14 +29,12 @@ function DockExternalIcon({ link, mouseX }: { link: DockLink; mouseX: ReturnType
           height: size,
           translateY: lift,
           translateZ: depth,
-          borderRadius: "22.5%",
-          background:
-            "linear-gradient(135deg, rgb(255 255 255 / .18) 0%, transparent 32%, transparent 68%, rgb(255 255 255 / .06) 100%), linear-gradient(135deg, #3a3a3e, #232326)",
-          boxShadow: "inset 0 1px 0 rgb(255 255 255 / .24), inset 0 -1px 0 rgb(0 0 0 / .12)",
+          ...squircleBase(["#3a3a3e", "#232326"]),
         }}
-        className="flex shrink-0 items-center justify-center focus-visible:outline-offset-4"
+        className="relative flex shrink-0 items-center justify-center focus-visible:outline-offset-4"
       >
-        <link.icon size={REST * 0.5} weight="light" color="white" />
+        <span aria-hidden className="pointer-events-none absolute inset-0" style={SQUIRCLE_GLASS} />
+        <link.icon size={REST * 0.5} weight="light" color="white" style={SQUIRCLE_GLYPH} />
       </motion.a>
     </motion.li>
   )
@@ -43,6 +44,8 @@ export function Dock() {
   const mouseX = useMotionValue(Infinity)
   const booted = useOS((s) => s.booted)
   const reducedMotion = useReducedMotion()
+  const railRef = useRef<HTMLUListElement>(null)
+  useGlassPointer(railRef)
 
   return (
     <nav
@@ -52,7 +55,11 @@ export function Dock() {
       onPointerLeave={() => mouseX.set(Infinity)}
     >
       <motion.ul
-        className="os-glass flex items-end gap-1 rounded-(--r-chip) px-2 pb-1 pt-2"
+        ref={railRef}
+        // Icons sit --r-inset in from the rail on every side, so the rail's
+        // own curve stays concentric with theirs no matter how far
+        // magnification pushes them.
+        className="os-glass flex items-end gap-1.5 rounded-(--r-chip) px-(--r-inset) pb-1.5 pt-2.5"
         initial={reducedMotion ? false : "hidden"}
         animate={reducedMotion || booted ? "show" : "hidden"}
         variants={{ hidden: {}, show: { transition: { staggerChildren: 0.04 } } }}

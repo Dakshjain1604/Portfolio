@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion"
 import { appOrder, apps, dockLinks, type AppId } from "@/data/apps"
 import { useOS } from "@/os/store"
-import { Squircle } from "@/components/primitives/Squircle"
+import { Squircle, squircleBase, SQUIRCLE_GLASS, SQUIRCLE_GLYPH } from "@/components/primitives/Squircle"
 import { Wallpaper } from "@/components/shell/Wallpaper"
 import { StatusBar } from "./StatusBar"
 import { AppSheet } from "./AppSheet"
@@ -32,8 +32,8 @@ export function Springboard() {
           >
             <Squircle icon={apps[id].icon} tint={apps[id].tint} size={62} />
             <span
-              className="rounded px-1 text-center text-[11px] leading-tight text-white"
-              style={{ background: "rgb(0 0 0 / .3)" }}
+              className="rounded-(--r-pill) px-1.5 text-center text-[11px] leading-tight text-white"
+              style={{ background: "rgb(0 0 0 / .34)" }}
             >
               {apps[id].title}
             </span>
@@ -49,16 +49,16 @@ export function Springboard() {
             className="flex flex-col items-center gap-1"
           >
             <div
-              className="flex h-[62px] w-[62px] items-center justify-center"
-              style={{
-                borderRadius: "22.5%",
-                background: "linear-gradient(135deg, #3a3a3e, #232326)",
-                boxShadow: "inset 0 1px 0 rgb(255 255 255 / .16)",
-              }}
+              className="relative flex h-[62px] w-[62px] items-center justify-center"
+              style={squircleBase(["#3a3a3e", "#232326"])}
             >
-              <link.icon size={31} weight="light" color="white" />
+              <span aria-hidden className="pointer-events-none absolute inset-0" style={SQUIRCLE_GLASS} />
+              <link.icon size={31} weight="light" color="white" style={SQUIRCLE_GLYPH} />
             </div>
-            <span className="rounded px-1 text-center text-[11px] leading-tight text-white" style={{ background: "rgb(0 0 0 / .3)" }}>
+            <span
+              className="rounded-(--r-pill) px-1.5 text-center text-[11px] leading-tight text-white"
+              style={{ background: "rgb(0 0 0 / .34)" }}
+            >
               {link.label}
             </span>
           </a>

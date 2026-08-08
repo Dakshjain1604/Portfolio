@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import { FolderSimple, FilePdf, FileText } from "@phosphor-icons/react/dist/ssr"
 import { useOS } from "@/os/store"
 import { readmeDesktopIcon, type AppId } from "@/data/apps"
+import { SQUIRCLE_GLYPH } from "@/components/primitives/Squircle"
 
 type DesktopIconDef = { label: string; opens: AppId; icon: typeof FolderSimple }
 
@@ -54,10 +55,14 @@ export function DesktopIcons() {
             className="flex w-[76px] flex-col items-center gap-1 rounded-(--r-control) p-1.5"
             style={{ background: selected === i ? "var(--os-accent-soft)" : "transparent" }}
           >
-            <item.icon size={32} weight="light" color="white" />
+            {/* Desktop file icons stay bare glyphs rather than becoming
+                squircles - macOS reserves the tile for apps. They get the
+                same depth shadow so they read as sitting on the wallpaper
+                rather than being printed into it. */}
+            <item.icon size={32} weight="light" color="white" style={SQUIRCLE_GLYPH} />
             <span
-              className="rounded px-1 text-center text-[11px] leading-tight text-white"
-              style={{ background: "rgb(0 0 0 / .35)" }}
+              className="rounded-(--r-pill) px-1.5 text-center text-[11px] leading-tight text-white"
+              style={{ background: "rgb(0 0 0 / .38)" }}
             >
               {item.label}
             </span>

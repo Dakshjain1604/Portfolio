@@ -7,6 +7,7 @@ import { apps, type AppId } from "@/data/apps"
 import { setDockIconCenter } from "@/os/dockIconRects"
 import { useReducedMotion } from "@/os/ReducedMotionContext"
 import { useDockMagnify, DOCK_ICON_VARIANTS } from "@/os/useDockMagnify"
+import { squircleBase, SQUIRCLE_GLASS, SQUIRCLE_GLYPH } from "@/components/primitives/Squircle"
 
 export function DockIcon({ id, mouseX }: { id: AppId; mouseX: MotionValue<number> }) {
   const meta = apps[id]
@@ -106,26 +107,27 @@ export function DockIcon({ id, mouseX }: { id: AppId; mouseX: MotionValue<number
           height: size,
           translateY: lift,
           translateZ: depth,
-          borderRadius: "22.5%",
-          // Same specular-sheen layering as Squircle.tsx - see the comment
-          // there. DockIcon can't use the Squircle component directly
-          // because the magnification motion values (size/lift/depth) need
-          // to bind to this element's own style, not a child's.
-          background: `linear-gradient(135deg, rgb(255 255 255 / .22) 0%, transparent 32%, transparent 68%, rgb(255 255 255 / .08) 100%), linear-gradient(135deg, ${meta.tint[0]}, ${meta.tint[1]})`,
-          boxShadow: "inset 0 1px 0 rgb(255 255 255 / .3), inset 0 -1px 0 rgb(0 0 0 / .12)",
+          // The layer recipe is shared with Squircle.tsx rather than
+          // duplicated here. DockIcon still can't render <Squircle>
+          // directly, because the magnification motion values
+          // (size/lift/depth) have to bind to this element's own style
+          // rather than a child's - so it takes the style objects instead.
+          ...squircleBase(meta.tint),
         }}
-        className="flex shrink-0 items-center justify-center focus-visible:outline-offset-4"
+        className="relative flex shrink-0 items-center justify-center focus-visible:outline-offset-4"
       >
+        <span aria-hidden className="pointer-events-none absolute inset-0" style={SQUIRCLE_GLASS} />
         {/* Bounce lives on its own element: mixing a style-bound translateY
             (magnification lift) with an animate-driven y target on the SAME
             motion component targets the same transform channel and hangs,
             per the box-shadow lesson in Window.tsx (plan/02). */}
         <motion.div
+          className="relative"
           animate={bouncing ? { y: [0, -14, 0] } : { y: 0 }}
           transition={bouncing ? { duration: 0.4, times: [0, 0.5, 1] } : { duration: 0 }}
           onAnimationComplete={() => setBouncing(false)}
         >
-          <meta.icon size={REST * 0.55} weight="light" color="white" />
+          <meta.icon size={REST * 0.55} weight="light" color="white" style={SQUIRCLE_GLYPH} />
         </motion.div>
       </motion.button>
       <div
