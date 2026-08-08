@@ -123,7 +123,7 @@ export function ContextMenu({ state, onClose }: { state: ContextMenuState; onClo
               item.onSelect()
               onClose()
             }}
-            className="flex h-[26px] w-full items-center rounded-(--r-control) px-2.5 text-left text-xs text-text hover:bg-accent hover:text-white disabled:text-text-3 disabled:hover:bg-transparent disabled:hover:text-text-3"
+            className="flex h-[26px] w-full items-center whitespace-nowrap rounded-(--r-control) px-2.5 text-left text-xs text-text hover:bg-accent hover:text-white disabled:text-text-3 disabled:hover:bg-transparent disabled:hover:text-text-3"
           >
             {item.label}
           </button>

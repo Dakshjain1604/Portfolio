@@ -52,6 +52,8 @@ export function Menu({
     .map((it, i) => (it.kind === "separator" ? -1 : i))
     .filter((i) => i >= 0)
 
+  const anyCheckable = items.some((it) => it.kind === "radio" || it.kind === "checkbox")
+
   useEffect(() => {
     if (!isOpen) return
     const onPointerDown = (e: PointerEvent) => {
@@ -174,12 +176,21 @@ export function Menu({
                 // full-bleed, so its curve sits concentrically inside the
                 // panel's. Tahoe's actual menu treatment, and the clearest
                 // small demonstration of the rule.
-                className="flex h-[26px] w-full items-center justify-between gap-4 rounded-(--r-control) px-2.5 text-left text-xs text-text hover:bg-accent hover:text-white disabled:text-text-3 disabled:hover:bg-transparent disabled:hover:text-text-3"
+                // whitespace-nowrap: the rows are a fixed 26px, so a
+                // wrapping label overflows into the row below it. macOS
+                // menus never wrap - the panel widens instead, which
+                // min-w-[210px] being a floor rather than a fixed width
+                // already allows.
+                className="flex h-[26px] w-full items-center justify-between gap-4 whitespace-nowrap rounded-(--r-control) px-2.5 text-left text-xs text-text hover:bg-accent hover:text-white disabled:text-text-3 disabled:hover:bg-transparent disabled:hover:text-text-3"
               >
                 <span className="flex items-center gap-2">
-                  {hasCheckState && (
+                  {/* The gutter is reserved for every item once any item in
+                      the menu is checkable, not only for the checkable ones.
+                      Otherwise labels in the same menu start at two
+                      different x positions, which macOS never does. */}
+                  {anyCheckable && (
                     <span className="flex w-3 justify-center">
-                      {item.checked && <Check size={11} weight="bold" />}
+                      {hasCheckState && item.checked && <Check size={11} weight="bold" />}
                     </span>
                   )}
                   {item.label}

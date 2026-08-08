@@ -33,7 +33,7 @@ export function StatusBar() {
         type="button"
         onClick={() => setMode("reader")}
         aria-label="Switch to Reader view"
-        className="flex items-center gap-1 rounded-full bg-white/10 px-2.5 py-1 text-[11px]"
+        className="os-press flex items-center gap-1 rounded-(--r-pill) bg-white/10 px-2.5 py-1 text-[11px]"
       >
         <BookOpen size={12} weight="light" />
         Reader

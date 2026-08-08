@@ -18,9 +18,14 @@
   --os-edge-inner: rgb(255 255 255 / 0.14);
   --os-divider: rgb(255 255 255 / 0.06);
 
-  /* text: Apple's warm-neutral grays. not cool slate. */
+  /* text: Apple's warm-neutral grays. not cool slate.
+     --os-text-2 was #98989d, tuned when every surface under it was an
+     opaque panel. Secondary copy now also sits on translucent glass
+     (floating sidebars), where measurement put it at 3.7:1 against the
+     composited background. One step up clears 4.5:1 there and stays
+     clearly secondary against --os-text. */
   --os-text: #f5f5f7;
-  --os-text-2: #98989d;
+  --os-text-2: #a9a9b0;
   --os-text-3: #6e6e73; /* decoration only. never body copy. */
 
   /* the one accent. Overridable at runtime (System Settings > Appearance
@@ -248,7 +253,7 @@ body[data-mode="desktop"] {
          tier's only defence for --os-text-2 body copy would be whatever
          the wallpaper happens to be - which fails the moment someone drops
          a bright JPG into public/wallpapers. */
-        linear-gradient(rgb(18 18 21 / 0.3), rgb(18 18 21 / 0.24)) padding-box,
+        linear-gradient(rgb(18 18 21 / 0.42), rgb(18 18 21 / 0.36)) padding-box,
       linear-gradient(rgb(255 255 255 / 0.09), rgb(255 255 255 / 0.03)) border-box;
     backdrop-filter: blur(20px) saturate(150%);
     box-shadow: none;

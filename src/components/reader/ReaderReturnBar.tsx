@@ -12,7 +12,11 @@ export function ReaderReturnBar() {
   if (mode !== "reader") return null
 
   return (
-    <div className="os-glass sticky top-0 z-10 flex h-9 items-center justify-between px-4">
+    // border-x-0/-t-0: .os-glass sets all four sides, and a full-bleed bar
+    // does not want a hairline running down the viewport edges. Only
+    // possible now that the glass tiers live in @layer components, where a
+    // utility can beat them.
+    <div className="os-glass sticky top-0 z-10 flex h-9 items-center justify-between rounded-none border-x-0 border-t-0 px-4">
       <span className="text-xs font-semibold text-text">dj</span>
       <button
         type="button"

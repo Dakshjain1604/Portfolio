@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { motion, useDragControls, type PanInfo } from "framer-motion"
 import { X } from "@phosphor-icons/react/dist/ssr"
 import { apps, type AppId } from "@/data/apps"
@@ -16,6 +16,7 @@ export function AppSheet({ id, onClose }: { id: AppId; onClose: () => void }) {
   const reducedMotion = useReducedMotion()
   const dragControls = useDragControls()
   const bodyRef = useRef<HTMLDivElement>(null)
+  const [scrolled, setScrolled] = useState(false)
   const sheetRef = useRef<HTMLDivElement>(null)
   const previouslyFocused = useRef<HTMLElement | null>(null)
 
@@ -60,7 +61,7 @@ export function AppSheet({ id, onClose }: { id: AppId; onClose: () => void }) {
     >
       <header
         onPointerDown={(e) => dragControls.start(e)}
-        className="os-glass relative flex h-12 shrink-0 items-center justify-center rounded-none"
+        className="os-glass relative flex h-12 shrink-0 items-center justify-center rounded-none border-x-0 border-t-0"
         style={{ touchAction: "none" }}
       >
         <div aria-hidden className="absolute top-2 h-[5px] w-9 rounded-full bg-panel-3" />
@@ -69,19 +70,36 @@ export function AppSheet({ id, onClose }: { id: AppId; onClose: () => void }) {
           type="button"
           onClick={onClose}
           aria-label={`Close ${meta.title}`}
-          className="absolute right-3 flex h-7 w-7 items-center justify-center rounded-full bg-panel-3"
+          className="os-press absolute right-3 flex h-7 w-7 items-center justify-center rounded-full bg-panel-3"
         >
           <X size={13} weight="bold" />
         </button>
       </header>
 
+      {/* Same underlap treatment as a desktop window: content softens as it
+          passes beneath the sheet header rather than hard-clipping at it. */}
       <div
-        ref={bodyRef}
-        onPointerDown={startDragFromBody}
-        className="flex-1 overflow-auto"
-        style={{ overscrollBehavior: "contain", touchAction: "pan-y" }}
+        className="relative min-h-0 flex-1"
+        onScrollCapture={(e) => {
+          const next = (e.target as HTMLElement).scrollTop > 2
+          setScrolled((prev) => (prev === next ? prev : next))
+        }}
       >
-        <AppContent windowId={id} />
+        <div
+          ref={bodyRef}
+          onPointerDown={startDragFromBody}
+          className="h-full overflow-auto"
+          style={{ overscrollBehavior: "contain", touchAction: "pan-y" }}
+        >
+          <AppContent windowId={id} />
+        </div>
+        {/* Only once content is actually under the header - see the same
+            note in Window.tsx. */}
+        <div
+          aria-hidden
+          className="os-scroll-edge os-scroll-edge-top absolute inset-x-0 top-0 h-5 transition-opacity duration-200"
+          style={{ opacity: scrolled ? 1 : 0 }}
+        />
       </div>
     </motion.div>
   )

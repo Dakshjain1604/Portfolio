@@ -68,14 +68,15 @@ export function Finder() {
             type="button"
             aria-pressed={source === s.id}
             onClick={() => setSource(s.id)}
-            className="flex w-full items-center justify-between rounded-(--r-control) px-2 py-1.5 text-left text-xs"
-            style={{
-              background: source === s.id ? "var(--os-accent-soft)" : "transparent",
-              color: source === s.id ? "var(--os-text)" : "var(--os-text-2)",
-            }}
+            // Selection is carried by the fill, not by dimming the label.
+            // macOS sidebars keep every row at full text strength, and
+            // --os-text-2 over the clear tier measured 3.29:1 against the
+            // composited background, under the 4.5:1 floor.
+            className="flex w-full items-center justify-between rounded-(--r-control) px-2 py-1.5 text-left text-xs text-text"
+            style={{ background: source === s.id ? "var(--os-accent-soft)" : "transparent" }}
           >
             <span>{s.label}</span>
-            <span className="text-text-3">{counts[s.id]}</span>
+            <span className="text-text-2">{counts[s.id]}</span>
           </button>
         ))}
       </Sidebar>

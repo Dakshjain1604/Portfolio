@@ -172,11 +172,11 @@ export function SystemSettings() {
           aria-pressed={groupId === APPEARANCE_ID}
           aria-controls="settings-pane"
           onClick={() => setGroupId(APPEARANCE_ID)}
-          className="flex w-full items-center gap-2.5 rounded-(--r-control) px-2 py-2 text-left text-xs"
-          style={{
-            background: groupId === APPEARANCE_ID ? "var(--os-accent-soft)" : "transparent",
-            color: groupId === APPEARANCE_ID ? "var(--os-text)" : "var(--os-text-2)",
-          }}
+          // Full text strength on every row, selection carried by the fill
+          // alone - --os-text-2 over the clear tier measured 4.32:1 against
+          // the composited background, under the 4.5:1 floor.
+          className="flex w-full items-center gap-2.5 rounded-(--r-control) px-2 py-2 text-left text-xs text-text"
+          style={{ background: groupId === APPEARANCE_ID ? "var(--os-accent-soft)" : "transparent" }}
         >
           <PaintBrush size={15} weight="light" />
           Appearance
@@ -191,11 +191,8 @@ export function SystemSettings() {
               aria-pressed={groupId === g.id}
               aria-controls="settings-pane"
               onClick={() => setGroupId(g.id)}
-              className="flex w-full items-center gap-2.5 rounded-(--r-control) px-2 py-2 text-left text-xs"
-              style={{
-                background: groupId === g.id ? "var(--os-accent-soft)" : "transparent",
-                color: groupId === g.id ? "var(--os-text)" : "var(--os-text-2)",
-              }}
+              className="flex w-full items-center gap-2.5 rounded-(--r-control) px-2 py-2 text-left text-xs text-text"
+              style={{ background: groupId === g.id ? "var(--os-accent-soft)" : "transparent" }}
             >
               <Icon size={15} weight="light" />
               {g.label}

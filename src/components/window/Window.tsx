@@ -66,6 +66,7 @@ export function Window({ id }: WindowProps) {
   // plan/02-window-manager.md section 6: leaving it on for nine persistent
   // windows costs more compositor memory than it saves.
   const [interacting, setInteracting] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
   useEffect(() => {
     const onUp = () => setInteracting(false)
     window.addEventListener("pointerup", onUp)
@@ -186,15 +187,28 @@ export function Window({ id }: WindowProps) {
               --r-window. Apps own their own surface tier: content apps
               use .os-plate, while Terminal, Preview and Orchestrator
               keep their deliberately opaque backgrounds. */}
-          <div className="relative min-h-0 flex-1 px-(--r-inset) pb-(--r-inset)">
+          <div
+            className="relative min-h-0 flex-1 px-(--r-inset) pb-(--r-inset)"
+            // scroll does not bubble, but it does reach ancestors during
+            // capture, which is the only way to observe it from here - the
+            // scroll container belongs to whichever app is mounted, and
+            // every app structures its own differently.
+            onScrollCapture={(e) => {
+              const next = (e.target as HTMLElement).scrollTop > 2
+              setScrolled((prev) => (prev === next ? prev : next))
+            }}
+          >
             {(() => {
               const AppContent = appRegistry[id]
               return <AppContent windowId={id} />
             })()}
+            {/* Tahoe's scroll edge is a response to scrolling, not a
+                permanent fixture. Left always-on it would sit blurring
+                Finder's static search row forever. */}
             <div
               aria-hidden
-              className="os-scroll-edge os-scroll-edge-top absolute top-0 h-6 rounded-t-(--r-float)"
-              style={{ left: "var(--r-inset)", right: "var(--r-inset)" }}
+              className="os-scroll-edge os-scroll-edge-top absolute top-0 h-6 rounded-t-(--r-float) transition-opacity duration-200"
+              style={{ left: "var(--r-inset)", right: "var(--r-inset)", opacity: scrolled ? 1 : 0 }}
             />
           </div>
         </div>
