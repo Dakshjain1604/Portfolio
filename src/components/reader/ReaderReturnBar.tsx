@@ -17,7 +17,7 @@ export function ReaderReturnBar() {
       <button
         type="button"
         onClick={() => setMode("desktop")}
-        className="rounded-(--r-control) bg-panel-3 px-3 py-1 text-xs text-text"
+        className="os-press rounded-(--r-pill) bg-panel-3 px-3 py-1 text-xs text-text"
       >
         Back to desktop
       </button>

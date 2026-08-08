@@ -64,14 +64,14 @@ export function AboutThisMac() {
         <button
           type="button"
           onClick={() => open("activity")}
-          className="rounded-(--r-control) bg-panel-3 px-3 py-1.5 text-xs text-text"
+          className="os-press rounded-(--r-pill) bg-panel-3 px-3 py-1.5 text-xs text-text"
         >
           System Report
         </button>
         <button
           type="button"
           onClick={() => open("settings")}
-          className="rounded-(--r-control) bg-panel-3 px-3 py-1.5 text-xs text-text"
+          className="os-press rounded-(--r-pill) bg-panel-3 px-3 py-1.5 text-xs text-text"
         >
           Skills
         </button>
@@ -81,7 +81,7 @@ export function AboutThisMac() {
             e.preventDefault()
             open("preview")
           }}
-          className="rounded-(--r-control) bg-accent-soft px-3 py-1.5 text-xs text-accent"
+          className="os-press rounded-(--r-pill) bg-accent-soft px-3 py-1.5 text-xs text-accent"
         >
           Resume
         </a>

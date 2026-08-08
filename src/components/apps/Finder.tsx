@@ -104,7 +104,7 @@ export function Finder() {
               <button
                 type="button"
                 onClick={() => setQuery("")}
-                className="rounded-(--r-control) bg-panel-3 px-3 py-1.5 text-xs text-text"
+                className="os-press rounded-(--r-pill) bg-panel-3 px-3 py-1.5 text-xs text-text"
               >
                 Clear
               </button>
@@ -155,7 +155,7 @@ export function Finder() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`${selected.title} source on GitHub, opens in a new tab`}
-                className="flex items-center gap-1.5 rounded-(--r-control) bg-panel-3 px-2.5 py-1.5 text-xs text-text"
+                className="flex items-center gap-1.5 os-press rounded-(--r-pill) bg-panel-3 px-2.5 py-1.5 text-xs text-text"
               >
                 <GithubLogo size={13} weight="light" />
                 Source
@@ -167,7 +167,7 @@ export function Finder() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`${selected.title} live demo, opens in a new tab`}
-                className="flex items-center gap-1.5 rounded-(--r-control) bg-accent-soft px-2.5 py-1.5 text-xs text-accent"
+                className="flex items-center gap-1.5 os-press rounded-(--r-pill) bg-accent-soft px-2.5 py-1.5 text-xs text-accent"
               >
                 <ArrowSquareOut size={13} weight="light" />
                 Live

@@ -19,7 +19,7 @@ function MissingResume() {
             <button
               type="button"
               onClick={() => open("mail")}
-              className="rounded-(--r-control) bg-accent-soft px-3 py-1.5 text-xs text-accent"
+              className="os-press rounded-(--r-pill) bg-accent-soft px-3 py-1.5 text-xs text-accent"
             >
               Contact
             </button>
@@ -27,7 +27,7 @@ function MissingResume() {
               href={socials.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-(--r-control) bg-panel-3 px-3 py-1.5 text-xs text-text"
+              className="os-press rounded-(--r-pill) bg-panel-3 px-3 py-1.5 text-xs text-text"
             >
               View GitHub
             </a>

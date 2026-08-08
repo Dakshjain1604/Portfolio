@@ -99,7 +99,7 @@ export function ActivityMonitor() {
               href={socials.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 rounded-(--r-control) bg-panel-3 px-3 py-1.5 text-xs text-text"
+              className="flex items-center gap-1.5 os-press rounded-(--r-pill) bg-panel-3 px-3 py-1.5 text-xs text-text"
             >
               <GithubLogo size={13} weight="light" />
               View on GitHub
@@ -115,30 +115,38 @@ export function ActivityMonitor() {
 
   return (
     <div className="os-plate flex h-full flex-col overflow-hidden rounded-(--r-float)">
-      <div role="tablist" className="flex gap-1 border-b border-divider px-3 pt-2">
-        {(["contributions", "repositories", "languages"] as const).map((t) => (
-          <button
-            key={t}
-            role="tab"
-            id={`tab-${t}`}
-            aria-selected={tab === t}
-            aria-controls={`panel-${t}`}
-            onClick={() => setTab(t)}
-            onKeyDown={(e) => {
-              const order = ["contributions", "repositories", "languages"] as const
-              const idx = order.indexOf(t)
-              if (e.key === "ArrowRight") setTab(order[(idx + 1) % 3])
-              if (e.key === "ArrowLeft") setTab(order[(idx - 1 + 3) % 3])
-            }}
-            className="rounded-t-(--r-control) px-3 py-1.5 text-xs capitalize"
-            style={{
-              color: tab === t ? "var(--os-text)" : "var(--os-text-2)",
-              borderBottom: tab === t ? "2px solid var(--os-accent)" : "2px solid transparent",
-            }}
-          >
-            {t}
-          </button>
-        ))}
+      {/* Tahoe replaced the underlined tab strip with a segmented capsule:
+          one pill track, the selection sliding inside it. The old
+          border-bottom accent line is the classic-macOS tell. */}
+      <div className="shrink-0 px-3 pt-3">
+        <div
+          role="tablist"
+          className="inline-flex gap-0.5 rounded-(--r-pill) bg-panel-3 p-0.5"
+        >
+          {(["contributions", "repositories", "languages"] as const).map((t) => (
+            <button
+              key={t}
+              role="tab"
+              id={`tab-${t}`}
+              aria-selected={tab === t}
+              aria-controls={`panel-${t}`}
+              onClick={() => setTab(t)}
+              onKeyDown={(e) => {
+                const order = ["contributions", "repositories", "languages"] as const
+                const idx = order.indexOf(t)
+                if (e.key === "ArrowRight") setTab(order[(idx + 1) % 3])
+                if (e.key === "ArrowLeft") setTab(order[(idx - 1 + 3) % 3])
+              }}
+              className="os-press rounded-(--r-pill) px-3 py-1 text-xs capitalize transition-colors"
+              style={{
+                color: tab === t ? "var(--os-text)" : "var(--os-text-2)",
+                background: tab === t ? "var(--os-accent)" : "transparent",
+              }}
+            >
+              {t}
+            </button>
+          ))}
+        </div>
       </div>
 
       <div className="flex-1 overflow-auto p-5">

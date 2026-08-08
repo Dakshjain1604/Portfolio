@@ -195,7 +195,7 @@ export function MenuBar() {
           type="button"
           onClick={() => setMode("reader")}
           aria-label="Switch to Reader view"
-          className="flex items-center gap-1 rounded-(--r-control) px-2 py-0.5 text-xs text-text-2 hover:bg-panel-3 hover:text-text"
+          className="flex items-center gap-1 os-press rounded-(--r-pill) px-2 py-0.5 text-xs text-text-2 hover:bg-panel-3 hover:text-text"
         >
           <BookOpen size={13} weight="light" />
           Reader view

@@ -50,12 +50,16 @@
   --r-float: calc(var(--r-window) - var(--r-inset)); /* sidebars, content plate */
   --r-card: calc(var(--r-float) - 4px); /* cards sitting inside a floating pane */
 
-  /* Tahoe's default control shape is a capsule (SwiftUI's
-     .buttonBorderShape(.capsule)), not the 6px rect classic macOS used.
-     --r-control-sq is the deliberate exception: text fields and the
-     terminal prompt, where a capsule fights the text baseline. */
-  --r-control: 999px;
-  --r-control-sq: 8px;
+  /* Tahoe's default *button* shape is a capsule - SwiftUI's
+     .buttonBorderShape(.capsule) - but its list rows, menu items and
+     text fields stay rounded rectangles. A blanket capsule would put a
+     28px radius on a 56px-tall sidebar row, which is not what the OS
+     does. So two tokens, not one:
+       --r-pill     action buttons, segmented controls, tooltips
+       --r-control  selection rows, menu items, inputs
+     8px rather than the old 6px, to sit correctly inside --r-card. */
+  --r-pill: 999px;
+  --r-control: 8px;
   --r-chip: 999px;
 
   /* motion */
@@ -271,6 +275,18 @@ body[data-mode="desktop"] {
     border: 1px solid rgb(255 255 255 / 0.05);
   }
 
+  /* "Scaling on press" is one of the behaviors Apple lists for
+     interactive Liquid Glass, and it is most of what separates a live
+     control from a painted rectangle. Opt-in rather than a blanket
+     button rule, so list rows and menu items - which do not do this on
+     macOS - are unaffected. */
+  .os-press {
+    transition: transform var(--dur-fast) var(--ease-os);
+  }
+  .os-press:active {
+    transform: scale(0.96);
+  }
+
   /* Tahoe's scroll edge effect: content underlaps translucent chrome and
      softens as it passes beneath, instead of hard-clipping at the edge.
      One masked backdrop-filter layer, not a stack of seven - the mask
@@ -369,5 +385,11 @@ body[data-mode="desktop"] {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  /* Killing the duration alone would still snap the control to 96% and
+     hold it there for the whole press, which is worse than not moving. */
+  .os-press:active {
+    transform: none;
   }
 }

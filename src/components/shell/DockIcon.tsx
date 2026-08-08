@@ -84,7 +84,10 @@ export function DockIcon({ id, mouseX }: { id: AppId; mouseX: MotionValue<number
       {showTooltip && (
         <div
           role="tooltip"
-          className="os-glass pointer-events-none absolute bottom-full mb-2 whitespace-nowrap rounded-(--r-control) px-2 py-1 text-xs text-text"
+          // .os-plate, not .os-glass: this floats directly over the Dock's
+          // own glass, and stacking two blurs is what Apple's
+          // GlassEffectContainer rule exists to prevent.
+          className="os-plate pointer-events-none absolute bottom-full mb-2 whitespace-nowrap rounded-(--r-pill) px-2.5 py-1 text-xs text-text"
         >
           {meta.title}
         </div>
