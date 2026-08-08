@@ -17,7 +17,7 @@ export function ReaderView() {
     <div id="reader" className="relative min-h-[100dvh] bg-void">
       <a
         href="#main"
-        className="sr-only rounded-(--r-control) bg-accent px-3 py-2 text-xs text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50"
+        className="sr-only rounded-(--r-control) bg-accent-fill px-3 py-2 text-xs text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50"
       >
         Skip to content
       </a>

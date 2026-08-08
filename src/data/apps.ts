@@ -30,8 +30,13 @@ export type AppId =
 export type AppMeta = {
   id: AppId
   title: string
+  /** The dock/desktop tile draws its own composition in AppGlyph.tsx; this
+   *  is the fallback mark and what Reader view and the mobile grid label
+   *  themselves with. */
   icon: ComponentType<IconProps>
-  /** two-stop gradient for the squircle tile */
+  /** Two-stop gradient for the squircle tile, keyed to the equivalent real
+   *  macOS app icon rather than picked to taste: Mail is systemBlue, Notes
+   *  is paper-white, Terminal is near-black, Settings is graphite. */
   tint: [string, string]
   defaultRect: Rect
   minSize: { w: number; h: number }
@@ -44,7 +49,7 @@ export const apps: Record<AppId, AppMeta> = {
     id: "finder",
     title: "Projects",
     icon: FolderSimple,
-    tint: ["#5AA9E6", "#3E7BFA"],
+    tint: ["#4da2ff", "#0a6fe8"],
     defaultRect: { x: 120, y: 64, w: 940, h: 600 },
     minSize: { w: 640, h: 400 },
     onDesktop: "Projects",
@@ -54,7 +59,7 @@ export const apps: Record<AppId, AppMeta> = {
     id: "about",
     title: "About This Mac",
     icon: Info,
-    tint: ["#B0B4BB", "#7C8087"],
+    tint: ["#d5d7db", "#9a9ea6"],
     defaultRect: { x: 180, y: 88, w: 620, h: 520 },
     minSize: { w: 520, h: 440 },
     dockOrder: 1,
@@ -63,7 +68,7 @@ export const apps: Record<AppId, AppMeta> = {
     id: "notes",
     title: "Experience",
     icon: NotePencil,
-    tint: ["#F4C95D", "#E0A72E"],
+    tint: ["#fdfdfb", "#eceae2"],
     defaultRect: { x: 220, y: 72, w: 820, h: 560 },
     minSize: { w: 560, h: 400 },
     dockOrder: 2,
@@ -72,7 +77,7 @@ export const apps: Record<AppId, AppMeta> = {
     id: "settings",
     title: "Skills",
     icon: GearSix,
-    tint: ["#9C9FA8", "#5C5F66"],
+    tint: ["#8e9298", "#4d5157"],
     defaultRect: { x: 200, y: 96, w: 780, h: 560 },
     minSize: { w: 600, h: 420 },
     dockOrder: 3,
@@ -81,7 +86,7 @@ export const apps: Record<AppId, AppMeta> = {
     id: "activity",
     title: "Activity Monitor",
     icon: ChartLine,
-    tint: ["#7FD3A0", "#38A169"],
+    tint: ["#3a3f45", "#22262b"],
     defaultRect: { x: 240, y: 80, w: 720, h: 500 },
     minSize: { w: 560, h: 380 },
     dockOrder: 4,
@@ -90,7 +95,7 @@ export const apps: Record<AppId, AppMeta> = {
     id: "mail",
     title: "Contact",
     icon: EnvelopeSimple,
-    tint: ["#8FC7F7", "#4A90D9"],
+    tint: ["#3fa4ff", "#0a6ae8"],
     defaultRect: { x: 260, y: 104, w: 680, h: 540 },
     minSize: { w: 520, h: 420 },
     dockOrder: 5,
@@ -99,7 +104,7 @@ export const apps: Record<AppId, AppMeta> = {
     id: "preview",
     title: "Resume.pdf",
     icon: FilePdf,
-    tint: ["#F0A0A0", "#D9534F"],
+    tint: ["#fdfdfd", "#e8e8ec"],
     defaultRect: { x: 300, y: 56, w: 700, h: 780 },
     minSize: { w: 480, h: 500 },
     onDesktop: "Resume.pdf",
@@ -109,7 +114,7 @@ export const apps: Record<AppId, AppMeta> = {
     id: "terminal",
     title: "Terminal",
     icon: TerminalGlyph,
-    tint: ["#4B4F58", "#1C1C1F"],
+    tint: ["#3a3a3c", "#111113"],
     defaultRect: { x: 160, y: 140, w: 720, h: 460 },
     minSize: { w: 480, h: 300 },
     dockOrder: 7,
@@ -118,7 +123,7 @@ export const apps: Record<AppId, AppMeta> = {
     id: "orchestrator",
     title: "Orchestrator",
     icon: Graph,
-    tint: ["#C79DF5", "#8B5CF6"],
+    tint: ["#7d7bf0", "#5e5ce6"],
     defaultRect: { x: 340, y: 72, w: 800, h: 600 },
     minSize: { w: 560, h: 420 },
     dockOrder: 8,

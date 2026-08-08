@@ -81,7 +81,7 @@ export function AboutThisMac() {
             e.preventDefault()
             open("preview")
           }}
-          className="os-press rounded-(--r-pill) bg-accent-soft px-3 py-1.5 text-xs text-accent"
+          className="os-press rounded-(--r-pill) bg-accent-soft px-3 py-1.5 text-xs text-link"
         >
           Resume
         </a>

@@ -181,7 +181,7 @@ export function Menu({
                 // menus never wrap - the panel widens instead, which
                 // min-w-[210px] being a floor rather than a fixed width
                 // already allows.
-                className="flex h-[26px] w-full items-center justify-between gap-4 whitespace-nowrap rounded-(--r-control) px-2.5 text-left text-xs text-text hover:bg-accent hover:text-white disabled:text-text-3 disabled:hover:bg-transparent disabled:hover:text-text-3"
+                className="flex h-[26px] w-full items-center justify-between gap-4 whitespace-nowrap rounded-(--r-control) px-2.5 text-left text-xs text-text hover:bg-accent-fill hover:text-white disabled:text-text-3 disabled:hover:bg-transparent disabled:hover:text-text-3"
               >
                 <span className="flex items-center gap-2">
                   {/* The gutter is reserved for every item once any item in
@@ -196,7 +196,7 @@ export function Menu({
                   {item.label}
                 </span>
                 {item.kind === "action" && item.shortcut && (
-                  <span className="text-text-3">{item.shortcut}</span>
+                  <span className="text-text-2">{item.shortcut}</span>
                 )}
               </button>
             )

@@ -53,9 +53,12 @@ function computeStreaks(weeks: { days: Day[] }[]) {
 
 function intensity(count: number) {
   if (count === 0) return "rgb(255 255 255 / .06)"
-  if (count < 2) return "rgb(62 123 250 / .3)"
-  if (count < 4) return "rgb(62 123 250 / .5)"
-  if (count < 8) return "rgb(62 123 250 / .75)"
+  // Steps of the live accent, not the old hardcoded #3e7bfa these were
+  // frozen at - the heatmap has to follow an accent-tint change like
+  // everything else does.
+  if (count < 2) return "color-mix(in srgb, var(--os-accent) 34%, transparent)"
+  if (count < 4) return "color-mix(in srgb, var(--os-accent) 56%, transparent)"
+  if (count < 8) return "color-mix(in srgb, var(--os-accent) 78%, transparent)"
   return "var(--os-accent)"
 }
 
@@ -139,8 +142,8 @@ export function ActivityMonitor() {
               }}
               className="os-press rounded-(--r-pill) px-3 py-1 text-xs capitalize transition-colors"
               style={{
-                color: tab === t ? "var(--os-text)" : "var(--os-text-2)",
-                background: tab === t ? "var(--os-accent)" : "transparent",
+                color: tab === t ? "#fff" : "var(--os-text-2)",
+                background: tab === t ? "var(--os-accent-fill)" : "transparent",
               }}
             >
               {t}
@@ -237,7 +240,7 @@ export function ActivityMonitor() {
                   key={l.name}
                   style={{
                     width: `${(l.count / totalLangCount) * 100}%`,
-                    background: i === data.languages.length - 1 ? "var(--os-text-3)" : `rgb(62 123 250 / ${1 - i * 0.18})`,
+                    background: i === data.languages.length - 1 ? "var(--os-text-3)" : `color-mix(in srgb, var(--os-accent) ${Math.round((1 - i * 0.18) * 100)}%, transparent)`,
                   }}
                 />
               ))}

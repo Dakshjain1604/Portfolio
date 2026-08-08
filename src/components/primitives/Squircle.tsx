@@ -2,11 +2,18 @@
 
 import type { CSSProperties, ComponentType } from "react"
 import type { IconProps } from "@phosphor-icons/react"
+import type { AppId } from "@/data/apps"
+import { AppGlyph } from "./AppGlyph"
 
 type SquircleProps = {
+  /** Fallback mark, used when no appId is given (the Dock's external
+   *  links, which have no composed artwork of their own). */
   icon: ComponentType<IconProps>
   tint: [string, string]
   size?: number
+  /** When set, AppGlyph draws that app's real composition instead of a
+   *  centred outline glyph. */
+  appId?: AppId
 }
 
 /** Apple's superellipse approximated as a percentage radius so it scales
@@ -54,14 +61,18 @@ export const SQUIRCLE_GLYPH: CSSProperties = {
   filter: "drop-shadow(0 1px 1.5px rgb(0 0 0 / .35))",
 }
 
-export function Squircle({ icon: Icon, tint, size = 52 }: SquircleProps) {
+export function Squircle({ icon: Icon, tint, size = 52, appId }: SquircleProps) {
   return (
     <div
       className="relative flex shrink-0 items-center justify-center"
       style={{ width: size, height: size, ...squircleBase(tint) }}
     >
+      {appId ? (
+        <AppGlyph id={appId} size={size} />
+      ) : (
+        <Icon size={size * 0.52} weight="fill" color="white" style={SQUIRCLE_GLYPH} />
+      )}
       <span aria-hidden className="pointer-events-none absolute inset-0" style={SQUIRCLE_GLASS} />
-      <Icon size={size * 0.55} weight="light" color="white" style={SQUIRCLE_GLYPH} />
     </div>
   )
 }

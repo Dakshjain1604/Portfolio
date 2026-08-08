@@ -30,7 +30,7 @@ export function Springboard() {
             onClick={() => open(id)}
             className="flex flex-col items-center gap-1"
           >
-            <Squircle icon={apps[id].icon} tint={apps[id].tint} size={62} />
+            <Squircle icon={apps[id].icon} tint={apps[id].tint} size={62} appId={id} />
             <span
               className="rounded-(--r-pill) px-1.5 text-center text-[11px] leading-tight text-white"
               style={{ background: "rgb(0 0 0 / .34)" }}
@@ -72,7 +72,7 @@ export function Springboard() {
       >
         {PINNED.map((id) => (
           <button key={id} type="button" onClick={() => open(id)} aria-label={`Open ${apps[id].title}`}>
-            <Squircle icon={apps[id].icon} tint={apps[id].tint} size={52} />
+            <Squircle icon={apps[id].icon} tint={apps[id].tint} size={52} appId={id} />
           </button>
         ))}
       </nav>

@@ -7,7 +7,8 @@ import { apps, type AppId } from "@/data/apps"
 import { setDockIconCenter } from "@/os/dockIconRects"
 import { useReducedMotion } from "@/os/ReducedMotionContext"
 import { useDockMagnify, DOCK_ICON_VARIANTS } from "@/os/useDockMagnify"
-import { squircleBase, SQUIRCLE_GLASS, SQUIRCLE_GLYPH } from "@/components/primitives/Squircle"
+import { squircleBase, SQUIRCLE_GLASS } from "@/components/primitives/Squircle"
+import { AppGlyph } from "@/components/primitives/AppGlyph"
 
 export function DockIcon({ id, mouseX }: { id: AppId; mouseX: MotionValue<number> }) {
   const meta = apps[id]
@@ -116,19 +117,21 @@ export function DockIcon({ id, mouseX }: { id: AppId; mouseX: MotionValue<number
         }}
         className="relative flex shrink-0 items-center justify-center focus-visible:outline-offset-4"
       >
-        <span aria-hidden className="pointer-events-none absolute inset-0" style={SQUIRCLE_GLASS} />
         {/* Bounce lives on its own element: mixing a style-bound translateY
             (magnification lift) with an animate-driven y target on the SAME
             motion component targets the same transform channel and hangs,
             per the box-shadow lesson in Window.tsx (plan/02). */}
         <motion.div
-          className="relative"
+          className="absolute inset-0 flex items-center justify-center"
           animate={bouncing ? { y: [0, -14, 0] } : { y: 0 }}
           transition={bouncing ? { duration: 0.4, times: [0, 0.5, 1] } : { duration: 0 }}
           onAnimationComplete={() => setBouncing(false)}
         >
-          <meta.icon size={REST * 0.55} weight="light" color="white" style={SQUIRCLE_GLYPH} />
+          <AppGlyph id={id} size={REST} />
         </motion.div>
+        {/* Above the artwork: the glass sheet is over the icon, not under
+            it, which is what "multiple layers of glass" actually means. */}
+        <span aria-hidden className="pointer-events-none absolute inset-0" style={SQUIRCLE_GLASS} />
       </motion.button>
       <div
         className="mt-1 h-[3.5px] w-[3.5px] rounded-full"

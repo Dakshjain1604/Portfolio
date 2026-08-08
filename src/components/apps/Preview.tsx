@@ -19,7 +19,7 @@ function MissingResume() {
             <button
               type="button"
               onClick={() => open("mail")}
-              className="os-press rounded-(--r-pill) bg-accent-soft px-3 py-1.5 text-xs text-accent"
+              className="os-press rounded-(--r-pill) bg-accent-soft px-3 py-1.5 text-xs text-link"
             >
               Contact
             </button>

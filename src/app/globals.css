@@ -5,43 +5,78 @@
    Dark-locked. There is no light mode and no `dark:` variant.
    --------------------------------------------------------------- */
 
+/* ---------------------------------------------------------------
+   APPLE SYSTEM COLORS (dark appearance).
+   These are Apple's published dark-variant system colors, kept
+   verbatim and never edited to taste. Everything below derives from
+   them, so "what colour is this" always has one answer with a source.
+   --------------------------------------------------------------- */
 :root {
-  /* surfaces */
-  --os-void: #0b0b0e;
-  --os-chrome: rgb(40 40 44 / 0.6);
-  --os-panel: #1c1c1f;
-  --os-panel-2: #232326;
-  --os-panel-3: #2a2a2e;
+  --sys-red: #ff453a;
+  --sys-orange: #ff9f0a;
+  --sys-yellow: #ffd60a;
+  --sys-green: #30d158;
+  --sys-mint: #63e6e2;
+  --sys-teal: #40c8e0;
+  --sys-cyan: #64d2ff;
+  --sys-blue: #0a84ff;
+  --sys-indigo: #5e5ce6;
+  --sys-purple: #bf5af2;
+  --sys-pink: #ff375f;
+  --sys-brown: #ac8e68;
+  --sys-gray: #98989d;
+}
+
+:root {
+  /* Surfaces. Neutral greys, not the blue-cast ones this shipped with
+     (#1c1c1f had b > r, which read cool next to real macOS chrome).
+     macOS dark content areas sit around #1e1e1e; each step up is a
+     real elevation, not a decorative tint. */
+  --os-void: #0d0d0d;
+  --os-chrome: rgb(44 44 44 / 0.6);
+  --os-panel: #1e1e1e;
+  --os-panel-2: #262626;
+  --os-panel-3: #323232;
 
   /* edges: outer hairline + inner top highlight = the macOS double-edge */
   --os-edge: rgb(255 255 255 / 0.1);
   --os-edge-inner: rgb(255 255 255 / 0.14);
-  --os-divider: rgb(255 255 255 / 0.06);
+  --os-divider: rgb(255 255 255 / 0.07);
 
-  /* text: Apple's warm-neutral grays. not cool slate.
-     --os-text-2 was #98989d, tuned when every surface under it was an
-     opaque panel. Secondary copy now also sits on translucent glass
-     (floating sidebars), where measurement put it at 3.7:1 against the
-     composited background. One step up clears 4.5:1 there and stays
-     clearly secondary against --os-text. */
-  --os-text: #f5f5f7;
-  --os-text-2: #a9a9b0;
-  --os-text-3: #6e6e73; /* decoration only. never body copy. */
+  /* Text. Apple's dark-appearance label colors are white at fixed
+     alphas, not opaque greys, which is why macOS text keeps its
+     hierarchy on any surface - opaque greys drift as the surface
+     changes, and this build's translucent sidebars made that visible.
+     label / secondaryLabel / tertiaryLabel. */
+  --os-text: rgb(255 255 255 / 0.92);
+  --os-text-2: rgb(255 255 255 / 0.64);
+  --os-text-3: rgb(255 255 255 / 0.32); /* decoration only. never body copy. */
 
   /* the one accent. Overridable at runtime (System Settings > Appearance
      and Control Center, plan/19 phase D + plan/20 phase E) via a `style`
      attribute on :root - --os-accent-soft is derived with color-mix()
      rather than hardcoded so a tint change never needs a second variable
      updated alongside it. */
-  --os-accent: #3e7bfa;
-  --os-accent-soft: color-mix(in srgb, var(--os-accent) 16%, transparent);
+  --os-accent: var(--sys-blue);
+  --os-accent-soft: color-mix(in srgb, var(--os-accent) 22%, transparent);
 
-  /* traffic lights. the only other color on the page. Phase 19C: richer,
-     more saturated dots, matching Tahoe's deeper jewel-toned glass dots
-     rather than the flatter classic-macOS values. */
-  --tl-red: #fb4b44;
-  --tl-amber: #fcb31f;
-  --tl-green: #1fb646;
+  /* Two derived accents, both for contrast rather than taste.
+     White on raw systemBlue measures 3.7:1, which is fine for macOS's own
+     large controls but fails AA for the 12-13px labels this UI uses, so
+     any solid accent fill carrying white text uses --os-accent-fill.
+     --os-accent-text is the reverse case: accent-coloured text sitting on
+     a dark accent-soft tint, where raw systemBlue measures 3.1:1. */
+  --os-accent-fill: color-mix(in srgb, var(--os-accent) 82%, black);
+  --os-accent-text: color-mix(in srgb, var(--os-accent) 55%, white);
+
+  /* Traffic lights, at their real macOS values. Phase 19C invented
+     "richer" ones (#fb4b44 / #fcb31f / #1fb646) on the theory that Tahoe
+     deepened them. It did not - these three have been stable across
+     releases, and they are among the most recognisable colours in the
+     entire OS, so inventing near-misses is worse than using no colour. */
+  --tl-red: #ff5f57;
+  --tl-amber: #febc2e;
+  --tl-green: #28c840;
 
   /* ---- RADII: a concentric scale, not a flat list. --------------
      Tahoe's stated rule is concentricity: "each element designed with
@@ -91,6 +126,10 @@
   --color-text-3: var(--os-text-3);
   --color-accent: var(--os-accent);
   --color-accent-soft: var(--os-accent-soft);
+  /* bg-accent-fill: solid accent carrying white text.
+     text-link:      accent-coloured text on a dark surface. */
+  --color-accent-fill: var(--os-accent-fill);
+  --color-link: var(--os-accent-text);
 
   --radius-window: var(--r-window);
   --radius-float: var(--r-float);

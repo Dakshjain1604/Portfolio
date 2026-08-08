@@ -79,12 +79,16 @@ export function clampToViewport(rect: Rect): Rect {
 /** Preset accent tints for System Settings > Appearance, per
  *  plan/19-liquid-glass-modernization.md phase D - Tahoe's cited
  *  "personalize icons and widgets... tinted... clear look." */
+/** Apple's dark-appearance system colors, mirrored from the --sys-* block
+ *  in globals.css. Duplicated rather than read from CSS because these are
+ *  needed as values in TS (swatch backgrounds, --os-accent assignment);
+ *  the CSS block is the source of truth if the two ever disagree. */
 export const ACCENT_TINTS = {
-  blue: "#3e7bfa",
-  purple: "#a374ff",
-  pink: "#ff6fb0",
-  orange: "#ff9f43",
-  green: "#34c77b",
+  blue: "#0a84ff",
+  purple: "#bf5af2",
+  pink: "#ff375f",
+  orange: "#ff9f0a",
+  green: "#30d158",
   graphite: "#98989d",
 } as const
 export type AccentTint = keyof typeof ACCENT_TINTS

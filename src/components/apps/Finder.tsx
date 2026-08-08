@@ -83,7 +83,7 @@ export function Finder() {
 
       <div className="os-plate flex min-w-0 flex-1 flex-col overflow-hidden rounded-(--r-float)">
         <div className="flex h-10 shrink-0 items-center gap-2 border-b border-divider px-3">
-          <MagnifyingGlass size={13} className="text-text-3" weight="light" />
+          <MagnifyingGlass size={13} className="text-text-2" weight="light" />
           <label htmlFor="finder-search" className="sr-only">
             Search projects
           </label>
@@ -130,7 +130,7 @@ export function Finder() {
                     <p className="truncate text-xs text-text">{p.title}</p>
                     <p className="truncate text-[11px] text-text-2">{p.outcome}</p>
                   </div>
-                  <span className="shrink-0 text-[10px] text-text-3">{p.tech.length} tech</span>
+                  <span className="shrink-0 text-[10px] text-text-2">{p.tech.length} tech</span>
                 </button>
               </li>
             ))}
@@ -168,7 +168,7 @@ export function Finder() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`${selected.title} live demo, opens in a new tab`}
-                className="flex items-center gap-1.5 os-press rounded-(--r-pill) bg-accent-soft px-2.5 py-1.5 text-xs text-accent"
+                className="flex items-center gap-1.5 os-press rounded-(--r-pill) bg-accent-soft px-2.5 py-1.5 text-xs text-link"
               >
                 <ArrowSquareOut size={13} weight="light" />
                 Live

@@ -107,7 +107,7 @@ export function Mail() {
           <button
             type="submit"
             aria-describedby="mail-send-hint"
-            className="group flex items-center gap-1.5 rounded-(--r-chip) bg-accent px-4 py-1.5 text-xs text-white"
+            className="group flex items-center gap-1.5 rounded-(--r-chip) bg-accent-fill px-4 py-1.5 text-xs text-white"
           >
             Send
             <PaperPlaneTilt size={13} weight="light" className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />

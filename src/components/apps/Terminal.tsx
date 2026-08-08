@@ -268,7 +268,7 @@ export function Terminal() {
             <div key={i} className="mb-3 whitespace-pre-wrap text-text-2">
               {line.text}
               {line.links?.map((l) => (
-                <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer" className="block text-accent underline">
+                <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer" className="block text-link underline">
                   {l.text}
                 </a>
               ))}
