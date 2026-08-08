@@ -24,6 +24,7 @@ import type { IconProps } from "@phosphor-icons/react"
 import { skills, type Skill } from "@/data/skills"
 import { projects } from "@/data/projects"
 import { useOS, ACCENT_TINTS, type AccentTint } from "@/os/store"
+import { Sidebar } from "@/components/primitives/Sidebar"
 
 const GROUP_ICON: Record<string, ComponentType<IconProps>> = {
   ai: Sparkle,
@@ -164,8 +165,8 @@ export function SystemSettings() {
   const cloudTools = group?.id === "cloud" ? group.skills.filter((s) => !CLOUD_INFRA.has(s.name)) : []
 
   return (
-    <div className="os-plate flex h-full overflow-hidden rounded-(--r-float)">
-      <nav aria-label="Settings categories" className="w-[196px] shrink-0 border-r border-divider bg-panel-2 p-2">
+    <div className="flex h-full gap-(--r-inset)">
+      <Sidebar ariaLabel="Settings categories" width={196}>
         <button
           type="button"
           aria-pressed={groupId === APPEARANCE_ID}
@@ -201,9 +202,13 @@ export function SystemSettings() {
             </button>
           )
         })}
-      </nav>
+      </Sidebar>
 
-      <div id="settings-pane" aria-live="polite" className="flex-1 overflow-auto px-6 py-5">
+      <div
+        id="settings-pane"
+        aria-live="polite"
+        className="os-plate min-w-0 flex-1 overflow-auto rounded-(--r-float) px-6 py-5"
+      >
         {group ? (
           <>
             <h3 className="mb-4 text-sm font-medium text-text">{group.label}</h3>

@@ -6,6 +6,7 @@ import { GithubLogo, ArrowSquareOut, MagnifyingGlass } from "@phosphor-icons/rea
 import { projects, type ProjectTag } from "@/data/projects"
 import { Chip } from "@/components/primitives/Chip"
 import { EmptyState } from "@/components/primitives/EmptyState"
+import { Sidebar } from "@/components/primitives/Sidebar"
 
 type Source = { id: "all" | ProjectTag; label: string }
 const SOURCES: Source[] = [
@@ -50,14 +51,15 @@ export function Finder() {
   }
 
   return (
-    <div className="os-plate flex h-full overflow-hidden rounded-(--r-float) @container">
+    <div className="flex h-full gap-(--r-inset) @container">
       {/* @container query, not a viewport media query: this window can be
           resized narrower than 560/720px while the browser stays wide,
           and a viewport-based breakpoint would miss that entirely.
           See plan/07-app-finder.md and plan/18-preflight.md section D. */}
-      <nav
-        aria-label="Project categories"
-        className="hidden w-[176px] shrink-0 border-r border-divider bg-panel-2 p-2 @[560px]:block"
+      <Sidebar
+        ariaLabel="Project categories"
+        width={176}
+        className="hidden @[560px]:block"
       >
         <h3 className="px-2 pb-1 pt-1 text-[10px] font-medium uppercase tracking-wide text-text-2">Favorites</h3>
         {SOURCES.map((s) => (
@@ -76,9 +78,9 @@ export function Finder() {
             <span className="text-text-3">{counts[s.id]}</span>
           </button>
         ))}
-      </nav>
+      </Sidebar>
 
-      <div className="flex min-w-0 flex-1 flex-col">
+      <div className="os-plate flex min-w-0 flex-1 flex-col overflow-hidden rounded-(--r-float)">
         <div className="flex h-10 shrink-0 items-center gap-2 border-b border-divider px-3">
           <MagnifyingGlass size={13} className="text-text-3" weight="light" />
           <label htmlFor="finder-search" className="sr-only">
@@ -136,7 +138,7 @@ export function Finder() {
       </div>
 
       {selected && (
-        <aside aria-live="polite" className="hidden w-[280px] shrink-0 overflow-auto border-l border-divider bg-panel-2 p-4 @[720px]:block">
+        <Sidebar as="aside" live ariaLabel="Project details" width={280} className="hidden p-4 @[720px]:block">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={selected.image} alt={`${selected.title} screenshot`} className="mb-3 w-full rounded-(--r-card) object-cover" />
           <h3 className="mb-1 text-sm font-medium text-text">{selected.title}</h3>
@@ -182,7 +184,7 @@ export function Finder() {
               <dd className="text-text-2">{selected.tech.length} technologies</dd>
             </div>
           </dl>
-        </aside>
+        </Sidebar>
       )}
     </div>
   )

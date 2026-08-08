@@ -239,6 +239,12 @@ body[data-mode="desktop"] {
         )
         padding-box,
       linear-gradient(rgb(255 255 255 / 0.04), rgb(255 255 255 / 0.015)) padding-box,
+      /* A real, if slight, dark fill rather than pure transparency. Tahoe's
+         sidebars visibly darken what is behind them, and without this the
+         tier's only defence for --os-text-2 body copy would be whatever
+         the wallpaper happens to be - which fails the moment someone drops
+         a bright JPG into public/wallpapers. */
+        linear-gradient(rgb(18 18 21 / 0.3), rgb(18 18 21 / 0.24)) padding-box,
       linear-gradient(rgb(255 255 255 / 0.09), rgb(255 255 255 / 0.03)) border-box;
     backdrop-filter: blur(20px) saturate(150%);
     box-shadow: none;
