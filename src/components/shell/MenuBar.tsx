@@ -1,12 +1,13 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { GithubLogo, LinkedinLogo, BookOpen } from "@phosphor-icons/react/dist/ssr"
+import { GithubLogo, LinkedinLogo } from "@phosphor-icons/react/dist/ssr"
 import { useOS } from "@/os/store"
 import { apps, type AppId } from "@/data/apps"
 import { socials } from "@/data/socials"
 import { MENUBAR_H } from "@/os/types"
 import { Menu, type MenuItemDef } from "./Menu"
+import { ControlCenter } from "./ControlCenter"
 import { WALLPAPERS } from "./Wallpaper"
 import { cn } from "@/lib/utils"
 
@@ -190,16 +191,12 @@ export function MenuBar() {
         />
       </div>
 
+      {/* Tahoe's menu bar consolidates its right side into Control Center
+          rather than a loose row of controls. Reader view moved in there;
+          GitHub and LinkedIn stay out because they are navigation, not
+          system state. See plan/20-tahoe-refinement.md phase E. */}
       <div className="flex items-center gap-3">
-        <button
-          type="button"
-          onClick={() => setMode("reader")}
-          aria-label="Switch to Reader view"
-          className="flex items-center gap-1 os-press rounded-(--r-pill) px-2 py-0.5 text-xs text-text-2 hover:bg-panel-3 hover:text-text"
-        >
-          <BookOpen size={13} weight="light" />
-          Reader view
-        </button>
+        <ControlCenter />
         <a
           href={socials.github}
           target="_blank"
