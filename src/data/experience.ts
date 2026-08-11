@@ -33,10 +33,10 @@ export const experience: Role[] = [
     summary:
       "Joined an early-stage autonomous AI engineering startup as an intern and was promoted to full-time in three months. Owns the website, the backend behind it, and the LLM features inside the product.",
     bullets: [
-      "Built and published neo-mcp, an open-source MIT-licensed MCP server on PyPI that puts NEO inside Claude Code, Cursor, VS Code, Zed and Codex — owning its tool schemas, structured outputs, function calling, auth and error contracts across 45 releases in 4 months.",
+      "Built and published neo-mcp, an open-source MIT-licensed MCP server on PyPI that puts NEO inside Claude Code, Cursor, VS Code, Zed and Codex. I own its tool schemas, structured outputs, function calling, auth and error contracts, across 45 releases in 4 months.",
       "Architected NeoClaw, a messaging-first agent orchestration layer that turns one Telegram or WhatsApp message into multi-step work through subagents over MCP, with 50+ tools behind a single contract, loop detection, confidence-based escalation to a human, and LLM tracing.",
-      "Shipped three production LLM features on the Claude API and LangChain — a research agent, a PDF parser and a dataset processor — plus the product's RAG pipelines.",
-      "Open-sourced the Ornith evaluation framework and used it to benchmark models head-to-head, so output quality was measured before any model change shipped; wrote NEO's public model comparisons off those benchmarks.",
+      "Shipped three production LLM features on the Claude API and LangChain: a research agent, a PDF parser and a dataset processor, plus the product's RAG pipelines.",
+      "Open-sourced the Ornith evaluation framework and used it to benchmark models against each other, so output quality was measured before any model change shipped. NEO's public model comparisons were written off those benchmarks.",
       "Led the v1-to-v2 REST API migration and full React rebuild of heyneo.com as the only engineer, reworking product pages, user flows and dashboards end to end, and rebuilt the developer docs at docs.heyneo.com on Next.js.",
       "Owns the Node.js/Express and MongoDB backend: tuned hot paths with compound indexes and aggregation pipelines, added Redis caching and rate limiting so agent traffic could not overwhelm the database, and built OAuth 2.0 and JWT auth flows with Jest coverage on critical routes.",
       "Ships every change through Git, GitHub Actions CI/CD, Docker, AWS and Vercel.",
@@ -86,7 +86,7 @@ export const experience: Role[] = [
     summary:
       "Built scalability modules and optimized REST interfaces for a high-traffic e-commerce platform.",
     bullets: [
-      "Developed Node.js and Express backend API layers with robust CRUD routes.",
+      "Developed Node.js and Express API layers with full CRUD routes.",
       "Integrated JWT authentication and designed GraphQL schema queries.",
       "Documented payment and user APIs using Swagger UI, and containerized the workspace with Docker.",
     ],

@@ -41,9 +41,15 @@ const browser = await chromium.launch({ channel: 'chrome' });
     `${await page.locator('[role="region"]').count()} open`);
 
   // wallpaper actually loaded (not the css fallback)
+  // Match the wallpaper specifically. This used to be `img[data-nimg]`,
+  // which resolved to whichever project screenshot happened to come first in
+  // the always-present ReaderView tree - so it passed while asserting
+  // nothing about the wallpaper at all.
   const wp = await page.evaluate(() => {
-    const i = document.querySelector('img[data-nimg]');
-    return i ? { ok: i.complete && i.naturalWidth > 0, src: i.currentSrc.slice(-60) } : null;
+    const i = [...document.querySelectorAll('img[data-nimg]')].find((el) =>
+      decodeURIComponent(el.currentSrc || el.src).includes('/wallpapers/')
+    );
+    return i ? { ok: i.complete && i.naturalWidth > 0, src: decodeURIComponent(i.currentSrc).slice(-52) } : null;
   });
   check('wallpaper image decoded', !!wp && wp.ok, wp ? wp.src : 'no img element');
 

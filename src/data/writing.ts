@@ -40,7 +40,7 @@ export const posts: Post[] = [
     body: [
       {
         kind: "p",
-        text: "I built a window manager in React — drag, eight-handle resize, stacking, minimise, Mission Control. The thing I expected to be hard was resize geometry. The thing that actually decided whether it felt real was a single rule I wrote down before any other line of the spec.",
+        text: "I built a window manager in React: drag, eight-handle resize, stacking, minimise, Mission Control. The thing I expected to be hard was resize geometry. The thing that actually decided whether it felt real was a single rule I wrote down before any other line of the spec.",
       },
       { kind: "quote", text: "During a drag or a resize, React state is never touched." },
       {
@@ -84,12 +84,12 @@ const y = useMotionValue(rect.y)
 x.set(clampX(e.clientX - dx))
 y.set(clampY(e.clientY - dy))
 
-// pointerup — the only store write in the whole gesture
+// pointerup: the only store write in the whole gesture
 commitRect(id, { ...rect, x: x.get(), y: y.get() })`,
       },
       {
         kind: "p",
-        text: "The store now mutates only on discrete user events: open, close, focus, minimise, drag-end. Nine open windows means at most nine writes per interaction rather than sixty per second per window. React DevTools Profiler records zero renders across an entire drag — that is the acceptance test, and it is a binary one.",
+        text: "The store now mutates only on discrete user events: open, close, focus, minimise, drag-end. Nine open windows means at most nine writes per interaction rather than sixty per second per window. React DevTools Profiler records zero renders across an entire drag. That is the acceptance test, and it is a binary one.",
       },
       {
         kind: "p",
@@ -113,7 +113,7 @@ const rotateY = useSpring(
       },
       {
         kind: "p",
-        text: "Two details matter more than the numbers. First, rotateX inverts against vertical velocity — dragging down should tip the top of the window away from you, and getting the sign wrong is immediately, unplaceably wrong to look at.",
+        text: "Two details matter more than the numbers. First, rotateX inverts against vertical velocity. Dragging down should tip the top of the window away from you, and getting the sign wrong is immediately, unplaceably wrong to look at.",
       },
       {
         kind: "p",
@@ -126,7 +126,7 @@ const rotateY = useSpring(
       { kind: "h", text: "The generalisation" },
       {
         kind: "p",
-        text: "Continuous input — drag, resize, scroll, pointer-tracked lighting — does not belong in React state. State is for discrete facts your tree needs to re-render against. A cursor position mid-gesture is neither discrete nor something the tree needs. Write it to the element and tell the store once, when the gesture produces a fact worth keeping.",
+        text: "Continuous input does not belong in React state. Not drag, not resize, not scroll, not pointer-tracked lighting. State is for discrete facts your tree needs to re-render against. A cursor position mid-gesture is neither discrete nor something the tree needs. Write it to the element and tell the store once, when the gesture produces a fact worth keeping.",
       },
     ],
   },
@@ -140,7 +140,7 @@ const rotateY = useSpring(
     body: [
       {
         kind: "p",
-        text: "I was auditing corner radii — checking that nested elements sat concentrically inside their containers — when I realised the containers had no radius at all. None of them did. Every window, menu, card and chip in the entire build had been rendering as a hard rectangle, and I had been looking at it every day without seeing it.",
+        text: "I was auditing corner radii, checking that nested elements sat concentrically inside their containers, when I realised the containers had no radius at all. None of them did. Every window, menu, card and chip in the entire build had been rendering as a hard rectangle, and I had been looking at it every day without seeing it.",
       },
       { kind: "h", text: "The bug" },
       {
@@ -162,7 +162,7 @@ const rotateY = useSpring(
       },
       {
         kind: "p",
-        text: "`border-radius: --r-window` is not a parse error in a way anything reports — it is an invalid declaration, so the browser drops it and computes 0px. No build warning. No console message. No red squiggle. The class was still in the markup, still in the compiled stylesheet, and doing nothing.",
+        text: "`border-radius: --r-window` is not a parse error in a way anything reports. It is an invalid declaration, so the browser drops it and computes 0px. No build warning. No console message. No red squiggle. The class was still in the markup, still in the compiled stylesheet, and doing nothing.",
       },
       {
         kind: "p",
@@ -183,7 +183,7 @@ const rotateY = useSpring(
       },
       {
         kind: "p",
-        text: "There is also a plainer reason: a 20px radius is not something you miss by its absence. You notice a wrong radius. You do not notice a missing one, because square windows still look like windows. The bug was invisible precisely because it was total — with nothing rounded, there was no inconsistency to catch the eye.",
+        text: "There is also a plainer reason: a 20px radius is not something you miss by its absence. You notice a wrong radius. You do not notice a missing one, because square windows still look like windows. The bug was invisible precisely because it was total. With nothing rounded, there was no inconsistency to catch the eye.",
       },
       { kind: "h", text: "What I changed about how I check" },
       {
@@ -192,7 +192,7 @@ const rotateY = useSpring(
       },
       {
         kind: "p",
-        text: "That is now a rule in the project's preflight document, alongside two neighbours it earned by the same route. Never hand-write `-webkit-backdrop-filter`: Lightning CSS silently drops the unprefixed property when both are present with identical values, so writing both gets you fewer, not more. And delete `.next` before trusting that a CSS change did not apply — Turbopack's persistent cache will happily serve a stale chunk under an unchanged content hash.",
+        text: "That is now a rule in the project's preflight document, alongside two neighbours it earned by the same route. Never hand-write `-webkit-backdrop-filter`: Lightning CSS silently drops the unprefixed property when both are present with identical values, so writing both gets you fewer, not more. And delete `.next` before trusting that a CSS change did not apply. Turbopack's persistent cache will happily serve a stale chunk under an unchanged content hash.",
       },
       {
         kind: "p",
@@ -220,9 +220,9 @@ const rotateY = useSpring(
       {
         kind: "list",
         items: [
-          "It ships in Chromium only. Safari and Firefox get nothing — and Safari is the browser most likely to be running on the hardware this is imitating.",
+          "It ships in Chromium only. Safari and Firefox get nothing, and Safari is the browser most likely to be running on the hardware this is imitating.",
           "It pixelates. SVG displacement has no super-sampling, so the bent edge is visibly stair-stepped at exactly the place you were trying to make look expensive.",
-          "The filter cannot resize with its element. Every window here is draggable and resizable, which means regenerating the filter on every frame of every drag — reintroducing precisely the per-frame work the rest of the architecture exists to avoid.",
+          "The filter cannot resize with its element. Every window here is draggable and resizable, which means regenerating the filter on every frame of every drag. That reintroduces precisely the per-frame work the rest of the architecture exists to avoid.",
         ],
       },
       {
@@ -237,7 +237,7 @@ const rotateY = useSpring(
       {
         kind: "list",
         items: [
-          "A lit rim — brighter at the top, fading by the bottom, so the surface has an edge that catches light.",
+          "A lit rim, brighter at the top and fading by the bottom, so the surface has an edge that catches light.",
           "A specular highlight that tracks the cursor, the way real Liquid Glass illuminates at the touch point.",
           "A layered sheen across the face rather than a single flat tint.",
           "Progressive edge blur where content passes beneath chrome, instead of a hard clip.",
@@ -266,16 +266,16 @@ const rotateY = useSpring(
       },
       {
         kind: "p",
-        text: "Everything is a background layer rather than a positioned pseudo-element, because backgrounds always paint beneath an element's real children with zero stacking-order care. `--gx` and `--gy` are written straight to `element.style` by a pointer hook — never through React state, for the reasons in the drag post.",
+        text: "Everything is a background layer rather than a positioned pseudo-element, because backgrounds always paint beneath an element's real children with zero stacking-order care. `--gx` and `--gy` are written straight to `element.style` by a pointer hook, never through React state, for the reasons in the drag post.",
       },
       { kind: "h", text: "Glass is defined by what is behind it" },
       {
         kind: "p",
-        text: "The most expensive lesson in this whole area: I spent a while convinced the material was too weak, tuning blur radii and rim alphas, getting nowhere. The material was fine. The wallpaper was the problem — a dark gradient sitting at low alpha over a near-black background, so every blur, sheen and rim was faithfully sampling nothing at all.",
+        text: "The most expensive lesson in this whole area: I spent a while convinced the material was too weak, tuning blur radii and rim alphas, getting nowhere. The material was fine. The wallpaper was the problem: a dark gradient sitting at low alpha over a near-black background, so every blur, sheen and rim was faithfully sampling nothing at all.",
       },
       {
         kind: "p",
-        text: "There was no fix available inside the glass. A material with nothing behind it has no appearance to adjust. Raising the wallpaper's luminance — and, later, replacing it with an image that has real structure at the 20–200px scale the blur samples — fixed the material without touching a single glass value.",
+        text: "There was no fix available inside the glass. A material with nothing behind it has no appearance to adjust. Raising the wallpaper's luminance fixed the material without touching a single glass value. Later I replaced it entirely with an image that has real structure at the 20 to 200px scale the blur actually samples.",
       },
       { kind: "h", text: "Three tiers, and one contrast guarantee" },
       {
@@ -284,7 +284,7 @@ const rotateY = useSpring(
       },
       {
         kind: "p",
-        text: "One accessibility note I got wrong the first time. Under `prefers-reduced-transparency`, the instinct is to flatten everything to an opaque panel. macOS does not do that — it frosts *harder*. The material stays a material; it just stops letting content through. Flattening removes the design; frosting preserves it while satisfying the request that was actually made.",
+        text: "One accessibility note I got wrong the first time. Under `prefers-reduced-transparency`, the instinct is to flatten everything to an opaque panel. macOS does not do that. It frosts *harder*. The material stays a material; it just stops letting content through. Flattening removes the design; frosting preserves it while satisfying the request that was actually made.",
       },
     ],
   },
@@ -298,7 +298,7 @@ const rotateY = useSpring(
     body: [
       {
         kind: "p",
-        text: "My portfolio boots into a macOS desktop. It has a real window manager — drag, resize, stacking, Mission Control, dock magnification — nine apps, reduced-motion and reduced-transparency paths, and a reader view for people without JavaScript. I am genuinely proud of the engineering.",
+        text: "My portfolio boots into a macOS desktop. It has a real window manager with drag, resize, stacking, Mission Control and dock magnification, nine apps, reduced-motion and reduced-transparency paths, and a reader view for people without JavaScript. I am genuinely proud of the engineering.",
       },
       {
         kind: "p",
@@ -307,7 +307,7 @@ const rotateY = useSpring(
       { kind: "h", text: "How that happens" },
       {
         kind: "p",
-        text: "The boot sequence ended with one line: `open('finder')`. It was a reasonable-looking decision — show the work immediately, skip the throat-clearing. And every single time I loaded the site I already knew whose it was, so the gap was invisible to the only person who ever looked at it during development.",
+        text: "The boot sequence ended with one line: `open('finder')`. It was a reasonable-looking decision: show the work immediately, skip the throat-clearing. And every single time I loaded the site I already knew whose it was, so the gap was invisible to the only person who ever looked at it during development.",
       },
       {
         kind: "p",
@@ -316,26 +316,26 @@ const rotateY = useSpring(
       { kind: "h", text: "The hierarchy I use now" },
       {
         kind: "p",
-        text: "A portfolio has one job — convince a stranger with about forty seconds that you can do the work, then give them a way to act. Against that, not all content is equally persuasive. Roughly, most to least:",
+        text: "A portfolio has one job. Convince a stranger with about forty seconds that you can do the work, then give them a way to act. Against that, not all content is equally persuasive. Roughly, most to least:",
       },
       {
         kind: "list",
         items: [
           "Shipped things people actually use",
           "Code someone can read",
-          "Writing that shows judgment — why X over Y",
+          "Writing that shows judgment, meaning why you picked X over Y",
           "Specific outcomes with numbers",
           "Descriptions of what you built",
         ],
       },
       {
         kind: "p",
-        text: "Almost every developer portfolio lives entirely at the bottom of that list, mine included. Seven projects, each described by what the product does, not one number between them. Meanwhile the strongest evidence on the site was the site itself — and it was doing that work silently, three clicks deep, behind a window that did not say who had built it.",
+        text: "Almost every developer portfolio lives entirely at the bottom of that list, mine included. Seven projects, each described by what the product does, not one number between them. Meanwhile the strongest evidence on the site was the site itself, and it was doing that work silently, three clicks deep, behind a window that did not say who had built it.",
       },
       { kind: "h", text: "What changed" },
       {
         kind: "p",
-        text: "Boot now opens nothing. The landing view is the desktop, with the name set large on the wallpaper, receding behind windows once you open something. It cost about forty lines. It is unambiguously the highest-value change I have made to this project, and it took me a peer's site — worse than mine on capability, better on first impression — to see it.",
+        text: "Boot now opens nothing. The landing view is the desktop, with the name set large on the wallpaper, receding behind windows once you open something. It cost about forty lines. It is unambiguously the highest-value change I have made to this project, and it took a peer's site to make me see it. Theirs was worse than mine on capability and better on first impression.",
       },
       {
         kind: "quote",

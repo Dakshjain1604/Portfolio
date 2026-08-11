@@ -11,7 +11,7 @@ export const profile = {
    *  was here: it names the span (frontend to backend to the model) rather
    *  than listing capabilities. */
   tagline:
-    "Full-stack engineer who builds and ships AI product features end to end \u2014 from the React frontend to the Python backend to the LLM systems behind them.",
+    "Full-stack engineer who builds and ships AI product features end to end, from the React frontend to the Python backend to the LLM systems behind them.",
 
   /**
    * Shown in the desktop hero and the About panel. Recruiters look for this
@@ -29,21 +29,27 @@ export const profile = {
     detail: "Based in Jaipur, currently at NEO. Happy to talk agentic systems, MCP, or RAG.",
   },
 
+  /**
+   * Written to sound like a person. The previous version opened with
+   * "the intersection of robust full-stack systems and state-of-the-art AI
+   * orchestration" and closed on "not just intelligent, but also resilient,
+   * performant, and highly reliable" - stock adjectives and a not-just-X-but-Y
+   * construction, which is the register every generated bio defaults to and
+   * tells a reader nothing. Say what the work actually is instead.
+   */
   bio: [
     {
       parts: [
-        { text: "I am a software engineer focused on the intersection of " },
-        { text: "robust full-stack systems", bold: true },
-        { text: " and " },
-        { text: "state-of-the-art AI orchestration", bold: true },
+        { text: "I am a software engineer who works across the " },
+        { text: "whole stack and the LLM systems behind it", bold: true },
         {
-          text: ". I enjoy building systems that are not just intelligent, but also resilient, performant, and highly reliable under production loads.",
+          text: ". In practice that means React and Next.js at the front, Python and Node underneath, and most of my time going into the parts in between: tool schemas, retrieval, and the failure cases that only turn up under real traffic.",
         },
       ],
     },
     {
       parts: [
-        { text: "Currently, I am a " },
+        { text: "Right now I am a " },
         { text: "Full-Stack & AI Engineer", bold: true },
         { text: " at " },
         { text: "NEO", bold: true, link: "https://heyneo.com" },
@@ -52,11 +58,11 @@ export const profile = {
         },
         { text: "neo-mcp", bold: true, link: "https://pypi.org/project/neo-mcp/" },
         {
-          text: ", the open-source MCP server that puts NEO inside Claude Code, Cursor, VS Code, Zed and Codex \u2014 45 releases in 4 months \u2014 and architected ",
+          text: ", the open-source MCP server that puts NEO inside Claude Code, Cursor, VS Code, Zed and Codex, now past 45 releases. I architected ",
         },
         { text: "NeoClaw", bold: true },
         {
-          text: ", a messaging-first orchestration layer that turns a single Telegram or WhatsApp message into multi-step work through subagents over MCP, with 50+ tools behind one contract. I also led the v1-to-v2 API migration and React rebuild of heyneo.com as the ",
+          text: ", a messaging-first orchestration layer that turns a single Telegram or WhatsApp message into multi-step work through subagents over MCP, with 50+ tools behind one contract. And I led the v1-to-v2 API migration and React rebuild of heyneo.com as the ",
         },
         { text: "only engineer", bold: true },
         { text: " on it." },
@@ -64,15 +70,11 @@ export const profile = {
     },
     {
       parts: [
-        { text: "I build production-grade solutions and " },
-        { text: "agentic AI systems", bold: true },
-        { text: " using " },
-        { text: "Next.js, Node.js, Python, and GenAI", bold: true },
+        { text: "Outside work I keep building " },
+        { text: "developer tools", bold: true },
         {
-          text: " (such as LangChain, Claude API, and custom agent toolsets). I am passionate about ",
+          text: ", usually small ones that scratch a specific itch: a CLI coding agent that runs offline on local models, a harness for grading LLM output against a rubric, a document platform with hybrid retrieval. I like the problems where the model is the easy part and everything around it is not.",
         },
-        { text: "developer tooling", bold: true },
-        { text: ", automation, and bridging the gap between raw model intelligence and scalable, real-world products." },
       ],
     },
   ] as BioParagraph[],
@@ -91,7 +93,7 @@ export const profile = {
   education: {
     degree: "B.Tech, Computer Science & Engineering (Cloud Computing)",
     school: "JECRC University, Jaipur",
-    period: "2022 \u2013 2026",
+    period: "2022 to 2026",
     cgpa: "8.6/10",
     certifications: [
       "Microsoft Azure Fundamentals",

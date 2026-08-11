@@ -118,7 +118,7 @@ export const projects: Project[] = [
     image: "/images/projects/documind-ai.png",
     tech: ["Next.js 15", "React 19", "FastAPI", "LangChain", "ChromaDB", "MongoDB"],
     metrics: [
-      { label: "Retrieval", value: "Hybrid \u2014 dense + BM25" },
+      { label: "Retrieval", value: "Dense vectors + BM25" },
       { label: "Ingestion", value: "OCR via Tesseract" },
     ],
     github: "https://github.com/Dakshjain1604/DocuMind-Ai",
