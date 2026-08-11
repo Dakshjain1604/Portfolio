@@ -33,7 +33,13 @@
      macOS dark content areas sit around #1e1e1e; each step up is a
      real elevation, not a decorative tint. */
   --os-void: #0d0d0d;
-  --os-chrome: rgb(44 44 44 / 0.6);
+  /* 0.6 let 40% of the wallpaper through the window frame, and the frame is
+     most of what you see of a window: title bar, the gutters between panes,
+     every edge. Measured over the blue wallpaper it put 43 points of chroma
+     at hue 216 into the title bar, which is what "the windows are blue"
+     was. 0.82 keeps a real material without the frame becoming a tint of
+     whatever is behind it. */
+  --os-chrome: rgb(44 44 44 / 0.82);
   --os-panel: #1e1e1e;
   --os-panel-2: #262626;
   --os-panel-3: #323232;
@@ -296,11 +302,13 @@ body[data-mode="desktop"] {
           rgb(255 255 255 / 0.3)
         )
         border-box;
-    /* saturate was 190%, which is where most of the colour cast came from:
-       over a saturated wallpaper it does not read as "vivid glass", it
-       reads as the window being tinted by whatever is behind it. 140% still
-       lifts the material without staining the chrome. */
-    backdrop-filter: blur(30px) saturate(140%);
+    /* saturate BELOW 100, not above it. This was 190% and then 140%, both
+       of which amplify the backdrop's colour - exactly backwards for chrome
+       that has to stay neutral over an arbitrary wallpaper. Dropping it to
+       55% keeps the luminance structure the blur picks up, which is what
+       actually makes glass read as glass (you see light and dark shapes
+       move behind it), while muting the hue that was staining the frame. */
+    backdrop-filter: blur(30px) saturate(55%);
     box-shadow:
       inset 0 1px 0 var(--os-edge-inner),
       var(--shadow-rest);
@@ -326,9 +334,9 @@ body[data-mode="desktop"] {
          tier's only defence for --os-text-2 body copy would be whatever
          the wallpaper happens to be - which fails the moment someone drops
          a bright JPG into public/wallpapers. */
-        linear-gradient(rgb(18 18 21 / 0.62), rgb(18 18 21 / 0.56)) padding-box,
+        linear-gradient(rgb(18 18 21 / 0.70), rgb(18 18 21 / 0.64)) padding-box,
       linear-gradient(rgb(255 255 255 / 0.09), rgb(255 255 255 / 0.03)) border-box;
-    backdrop-filter: blur(20px) saturate(120%);
+    backdrop-filter: blur(20px) saturate(60%);
     box-shadow: none;
   }
 
@@ -357,7 +365,7 @@ body[data-mode="desktop"] {
      letting text sit on a real surface. */
   .os-plate {
     background: rgb(28 28 31 / 0.95);
-    backdrop-filter: blur(12px) saturate(105%);
+    backdrop-filter: blur(12px) saturate(80%);
     border: 1px solid rgb(255 255 255 / 0.05);
   }
 
@@ -412,7 +420,7 @@ body[data-mode="desktop"] {
           rgb(255 255 255 / 0.03) 100%
         )
         padding-box,
-      linear-gradient(rgb(20 20 23 / 0.28), rgb(20 20 23 / 0.28)) padding-box,
+      linear-gradient(rgb(20 20 23 / 0.58), rgb(20 20 23 / 0.58)) padding-box,
       conic-gradient(
           from 210deg at 50% 50%,
           rgb(255 255 255 / 0.26),
@@ -422,7 +430,7 @@ body[data-mode="desktop"] {
           rgb(255 255 255 / 0.26)
         )
         border-box;
-    backdrop-filter: blur(38px) saturate(160%);
+    backdrop-filter: blur(38px) saturate(70%);
   }
   /* Clear is meant to be more transparent than the default, not to undo the
      contrast guarantee: body copy still has to clear 4.5:1 on it. */
