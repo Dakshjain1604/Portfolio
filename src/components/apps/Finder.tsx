@@ -2,8 +2,17 @@
 
 import { useEffect, useMemo, useState } from "react"
 import { motion } from "framer-motion"
-import { GithubLogo, ArrowSquareOut, MagnifyingGlass, Star } from "@phosphor-icons/react/dist/ssr"
+import {
+  GithubLogo,
+  ArrowSquareOut,
+  MagnifyingGlass,
+  Star,
+  Package,
+  BookOpen,
+} from "@phosphor-icons/react/dist/ssr"
 import { fetchGithub, repoSlug, starsByRepo, type GithubResult } from "@/lib/github"
+import { fetchPypi, packageFor, type PypiResult } from "@/lib/pypi"
+import type { ProjectLink } from "@/data/projects"
 import { projects, type ProjectTag } from "@/data/projects"
 import { Chip } from "@/components/primitives/Chip"
 import { EmptyState } from "@/components/primitives/EmptyState"
@@ -16,6 +25,31 @@ const SOURCES: Source[] = [
   { id: "web", label: "Web" },
   { id: "neo", label: "Built with NEO" },
 ]
+
+const LINK_ICONS = {
+  source: GithubLogo,
+  live: ArrowSquareOut,
+  package: Package,
+  docs: BookOpen,
+} as const
+
+function LinkButton({ link }: { link: ProjectLink }) {
+  const Icon = LINK_ICONS[link.icon ?? "live"]
+  return (
+    <a
+      href={link.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`${link.label}, opens in a new tab`}
+      className={`os-press flex items-center gap-1.5 rounded-(--r-pill) px-2.5 py-1.5 text-xs ${
+        link.primary ? "bg-accent-soft text-link" : "bg-panel-3 text-text"
+      }`}
+    >
+      <Icon size={13} weight="regular" />
+      {link.label}
+    </a>
+  )
+}
 
 function norm(s: string) {
   return s.toLowerCase().replace(/[\s.\-_]/g, "")
@@ -39,6 +73,18 @@ export function Finder() {
     }
   }, [])
   const stars = useMemo(() => starsByRepo(gh), [gh])
+
+  // Live PyPI figures. Unlike GitHub this needs no token, so it works out
+  // of the box - see the comment in app/api/pypi/route.ts for why these are
+  // fetched rather than written into the data file.
+  const [pypi, setPypi] = useState<PypiResult | null>(null)
+  useEffect(() => {
+    let alive = true
+    fetchPypi().then((d) => alive && setPypi(d))
+    return () => {
+      alive = false
+    }
+  }, [])
   const starsFor = (github?: string) => {
     const n = stars.get(repoSlug(github) ?? "")
     return n && n > 0 ? n : null
@@ -175,31 +221,21 @@ export function Finder() {
               <Chip key={t}>{t}</Chip>
             ))}
           </div>
+          {/* `links` when the project names its own, otherwise the
+              Source/Live default. See ProjectLink in data/projects.ts. */}
           <div className="mb-4 flex flex-wrap gap-2">
-            {selected.github && (
-              <a
-                href={selected.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`${selected.title} source on GitHub, opens in a new tab`}
-                className="flex items-center gap-1.5 os-press rounded-(--r-pill) bg-panel-3 px-2.5 py-1.5 text-xs text-text"
-              >
-                <GithubLogo size={13} weight="light" />
-                Source
-              </a>
-            )}
-            {selected.live && (
-              <a
-                href={selected.live}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`${selected.title} live demo, opens in a new tab`}
-                className="flex items-center gap-1.5 os-press rounded-(--r-pill) bg-accent-soft px-2.5 py-1.5 text-xs text-link"
-              >
-                <ArrowSquareOut size={13} weight="light" />
-                Live
-              </a>
-            )}
+            {(
+              selected.links ?? [
+                ...(selected.github
+                  ? [{ label: "Source", href: selected.github, icon: "source" as const }]
+                  : []),
+                ...(selected.live
+                  ? [{ label: "Live", href: selected.live, icon: "live" as const, primary: true }]
+                  : []),
+              ]
+            ).map((l) => (
+              <LinkButton key={l.href} link={l} />
+            ))}
           </div>
           {/* Metrics first, when they exist: a number is the most persuasive
               thing on this panel. "Kind: AI System" and "Tech: 4
@@ -207,6 +243,22 @@ export function Finder() {
               already see from the chips above - filler where the evidence
               should be. */}
           <dl className="space-y-1.5 text-[11px]">
+            {(() => {
+              const pkg = packageFor(pypi, selected.pypi)
+              if (!pkg) return null
+              return (
+                <>
+                  <div className="flex justify-between gap-3">
+                    <dt className="text-text-2">Releases</dt>
+                    <dd className="font-medium text-text">{pkg.releases}</dd>
+                  </div>
+                  <div className="flex justify-between gap-3">
+                    <dt className="text-text-2">Latest</dt>
+                    <dd className="font-mono font-medium text-text">v{pkg.version}</dd>
+                  </div>
+                </>
+              )
+            })()}
             {selected.metrics?.map((m) => (
               <div key={m.label} className="flex justify-between gap-3">
                 <dt className="text-text-2">{m.label}</dt>

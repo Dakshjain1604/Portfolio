@@ -121,17 +121,36 @@ export function ReaderView() {
                 <p className="text-sm text-text-2">{p.outcome}</p>
                 <p className="mt-2 text-[15px] leading-[1.7] text-text-2">{p.description}</p>
                 <p className="mt-2 text-sm text-text-2">{p.tech.join(", ")}</p>
-                <p className="mt-2 flex gap-4 text-sm">
-                  {p.github && (
-                    <a href={p.github} target="_blank" rel="noopener noreferrer" className="text-text underline underline-offset-[3px]">
-                      Source
+                {p.metrics && (
+                  <dl className="mt-2 flex flex-wrap gap-x-6 gap-y-1 text-sm text-text-2">
+                    {p.metrics.map((m) => (
+                      <div key={m.label} className="flex gap-2">
+                        <dt>{m.label}:</dt>
+                        <dd className="text-text">{m.value}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                )}
+                {/* Mirrors Finder: a project's own `links` win over the
+                    Source/Live default, so the crawlable copy carries the
+                    same labels and destinations the app does. */}
+                <p className="mt-2 flex flex-wrap gap-4 text-sm">
+                  {(
+                    p.links ?? [
+                      ...(p.github ? [{ label: "Source", href: p.github }] : []),
+                      ...(p.live ? [{ label: "Live", href: p.live }] : []),
+                    ]
+                  ).map((l) => (
+                    <a
+                      key={l.href}
+                      href={l.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-text underline underline-offset-[3px]"
+                    >
+                      {l.label}
                     </a>
-                  )}
-                  {p.live && (
-                    <a href={p.live} target="_blank" rel="noopener noreferrer" className="text-text underline underline-offset-[3px]">
-                      Live
-                    </a>
-                  )}
+                  ))}
                 </p>
               </article>
             ))}

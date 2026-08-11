@@ -1,5 +1,22 @@
 export type ProjectTag = "ai" | "web" | "neo"
 
+/**
+ * An explicitly labelled link.
+ *
+ * The `github`/`live` pair below covers the common case, but it hardcodes
+ * two labels - "Source" and "Live" - and neither is right for every project.
+ * neo-mcp ships on PyPI: calling a package page "Live" is wrong, and it has
+ * a docs site and a homepage that the pair has nowhere to put. When `links`
+ * is present it replaces the default buttons entirely.
+ */
+export type ProjectLink = {
+  label: string
+  href: string
+  /** Renders as the accent-filled button. At most one per project. */
+  primary?: boolean
+  icon?: "source" | "live" | "package" | "docs"
+}
+
 export type Project = {
   id: string
   title: string
@@ -7,8 +24,14 @@ export type Project = {
   description: string
   image: string
   tech: string[]
+  /** Public repo. Also the key for the live star count, so it is kept even
+   *  when `links` overrides what is rendered. */
   github?: string
   live?: string
+  /** Overrides the default Source/Live buttons when present. */
+  links?: ProjectLink[]
+  /** PyPI package name. Drives live release/version figures via /api/pypi. */
+  pypi?: string
   tags: ProjectTag[]
   /**
    * The number that makes the project believable. Latency, scale, accuracy,
@@ -43,25 +66,36 @@ export const projects: Project[] = [
     title: "neo-mcp",
     outcome: "Open-source MCP server on PyPI that puts NEO inside Claude Code, Cursor, VS Code, Zed and Codex.",
     description:
-      "The surface that brings NEO, an autonomous AI engineer for ML, LLM and data workflows, into every major agentic editor. Owns the tool schemas, structured outputs, function calling, auth and error contracts behind a single MCP interface. MIT licensed, shipped across 45 releases in 4 months.",
-    // PLACEHOLDER: this is the Ai-Coding-Agent screenshot standing in for a
-    // shot that does not exist yet. It shows a CLI generating code, which is
-    // not what neo-mcp is - swap it for a real capture (an editor with the
-    // NEO tools listed, or the docs page) when you have one.
-    image: "/images/projects/ai-coding-agent.png",
-    tech: ["Python", "MCP", "PyPI", "Claude API", "Tool Calling"],
-    // The GitHub repo PyPI points at (NeoResearchAI/MCPServer) is private,
-    // so it is deliberately not linked - a 404 is worse than no link. PyPI
-    // and the docs are both public and verified.
-    live: "https://pypi.org/project/neo-mcp/",
-    // "neo" means "built *with* NEO the product" for the other two entries
-    // that carry it; this one IS NEO's own MCP server, so the tag would read
-    // as the wrong claim under a sidebar labelled "Built with NEO".
+      "The surface that brings NEO, an autonomous AI engineer for ML, LLM and data workflows, into every major agentic coding editor. Owns the tool schemas, structured outputs, function calling, auth and error contracts behind a single MCP interface, so one protocol covers model evals, prompt testing, RAG debugging, benchmarks, fine-tuning and output analysis. MIT licensed, Python 3.11+, shipped continuously since launch.",
+    image: "/images/projects/neo-mcp.png",
+    tech: ["Python", "MCP", "PyPI", "Claude API", "Tool Calling", "Structured Outputs"],
+    pypi: "neo-mcp",
+    /**
+     * Explicit links, because the default Source/Live pair gets this one
+     * wrong twice over.
+     *
+     * There is no GitHub link on purpose. PyPI's metadata points at
+     * NeoResearchAI/MCPServer, which is private - a "Source" button that
+     * 404s is worse than no button, and worse still next to the words "open
+     * source". The MIT-licensed source ships as an sdist on PyPI, so
+     * "Source (sdist)" points where the source actually is.
+     */
+    links: [
+      { label: "PyPI", href: "https://pypi.org/project/neo-mcp/", icon: "package", primary: true },
+      { label: "Docs", href: "https://docs.heyneo.com/neo-mcp", icon: "docs" },
+      { label: "Source (sdist)", href: "https://pypi.org/project/neo-mcp/#files", icon: "source" },
+    ],
     tags: ["ai"],
+    /**
+     * Release count and version are NOT hardcoded here. The resume said "45
+     * releases in 4 months"; by the time this was wired up PyPI was already
+     * at 46, which is exactly how a portfolio metric quietly becomes a false
+     * one. Finder reads both live from /api/pypi.
+     */
     metrics: [
-      { label: "Releases", value: "45 in 4 months" },
       { label: "Editors supported", value: "5" },
-      { label: "License", value: "MIT, on PyPI" },
+      { label: "License", value: "MIT" },
+      { label: "Requires", value: "Python 3.11+" },
     ],
   },
   {
