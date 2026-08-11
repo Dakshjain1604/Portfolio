@@ -7,8 +7,11 @@ export const profile = {
   role: "Full-Stack & AI Engineer",
   employer: { name: "NEO", url: "https://heyneo.com" },
   location: "Jaipur, India",
+  /** The resume's own positioning line, which is sharper than the one that
+   *  was here: it names the span (frontend to backend to the model) rather
+   *  than listing capabilities. */
   tagline:
-    "Building production-grade AI systems across autonomous agent orchestration, MCP tooling, and RAG pipelines.",
+    "Full-stack engineer who builds and ships AI product features end to end \u2014 from the React frontend to the Python backend to the LLM systems behind them.",
 
   /**
    * Shown in the desktop hero and the About panel. Recruiters look for this
@@ -22,8 +25,8 @@ export const profile = {
   availability: {
     /** Drives the dot colour: green reads as reachable, amber as selective. */
     status: "open" as "open" | "selective" | "closed",
-    label: "Open to interesting problems",
-    detail: "Currently at NEO. Happy to talk agentic systems, MCP, or RAG.",
+    label: "Open to remote work or relocation",
+    detail: "Based in Jaipur, currently at NEO. Happy to talk agentic systems, MCP, or RAG.",
   },
 
   bio: [
@@ -45,14 +48,18 @@ export const profile = {
         { text: " at " },
         { text: "NEO", bold: true, link: "https://heyneo.com" },
         {
-          text: ", an early-stage startup pioneering autonomous AI engineering agents. Having joined as an intern and stepped into a full-time role within three months, I actively design and ship critical agentic systems. My work here ranges from building ",
+          text: ", an early-stage startup building autonomous AI engineering agents. I joined as an intern and was promoted to full-time within three months. I built and publish ",
         },
-        { text: "secure, multi-tenant Model Context Protocol (MCP) servers", bold: true },
-        { text: " to implementing " },
-        { text: "advanced RAG pipelines", bold: true },
-        { text: " and " },
-        { text: "multi-agent orchestration backends", bold: true },
-        { text: "." },
+        { text: "neo-mcp", bold: true, link: "https://pypi.org/project/neo-mcp/" },
+        {
+          text: ", the open-source MCP server that puts NEO inside Claude Code, Cursor, VS Code, Zed and Codex \u2014 45 releases in 4 months \u2014 and architected ",
+        },
+        { text: "NeoClaw", bold: true },
+        {
+          text: ", a messaging-first orchestration layer that turns a single Telegram or WhatsApp message into multi-step work through subagents over MCP, with 50+ tools behind one contract. I also led the v1-to-v2 API migration and React rebuild of heyneo.com as the ",
+        },
+        { text: "only engineer", bold: true },
+        { text: " on it." },
       ],
     },
     {
@@ -72,11 +79,28 @@ export const profile = {
 
   specs: [
     { label: "Role", value: "Full-Stack & AI Engineer" },
-    { label: "Company", value: "NEO" },
+    { label: "Company", value: "NEO (heyneo.com)" },
     { label: "Location", value: "Jaipur, India" },
     { label: "Focus", value: "Agent orchestration, MCP, RAG" },
     { label: "Since", value: "Oct 2025" },
+    { label: "Education", value: "B.Tech CSE, JECRC University" },
+    { label: "CGPA", value: "8.6 / 10" },
   ],
+
+  /** From the resume. Shown in About This Mac under the specs table. */
+  education: {
+    degree: "B.Tech, Computer Science & Engineering (Cloud Computing)",
+    school: "JECRC University, Jaipur",
+    period: "2022 \u2013 2026",
+    cgpa: "8.6/10",
+    certifications: [
+      "Microsoft Azure Fundamentals",
+      "Azure AI Fundamentals",
+      "Azure Data Fundamentals",
+      "Dynamics 365 Fundamentals",
+      "Data Science with Python",
+    ],
+  },
 
   pillars: [
     "Autonomous AI Agents",

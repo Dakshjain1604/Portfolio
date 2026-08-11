@@ -1,4 +1,10 @@
 import { chromium } from 'playwright';
+import { readFileSync } from 'node:fs';
+
+// Read the expected copy out of the source rather than hardcoding it, so
+// editing profile.ts cannot silently break this test (it already did once).
+const profileSrc = readFileSync(new URL('../../src/data/profile.ts', import.meta.url), 'utf8');
+const availabilityLabel = profileSrc.match(/availability:[\s\S]*?label:\s*"([^"]+)"/)[1];
 
 const BASE = process.argv[2] || process.env.BASE || 'http://localhost:3000';
 const fails = [];
@@ -6,8 +12,6 @@ const notes = [];
 function check(name, cond, detail = '') {
   (cond ? notes : fails).push(`${cond ? 'PASS' : 'FAIL'}  ${name}${detail ? ' — ' + detail : ''}`);
 }
-
-const socialsResume = 'DakshJain_Resume.pdf';
 
 const browser = await chromium.launch({ channel: 'chrome' });
 
@@ -21,11 +25,10 @@ const browser = await chromium.launch({ channel: 'chrome' });
   const bad = [];
   page.on('response', r => {
     // /api/github returns 200 with {error:true} when GITHUB_TOKEN is unset,
-    // so it never 404s. The resume PDF is a real asset that has to be
-    // dropped into public/ - allowed through so a missing CV does not mask
-    // a genuine regression here.
-    const expected = ['/api/github', socialsResume].some(u => r.url().includes(u));
-    if (r.status() >= 400 && !expected) bad.push(r.status() + ' ' + r.url());
+    // so it never 404s and needs no exemption. The resume PDF is NOT
+    // exempted: it lives in public/ and a 404 there means every download
+    // path on the site is broken, which is exactly what this should catch.
+    if (r.status() >= 400 && !r.url().includes('/api/github')) bad.push(r.status() + ' ' + r.url());
   });
 
   await page.goto(BASE, { waitUntil: 'networkidle', timeout: 90000 });
@@ -33,7 +36,7 @@ const browser = await chromium.launch({ channel: 'chrome' });
 
   // hero / identity
   check('hero shows name', await page.locator('text=Daksh Jain').first().isVisible());
-  check('hero shows availability', await page.getByText('Open to interesting problems').first().isVisible());
+  check('hero shows availability', await page.getByText(availabilityLabel).first().isVisible(), availabilityLabel);
   check('no window auto-opens', (await page.locator('[role="region"]').count()) === 0,
     `${await page.locator('[role="region"]').count()} open`);
 
@@ -115,7 +118,7 @@ const browser = await chromium.launch({ channel: 'chrome' });
   check('all windows closed', (await page.locator('[role="region"]').count()) === 0);
 
   // hero returns after closing
-  check('hero visible again after close', await page.getByText('Open to interesting problems').first().isVisible());
+  check('hero visible again after close', await page.getByText(availabilityLabel).first().isVisible());
 
   check('no console errors (desktop)', errors.length === 0, errors.slice(0, 3).join(' | '));
   check('no failed requests (desktop)', bad.length === 0, bad.slice(0, 3).join(' | '));

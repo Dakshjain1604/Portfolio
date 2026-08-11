@@ -39,6 +39,32 @@ export type Project = {
  */
 export const projects: Project[] = [
   {
+    id: "neo_mcp",
+    title: "neo-mcp",
+    outcome: "Open-source MCP server on PyPI that puts NEO inside Claude Code, Cursor, VS Code, Zed and Codex.",
+    description:
+      "The surface that brings NEO, an autonomous AI engineer for ML, LLM and data workflows, into every major agentic editor. Owns the tool schemas, structured outputs, function calling, auth and error contracts behind a single MCP interface. MIT licensed, shipped across 45 releases in 4 months.",
+    // PLACEHOLDER: this is the Ai-Coding-Agent screenshot standing in for a
+    // shot that does not exist yet. It shows a CLI generating code, which is
+    // not what neo-mcp is - swap it for a real capture (an editor with the
+    // NEO tools listed, or the docs page) when you have one.
+    image: "/images/projects/ai-coding-agent.png",
+    tech: ["Python", "MCP", "PyPI", "Claude API", "Tool Calling"],
+    // The GitHub repo PyPI points at (NeoResearchAI/MCPServer) is private,
+    // so it is deliberately not linked - a 404 is worse than no link. PyPI
+    // and the docs are both public and verified.
+    live: "https://pypi.org/project/neo-mcp/",
+    // "neo" means "built *with* NEO the product" for the other two entries
+    // that carry it; this one IS NEO's own MCP server, so the tag would read
+    // as the wrong claim under a sidebar labelled "Built with NEO".
+    tags: ["ai"],
+    metrics: [
+      { label: "Releases", value: "45 in 4 months" },
+      { label: "Editors supported", value: "5" },
+      { label: "License", value: "MIT, on PyPI" },
+    ],
+  },
+  {
     id: "autocareer",
     title: "AutoCareer",
     outcome: "Autonomous job-application orchestration agent, my highest-starred repo.",
@@ -54,9 +80,13 @@ export const projects: Project[] = [
     title: "DocuMind AI",
     outcome: "RAG document Q&A system for instant chat with PDFs.",
     description:
-      "Chat with your documents using a RAG pipeline. Upload PDFs and get intelligent, cited answers instantly. Full-stack AI assistant built with LangChain and ChromaDB.",
+      "A full-stack document-intelligence platform for Q&A, summarisation and quiz generation over PDFs, backed by an async FastAPI microservice. Hybrid retrieval pairs ChromaDB dense vector search over SentenceTransformers embeddings with BM25 lexical search, so answers hold up for both keyword lookups and open-ended questions. OCR ingestion handles scanned PDFs; DiskCache cuts token cost on repeat queries.",
     image: "/images/projects/documind-ai.png",
-    tech: ["Next.js", "LangChain", "ChromaDB", "OpenAI"],
+    tech: ["Next.js 15", "React 19", "FastAPI", "LangChain", "ChromaDB", "MongoDB"],
+    metrics: [
+      { label: "Retrieval", value: "Hybrid \u2014 dense + BM25" },
+      { label: "Ingestion", value: "OCR via Tesseract" },
+    ],
     github: "https://github.com/Dakshjain1604/DocuMind-Ai",
     live: "https://docu-mind-ai-nu.vercel.app/",
     tags: ["ai"],
@@ -88,9 +118,9 @@ export const projects: Project[] = [
     title: "Interview AI",
     outcome: "AI mock-interview simulator with performance analytics.",
     description:
-      "AI-powered mock interview application that generates personalized questions and offers real-time conversational performance metrics, for both interviewer and candidate sides of the table.",
+      "A technical interview platform that parses resumes, generates LLM-tailored questions across difficulty tiers and auto-scores responses. Timed assessments carry crash-safe session recovery, so a candidate who loses their browser mid-interview resumes at the same question instead of starting over.",
     image: "/images/projects/ai-interview.png",
-    tech: ["React.js", "Node.js", "OpenAI API", "Redux"],
+    tech: ["React", "TypeScript", "Redux Toolkit", "OpenAI API"],
     github: "https://github.com/Dakshjain1604/Ai_Interview",
     live: "https://ai-interview-six-eosin.vercel.app",
     tags: ["ai"],
@@ -100,9 +130,14 @@ export const projects: Project[] = [
     title: "Ai-Coding-Agent",
     outcome: "Lightweight CLI agent that generates and edits real project files.",
     description:
-      "A file-based coding CLI that creates, updates, and diffs project structures for common dev tasks, powered by local Ollama models for private, offline generation.",
+      "A Node.js CLI that turns a plain-English task into a real file tree on disk - Express and JWT backends, React components, configs - with diff-based updates and non-destructive skip behaviour. Runs fully offline on local Ollama models with no API keys.",
     image: "/images/projects/ai-coding-agent.png",
-    tech: ["TypeScript", "Ollama", "CLI", "Opencode"],
+    tech: ["Node.js", "Ollama", "CLI", "Claude Code"],
+    metrics: [
+      { label: "Cold start", value: "38ms" },
+      { label: "Dependencies", value: "12" },
+      { label: "Memory", value: "under 50MB" },
+    ],
     github: "https://github.com/Dakshjain1604/Ai-coding-Agent",
     tags: ["ai"],
   },

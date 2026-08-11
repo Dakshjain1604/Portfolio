@@ -14,36 +14,54 @@ export type SkillGroup = {
 /**
  * Order is sidebar order. `ai` is first and selected by default.
  *
- * Kept deliberately short. Git, REST, SQL, CI/CD, JWT and OAuth2 were all
- * here and have been cut: they are table stakes for any backend engineer, so
- * listing them does not raise the reader's estimate - it lowers the average.
- * A skills list is read as a claim about level, and every obvious entry
- * dilutes the non-obvious ones next to it. JavaScript went for the same
- * reason it is implied by TypeScript.
+ * Grouped the way the resume groups them, which is a better structure than
+ * the frontend/backend/languages split this had: pulling **Retrieval** out
+ * as its own group is the single most differentiating thing on the list,
+ * and it was previously buried inside a generic "Agentic AI" bucket.
+ *
+ * Still kept short. Git, GitHub, REST, SQL, CI/CD, JWT and OAuth2 all appear
+ * on the resume - correctly, a resume is scanned by keyword - but a
+ * portfolio skills list is read as a claim about level, and every obvious
+ * entry dilutes the non-obvious one beside it. "Git" next to "Model Context
+ * Protocol" does not add Git; it subtracts from MCP.
  */
 export const skills: SkillGroup[] = [
   {
     id: "ai",
-    label: "Agentic AI & GenAI",
+    label: "AI & LLM Systems",
     skills: [
-      { name: "Autonomous Agent Workflows" },
-      { name: "Multi-Agent Orchestration" },
       { name: "Model Context Protocol (MCP)" },
-      { name: "Production RAG & Vector Search" },
-      { name: "LLM Tool & Function Calling" },
-      { name: "Prompt Engineering & Evals" },
+      { name: "Agent Orchestration" },
+      { name: "Tool & Function Calling" },
+      { name: "Structured Outputs" },
+      { name: "Model Evaluation & LLM Tracing" },
+      { name: "Prompt Engineering" },
+      { name: "Claude API", slug: "anthropic" },
+      { name: "OpenAI API", slug: "openai" },
       { name: "LangChain & LangGraph", slug: "langchain" },
-      { name: "Claude & OpenAI APIs", slug: "openai" },
+    ],
+  },
+  {
+    id: "retrieval",
+    label: "Retrieval",
+    skills: [
+      { name: "Production RAG" },
+      { name: "Hybrid Search (vector + BM25)" },
+      { name: "ChromaDB" },
+      { name: "FAISS" },
+      { name: "SentenceTransformers" },
+      { name: "OCR (Tesseract)" },
     ],
   },
   {
     id: "backend",
-    label: "Backend",
+    label: "Backend & APIs",
     skills: [
       { name: "Node.js", slug: "nodedotjs" },
       { name: "Express", slug: "express" },
-      { name: "PostgreSQL", slug: "postgresql" },
+      { name: "FastAPI", slug: "fastapi" },
       { name: "MongoDB", slug: "mongodb" },
+      { name: "PostgreSQL", slug: "postgresql" },
       { name: "Redis", slug: "redis" },
       { name: "Prisma", slug: "prisma" },
     ],
@@ -54,6 +72,7 @@ export const skills: SkillGroup[] = [
     skills: [
       { name: "React", slug: "react" },
       { name: "Next.js", slug: "nextdotjs" },
+      { name: "Redux Toolkit", slug: "redux" },
       { name: "Tailwind", slug: "tailwindcss" },
       { name: "Framer Motion", slug: "framer" },
     ],
@@ -68,12 +87,15 @@ export const skills: SkillGroup[] = [
     ],
   },
   {
-    id: "cloud",
-    label: "Cloud & Tools",
+    id: "delivery",
+    label: "Tooling & Delivery",
     skills: [
-      { name: "AWS", slug: "amazonaws" },
       { name: "Docker", slug: "docker" },
-      { name: "Claude Code" },
+      { name: "AWS", slug: "amazonaws" },
+      { name: "Vercel", slug: "vercel" },
+      { name: "Jest", slug: "jest" },
+      { name: "Playwright", slug: "playwright" },
+      { name: "Claude Code", slug: "anthropic" },
       { name: "Cursor", slug: "cursor" },
     ],
   },

@@ -78,6 +78,25 @@ export function AboutThisMac() {
         ))}
       </dl>
 
+      {/* Education and certifications, from the resume. About This Mac is
+          the "specs" panel, and a degree plus a certification list is
+          exactly the kind of thing it should carry. */}
+      <section className="mb-7 rounded-(--r-card) border border-divider p-3.5">
+        <h3 className="text-[11px] font-medium tracking-wide text-text-2 uppercase">Education</h3>
+        <p className="mt-2 text-xs font-medium text-text">{profile.education.degree}</p>
+        <p className="mt-0.5 text-[11px] text-text-2">
+          {profile.education.school} &middot; {profile.education.period} &middot; CGPA{" "}
+          {profile.education.cgpa}
+        </p>
+        <ul className="mt-3 flex flex-wrap gap-1.5">
+          {profile.education.certifications.map((c) => (
+            <li key={c}>
+              <Chip>{c}</Chip>
+            </li>
+          ))}
+        </ul>
+      </section>
+
       <div className="max-w-[62ch] space-y-4 text-[13px] leading-[1.65] text-text-2">
         {profile.bio.map((para, i) => (
           <p key={i}>
