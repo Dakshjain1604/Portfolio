@@ -5,6 +5,7 @@ import { profile } from "@/data/profile"
 import { projects, ingestSnippet } from "@/data/projects"
 import { experience } from "@/data/experience"
 import { skills } from "@/data/skills"
+import { posts } from "@/data/writing"
 import { socials } from "@/data/socials"
 import { useOS } from "@/os/store"
 import type { AppId } from "@/data/apps"
@@ -28,6 +29,7 @@ function help() {
     "cat ingest.py print the DocuMind RAG snippet",
     "skills        capability groups",
     "experience    work history",
+    "writing       open the writing app",
     "contact       email, linkedin, github",
     "resume        open the resume",
     "open <app>    open a window (e.g. open finder)",
@@ -42,6 +44,9 @@ const APP_ALIASES: Record<string, AppId> = {
   about: "about",
   notes: "notes",
   experience: "notes",
+  writing: "writing",
+  blog: "writing",
+  posts: "writing",
   settings: "settings",
   skills: "settings",
   activity: "activity",
@@ -62,6 +67,7 @@ const KEYWORD_MAP: { keywords: string[]; command: string }[] = [
   { keywords: ["project", "built", "made", "work", "portfolio"], command: "projects" },
   { keywords: ["skill", "stack", "tech", "language"], command: "skills" },
   { keywords: ["experience", "job", "role", "career"], command: "experience" },
+  { keywords: ["writing", "blog", "post", "article", "wrote"], command: "writing" },
   { keywords: ["contact", "reach", "email", "phone", "social", "linkedin", "github"], command: "contact" },
   { keywords: ["resume", "pdf", "cv"], command: "resume" },
   { keywords: ["neoclaw", "agent", "pulse"], command: "neoclaw" },
@@ -106,8 +112,24 @@ export function Terminal() {
 
     let i = 0
     const timer = setInterval(() => {
-      setBuffer((b) => [...b, INTRO[i]])
+      // Read the line into a const BEFORE the updater closes over anything.
+      //
+      // This previously did `setBuffer((b) => [...b, INTRO[i]])` and then
+      // `i++`. State updaters must be pure, and React is free to invoke one
+      // more than once for a single update - when it did, the second
+      // invocation ran after `i++` and appended `INTRO[2]`, i.e. undefined.
+      // The next render then hit `line.kind` on undefined and took down the
+      // entire tree: not just Terminal, but the Dock, menu bar and every
+      // other window with it. Nothing catches it, because there is no error
+      // boundary between an app and the shell.
+      const next = INTRO[i]
       i++
+      if (!next) {
+        clearInterval(timer)
+        setIntroDone(true)
+        return
+      }
+      setBuffer((b) => [...b, next])
       if (i >= INTRO.length) {
         clearInterval(timer)
         setIntroDone(true)
@@ -188,6 +210,10 @@ export function Terminal() {
     if (lower === "resume" || fuzzyResolve(lower) === "resume") {
       open("preview")
       return push([{ kind: "output", text: "opening resume.pdf" }])
+    }
+    if (lower === "writing" || fuzzyResolve(lower) === "writing") {
+      open("writing")
+      return push([{ kind: "output", text: `opening writing - ${posts.length} posts` }])
     }
     if (lower === "neoclaw" || fuzzyResolve(lower) === "neoclaw")
       return push([

@@ -130,7 +130,7 @@ export const useOS = create<OSStore>((set, get) => ({
   stack: [],
   mode: initialMode,
   booted: false,
-  wallpaper: "mesh",
+  wallpaper: "abyss",
   menuBarSolid: initialMenuBarSolid(),
   accentTint: initialAccentTint(),
   glassClear: initialGlassClear(),

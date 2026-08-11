@@ -8,8 +8,9 @@ import {
   EnvelopeSimple,
   FilePdf,
   Graph,
+  GithubLogo,
 } from "@phosphor-icons/react/dist/ssr"
-import type { AppId } from "@/data/apps"
+import type { AppId, LinkId } from "@/data/apps"
 import { SQUIRCLE_RADIUS } from "./Squircle"
 
 /**
@@ -112,6 +113,41 @@ export function AppGlyph({ id, size }: { id: AppId; size: number }) {
         </Clip>
       )
 
+    // Writing: a page of ruled text with a wide first line, so it reads as
+    // prose at Dock size. Structurally distinct from Notes next to it -
+    // Notes has the yellow header band, this has a serif mark and no band.
+    case "writing":
+      return (
+        <Clip>
+          <span
+            className="absolute font-semibold"
+            style={{
+              left: "16%",
+              top: "12%",
+              fontSize: s(0.42),
+              lineHeight: 1,
+              color: "#2b2b2e",
+              fontFamily: "Georgia, 'Times New Roman', serif",
+            }}
+          >
+            W
+          </span>
+          {[0.6, 0.73, 0.86].map((top, i) => (
+            <span
+              key={top}
+              className="absolute rounded-full"
+              style={{
+                top: `${top * 100}%`,
+                left: "17%",
+                width: i === 2 ? "36%" : "66%",
+                height: Math.max(1, s(0.05)),
+                background: "rgb(60 60 60 / .32)",
+              }}
+            />
+          ))}
+        </Clip>
+      )
+
     // Two gears, offset, the way System Settings stacks them.
     case "settings":
       return (
@@ -160,4 +196,35 @@ export function AppGlyph({ id, size }: { id: AppId; size: number }) {
     default:
       return null
   }
+}
+
+/**
+ * The Dock's two external links. Split from AppGlyph because they are keyed
+ * by LinkId, not AppId, but built to the same rules - and shared so the Dock
+ * and the Springboard grid cannot drift apart, which is exactly what
+ * happened when each drew its own `weight="light"` outline.
+ */
+export function LinkGlyph({ id, size }: { id: LinkId; size: number }) {
+  const s = (f: number) => Math.round(size * f)
+
+  if (id === "github") {
+    // Solid, not outlined. A light-weight octocat at 52px is a few
+    // hairlines that disappear against the tile.
+    return (
+      <GithubLogo size={s(0.58)} weight="fill" color="white" className="relative" style={{ filter: LIFT }} />
+    )
+  }
+
+  // LinkedIn's mark is the "in" wordmark, not a glyph in a box. Phosphor's
+  // LinkedinLogo is the full rounded-square badge, so dropping it into a
+  // squircle would nest one tile inside another; the wordmark alone is what
+  // the real icon shows.
+  return (
+    <span
+      className="relative font-semibold leading-none text-white"
+      style={{ fontSize: s(0.46), letterSpacing: "-0.04em", filter: LIFT }}
+    >
+      in
+    </span>
+  )
 }

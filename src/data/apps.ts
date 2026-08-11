@@ -8,6 +8,7 @@ import {
   FilePdf,
   Terminal as TerminalGlyph,
   Graph,
+  Article,
   GithubLogo,
   LinkedinLogo,
 } from "@phosphor-icons/react/dist/ssr"
@@ -26,6 +27,7 @@ export type AppId =
   | "preview"
   | "terminal"
   | "orchestrator"
+  | "writing"
 
 export type AppMeta = {
   id: AppId
@@ -73,6 +75,17 @@ export const apps: Record<AppId, AppMeta> = {
     minSize: { w: 560, h: 400 },
     dockOrder: 2,
   },
+  writing: {
+    id: "writing",
+    title: "Writing",
+    icon: Article,
+    // Paper-white like Notes, but warmer and without the yellow band, so
+    // the two read as related without being confusable at Dock size.
+    tint: ["#fbfaf7", "#e6e2d8"],
+    defaultRect: { x: 200, y: 68, w: 900, h: 620 },
+    minSize: { w: 520, h: 400 },
+    dockOrder: 3,
+  },
   settings: {
     id: "settings",
     title: "Skills",
@@ -80,7 +93,7 @@ export const apps: Record<AppId, AppMeta> = {
     tint: ["#8e9298", "#4d5157"],
     defaultRect: { x: 200, y: 96, w: 780, h: 560 },
     minSize: { w: 600, h: 420 },
-    dockOrder: 3,
+    dockOrder: 4,
   },
   activity: {
     id: "activity",
@@ -89,7 +102,7 @@ export const apps: Record<AppId, AppMeta> = {
     tint: ["#3a3f45", "#22262b"],
     defaultRect: { x: 240, y: 80, w: 720, h: 500 },
     minSize: { w: 560, h: 380 },
-    dockOrder: 4,
+    dockOrder: 5,
   },
   mail: {
     id: "mail",
@@ -98,7 +111,7 @@ export const apps: Record<AppId, AppMeta> = {
     tint: ["#3fa4ff", "#0a6ae8"],
     defaultRect: { x: 260, y: 104, w: 680, h: 540 },
     minSize: { w: 520, h: 420 },
-    dockOrder: 5,
+    dockOrder: 6,
   },
   preview: {
     id: "preview",
@@ -108,7 +121,7 @@ export const apps: Record<AppId, AppMeta> = {
     defaultRect: { x: 300, y: 56, w: 700, h: 780 },
     minSize: { w: 480, h: 500 },
     onDesktop: "Resume.pdf",
-    dockOrder: 6,
+    dockOrder: 7,
   },
   terminal: {
     id: "terminal",
@@ -117,7 +130,7 @@ export const apps: Record<AppId, AppMeta> = {
     tint: ["#3a3a3c", "#111113"],
     defaultRect: { x: 160, y: 140, w: 720, h: 460 },
     minSize: { w: 480, h: 300 },
-    dockOrder: 7,
+    dockOrder: 8,
   },
   orchestrator: {
     id: "orchestrator",
@@ -126,7 +139,7 @@ export const apps: Record<AppId, AppMeta> = {
     tint: ["#7d7bf0", "#5e5ce6"],
     defaultRect: { x: 340, y: 72, w: 800, h: 600 },
     minSize: { w: 560, h: 420 },
-    dockOrder: 8,
+    dockOrder: 9,
   },
 }
 
@@ -137,9 +150,21 @@ export const appOrder: AppId[] = Object.values(apps)
 /** The `README.txt` desktop icon has no window of its own; it opens `about`. */
 export const readmeDesktopIcon = { label: "README.txt", opens: "about" as AppId }
 
-export type DockLink = { id: "github" | "linkedin"; label: string; href: string; icon: React.ComponentType<IconProps> }
+export type LinkId = "github" | "linkedin"
+
+export type DockLink = {
+  id: LinkId
+  label: string
+  href: string
+  icon: React.ComponentType<IconProps>
+  /** Same contract as AppMeta.tint. Both of these used to share one grey
+   *  (#3a3a3e -> #232326), which is why they read as two blank chips at the
+   *  end of the Dock rather than as icons. These are the brands' own tile
+   *  colours: GitHub ships a near-black mark, LinkedIn is #0a66c2. */
+  tint: [string, string]
+}
 
 export const dockLinks: DockLink[] = [
-  { id: "github", label: "GitHub", href: socials.github, icon: GithubLogo },
-  { id: "linkedin", label: "LinkedIn", href: socials.linkedin, icon: LinkedinLogo },
+  { id: "github", label: "GitHub", href: socials.github, icon: GithubLogo, tint: ["#3d444d", "#1c2128"] },
+  { id: "linkedin", label: "LinkedIn", href: socials.linkedin, icon: LinkedinLogo, tint: ["#3e94dd", "#0a66c2"] },
 ]

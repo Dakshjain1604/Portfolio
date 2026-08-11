@@ -4,32 +4,9 @@ import { useEffect, useState } from "react"
 import { CloudSlash, GithubLogo, Star, GitFork } from "@phosphor-icons/react/dist/ssr"
 import { socials } from "@/data/socials"
 import { EmptyState } from "@/components/primitives/EmptyState"
+// Cache and types moved to lib/github so Finder can share this one request.
+import { fetchGithub, type Day, type GithubData, type GithubResult } from "@/lib/github"
 
-type Day = { count: number; date: string }
-type ApiData = {
-  contributions: { total: number; weeks: { days: Day[] }[] }
-  stats: { repos: number; stars: number; forks: number }
-  languages: { name: string; count: number }[]
-  pinned: { name: string; description: string; url: string; stars: number; forks: number }[]
-}
-type ApiResult = ApiData | { error: true }
-
-let cached: ApiResult | null = null
-let inflight: Promise<ApiResult> | null = null
-
-function fetchOnce(): Promise<ApiResult> {
-  if (cached) return Promise.resolve(cached)
-  if (!inflight) {
-    inflight = fetch("/api/github")
-      .then((r) => r.json())
-      .catch(() => ({ error: true as const }))
-      .then((data) => {
-        cached = data
-        return data
-      })
-  }
-  return inflight
-}
 
 function computeStreaks(weeks: { days: Day[] }[]) {
   const days = weeks.flatMap((w) => w.days)
@@ -81,10 +58,10 @@ function Skeleton() {
 
 export function ActivityMonitor() {
   const [tab, setTab] = useState<"contributions" | "repositories" | "languages">("contributions")
-  const [data, setData] = useState<ApiResult | "loading">("loading")
+  const [data, setData] = useState<GithubResult | "loading">("loading")
 
   useEffect(() => {
-    fetchOnce().then(setData)
+    fetchGithub().then(setData)
   }, [])
 
   if (data === "loading") return <Skeleton />

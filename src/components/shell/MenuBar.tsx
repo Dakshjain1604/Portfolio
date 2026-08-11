@@ -157,8 +157,23 @@ export function MenuBar() {
     >
       <div className="flex items-center gap-1">
         <Menu
-          label={<span className="px-1 font-semibold">dj</span>}
-          ariaLabel="dj"
+          // The Apple menu is a mark, not a word - it is the one item in the
+          // bar you identify by shape. Rendering "dj" as plain semibold text
+          // put it in the same visual class as the app name beside it, so it
+          // read as a stray label rather than the menu everything hangs off.
+          label={
+            <span
+              className="grid h-[17px] w-[17px] place-items-center rounded-[5px] text-[10px] leading-none font-bold tracking-tight text-white"
+              style={{
+                background: "linear-gradient(160deg, #4a4a4f, #1f1f22)",
+                boxShadow: "inset 0 1px 0 rgb(255 255 255 / .22), 0 1px 2px rgb(0 0 0 / .4)",
+                textShadow: "none",
+              }}
+            >
+              dj
+            </span>
+          }
+          ariaLabel="Daksh Jain"
           items={identityItems}
           isOpen={openMenu === "id"}
           onOpenChange={(v) => setOpenMenu(v ? "id" : null)}
@@ -202,27 +217,34 @@ export function MenuBar() {
           target="_blank"
           rel="noopener noreferrer"
           aria-label="GitHub, opens in a new tab"
-          className="text-text-2 hover:text-text"
+          className="text-text-2 transition-colors hover:text-text"
         >
-          <GithubLogo size={14} weight="light" />
+          {/* `light` at 14px is a few sub-pixel hairlines - at menu bar size
+              these were legible as "an icon" but not as which icon. */}
+          <GithubLogo size={15} weight="fill" />
         </a>
         <a
           href={socials.linkedin}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="LinkedIn, opens in a new tab"
-          className="text-text-2 hover:text-text"
+          className="text-text-2 transition-colors hover:text-text"
         >
-          <LinkedinLogo size={14} weight="light" />
+          <LinkedinLogo size={15} weight="fill" />
         </a>
         <time
           dateTime={now?.toISOString()}
-          className="font-mono text-xs text-text-2"
+          // Sans, not mono: the macOS clock is set in the system UI face.
+          // tabular-nums is the part that actually matters, so the bar does
+          // not reflow every time a digit changes width.
+          className="text-xs text-text-2"
           style={{ fontVariantNumeric: "tabular-nums" }}
         >
           {now
             ? new Intl.DateTimeFormat(undefined, {
                 weekday: "short",
+                month: "short",
+                day: "numeric",
                 hour: "numeric",
                 minute: "2-digit",
               }).format(now)

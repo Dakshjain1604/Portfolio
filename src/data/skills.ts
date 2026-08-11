@@ -11,7 +11,16 @@ export type SkillGroup = {
   skills: Skill[]
 }
 
-/** Order is sidebar order. `ai` is first and selected by default. */
+/**
+ * Order is sidebar order. `ai` is first and selected by default.
+ *
+ * Kept deliberately short. Git, REST, SQL, CI/CD, JWT and OAuth2 were all
+ * here and have been cut: they are table stakes for any backend engineer, so
+ * listing them does not raise the reader's estimate - it lowers the average.
+ * A skills list is read as a claim about level, and every obvious entry
+ * dilutes the non-obvious ones next to it. JavaScript went for the same
+ * reason it is implied by TypeScript.
+ */
 export const skills: SkillGroup[] = [
   {
     id: "ai",
@@ -54,10 +63,8 @@ export const skills: SkillGroup[] = [
     label: "Languages",
     skills: [
       { name: "TypeScript", slug: "typescript" },
-      { name: "JavaScript", slug: "javascript" },
       { name: "Python", slug: "python" },
       { name: "C++", slug: "cplusplus" },
-      { name: "SQL" },
     ],
   },
   {
@@ -66,12 +73,6 @@ export const skills: SkillGroup[] = [
     skills: [
       { name: "AWS", slug: "amazonaws" },
       { name: "Docker", slug: "docker" },
-      { name: "CI/CD" },
-      { name: "Git", slug: "git" },
-      { name: "REST" },
-      { name: "JWT", slug: "jsonwebtokens" },
-      { name: "OAuth2" },
-      { name: "Zod", slug: "zod" },
       { name: "Claude Code" },
       { name: "Cursor", slug: "cursor" },
     ],

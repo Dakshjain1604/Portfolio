@@ -1,8 +1,9 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { motion } from "framer-motion"
-import { GithubLogo, ArrowSquareOut, MagnifyingGlass } from "@phosphor-icons/react/dist/ssr"
+import { GithubLogo, ArrowSquareOut, MagnifyingGlass, Star } from "@phosphor-icons/react/dist/ssr"
+import { fetchGithub, repoSlug, starsByRepo, type GithubResult } from "@/lib/github"
 import { projects, type ProjectTag } from "@/data/projects"
 import { Chip } from "@/components/primitives/Chip"
 import { EmptyState } from "@/components/primitives/EmptyState"
@@ -24,6 +25,24 @@ export function Finder() {
   const [source, setSource] = useState<Source["id"]>("all")
   const [query, setQuery] = useState("")
   const [selectedId, setSelectedId] = useState(projects[0].id)
+
+  // Live star counts. The one claim on this page a reader can verify
+  // without trusting me, so it is worth a request. Renders nothing at all
+  // when the token is unset or GitHub is down - a project with no badge
+  // just looks like a project, where a wrong number looks like a lie.
+  const [gh, setGh] = useState<GithubResult | null>(null)
+  useEffect(() => {
+    let alive = true
+    fetchGithub().then((d) => alive && setGh(d))
+    return () => {
+      alive = false
+    }
+  }, [])
+  const stars = useMemo(() => starsByRepo(gh), [gh])
+  const starsFor = (github?: string) => {
+    const n = stars.get(repoSlug(github) ?? "")
+    return n && n > 0 ? n : null
+  }
 
   const bySource = useMemo(
     () => (source === "all" ? projects : projects.filter((p) => p.tags.includes(source))),
@@ -130,7 +149,14 @@ export function Finder() {
                     <p className="truncate text-xs text-text">{p.title}</p>
                     <p className="truncate text-[11px] text-text-2">{p.outcome}</p>
                   </div>
-                  <span className="shrink-0 text-[10px] text-text-2">{p.tech.length} tech</span>
+                  {starsFor(p.github) ? (
+                    <span className="flex shrink-0 items-center gap-1 text-[10px] text-text-2">
+                      <Star size={10} weight="fill" className="text-[var(--sys-yellow)]" />
+                      {starsFor(p.github)}
+                    </span>
+                  ) : (
+                    <span className="shrink-0 text-[10px] text-text-2">{p.tech.length} tech</span>
+                  )}
                 </button>
               </li>
             ))}
@@ -175,14 +201,30 @@ export function Finder() {
               </a>
             )}
           </div>
-          <dl className="space-y-1 text-[11px]">
-            <div className="flex justify-between">
+          {/* Metrics first, when they exist: a number is the most persuasive
+              thing on this panel. "Kind: AI System" and "Tech: 4
+              technologies" used to sit here, both of which the reader can
+              already see from the chips above - filler where the evidence
+              should be. */}
+          <dl className="space-y-1.5 text-[11px]">
+            {selected.metrics?.map((m) => (
+              <div key={m.label} className="flex justify-between gap-3">
+                <dt className="text-text-2">{m.label}</dt>
+                <dd className="text-right font-medium text-text">{m.value}</dd>
+              </div>
+            ))}
+            {starsFor(selected.github) && (
+              <div className="flex justify-between gap-3">
+                <dt className="text-text-2">GitHub stars</dt>
+                <dd className="flex items-center gap-1 font-medium text-text">
+                  <Star size={11} weight="fill" className="text-[var(--sys-yellow)]" />
+                  {starsFor(selected.github)}
+                </dd>
+              </div>
+            )}
+            <div className="flex justify-between gap-3">
               <dt className="text-text-2">Kind</dt>
               <dd className="text-text-2">{selected.tags.includes("ai") ? "AI System" : "Web App"}</dd>
-            </div>
-            <div className="flex justify-between">
-              <dt className="text-text-2">Tech</dt>
-              <dd className="text-text-2">{selected.tech.length} technologies</dd>
             </div>
           </dl>
         </Sidebar>

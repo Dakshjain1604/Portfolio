@@ -9,7 +9,22 @@ export const profile = {
   location: "Jaipur, India",
   tagline:
     "Building production-grade AI systems across autonomous agent orchestration, MCP tooling, and RAG pipelines.",
-  avatar: "/images/profile.avif",
+
+  /**
+   * Shown in the desktop hero and the About panel. Recruiters look for this
+   * inside the first ten seconds and most portfolios make them guess.
+   *
+   * Deliberately worded as an invitation rather than a job-seeking claim,
+   * because the second one is yours to make, not mine to assume. If you are
+   * open to roles, say so here directly - "Open to senior AI engineering
+   * roles" outperforms anything softer.
+   */
+  availability: {
+    /** Drives the dot colour: green reads as reachable, amber as selective. */
+    status: "open" as "open" | "selective" | "closed",
+    label: "Open to interesting problems",
+    detail: "Currently at NEO. Happy to talk agentic systems, MCP, or RAG.",
+  },
 
   bio: [
     {

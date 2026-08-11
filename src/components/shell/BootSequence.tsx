@@ -14,12 +14,18 @@ const HANDOFF_MS = 80
  * sessionStorage so a returning visitor within the session goes straight
  * to the desktop with no boot render at all (not hidden - unmounted).
  * See plan/05-shell-desktop.md section 5.
+ *
+ * Boot deliberately opens nothing. It used to `open("finder")` on
+ * completion, which meant the first thing a visitor ever saw was a file
+ * browser belonging to nobody - the name appeared on screen only if they
+ * went looking for it. The landing view is now the desktop itself, with
+ * DesktopHero carrying the identity and the icons and Dock carrying the
+ * affordance. See plan/21-composition-pass.md.
  */
 export function BootSequence() {
   const reducedMotion = useReducedMotion()
   const mode = useOS((s) => s.mode)
   const setBooted = useOS((s) => s.setBooted)
-  const open = useOS((s) => s.open)
 
   const [phase, setPhase] = useState<"pending" | "mark" | "progress" | "handoff" | "done">("pending")
   const skippedRef = useRef(false)
@@ -30,7 +36,6 @@ export function BootSequence() {
     sessionStorage.setItem(SESSION_KEY, "1")
     setBooted(true)
     setPhase("done")
-    open("finder")
   }
 
   useEffect(() => {
@@ -44,7 +49,6 @@ export function BootSequence() {
       // entirely can only be decided post-mount, on the client.
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setPhase("done")
-      if (!alreadyBooted) open("finder")
       return
     }
 

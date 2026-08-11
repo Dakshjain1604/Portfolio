@@ -5,7 +5,16 @@ import { cn } from "@/lib/utils"
 import { useGlassPointer } from "@/os/useGlassPointer"
 
 type SidebarProps = {
-  width: number
+  /** Fixed rail width in px. Ignored when `fluid` is set. */
+  width?: number
+  /**
+   * Drop the inline width so the caller can size this with classes instead.
+   *
+   * Exists because an inline style cannot be overridden by a container-query
+   * utility, and Writing's narrow layout needs the post list to become the
+   * whole window rather than stay a 260px rail beside a hidden article.
+   */
+  fluid?: boolean
   children: React.ReactNode
   /** Finder's categories are navigation, its preview pane is complementary
    *  content, and Notes' pane is neither - the listbox inside already
@@ -33,15 +42,19 @@ type SidebarProps = {
  * the blur - the thing Apple's GlassEffectContainer exists to avoid. See
  * plan/20-tahoe-refinement.md.
  */
-export function Sidebar({ width, children, as = "nav", ariaLabel, className, live }: SidebarProps) {
+export function Sidebar({ width, children, as = "nav", ariaLabel, className, live, fluid }: SidebarProps) {
   const ref = useRef<HTMLElement>(null)
   useGlassPointer(ref)
 
   const props = {
     "aria-label": ariaLabel,
     "aria-live": live ? ("polite" as const) : undefined,
-    style: { width },
-    className: cn("os-glass-clear shrink-0 overflow-auto rounded-(--r-float) p-2", className),
+    style: fluid ? undefined : { width },
+    className: cn(
+      "os-glass-clear overflow-auto rounded-(--r-float) p-2",
+      fluid ? undefined : "shrink-0",
+      className
+    ),
   }
 
   // One ref, three possible host elements. RefObject is invariant in TS so

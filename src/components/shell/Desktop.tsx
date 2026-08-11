@@ -5,6 +5,7 @@ import { AnimatePresence } from "framer-motion"
 import { useOS } from "@/os/store"
 import { Window } from "@/components/window/Window"
 import { Wallpaper } from "./Wallpaper"
+import { DesktopHero } from "./DesktopHero"
 import { DesktopIcons } from "./DesktopIcons"
 import { Dock } from "./Dock"
 import { MenuBar } from "./MenuBar"
@@ -32,6 +33,7 @@ export function Desktop() {
       }}
     >
       <Wallpaper />
+      <DesktopHero />
       <DesktopIcons />
 
       <AnimatePresence>

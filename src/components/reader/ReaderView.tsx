@@ -3,6 +3,7 @@ import { profile } from "@/data/profile"
 import { projects } from "@/data/projects"
 import { experience } from "@/data/experience"
 import { skills } from "@/data/skills"
+import { posts } from "@/data/writing"
 import { socials } from "@/data/socials"
 import { ReaderReturnBar } from "./ReaderReturnBar"
 
@@ -147,6 +148,79 @@ export function ReaderView() {
                 <h3 className="text-sm font-medium text-text">{group.label}</h3>
                 <p className="text-[15px] leading-[1.7] text-text-2">{group.skills.map((s) => s.name).join(", ")}</p>
               </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Full post bodies, not just titles. This is the only route by
+            which the writing is crawlable - the Writing app is a client
+            component behind a shell that never server-renders - and long-form
+            technical prose is the highest-value text on the whole page for
+            search. Rendering only the deks here would waste it. */}
+        <section aria-labelledby="writing-h" className="mb-16">
+          <h2 id="writing-h" className="mb-5 text-[13px] font-medium tracking-[0.14em] text-text-2 uppercase">
+            Writing
+          </h2>
+          <div className="space-y-10">
+            {posts.map((post) => (
+              <article key={post.slug}>
+                <h3 className="text-sm font-medium text-text">{post.title}</h3>
+                <p className="mt-1 text-[13px] text-text-2">
+                  {new Intl.DateTimeFormat("en-GB", {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric",
+                  }).format(new Date(post.date))}{" "}
+                  · {post.readingMinutes} min read
+                </p>
+                <div className="mt-3 space-y-3">
+                  {post.body.map((block, i) => {
+                    if (block.kind === "code") {
+                      return (
+                        <pre
+                          key={i}
+                          className="overflow-x-auto rounded-lg bg-panel p-3 font-mono text-[13px] text-text-2"
+                        >
+                          <code>{block.text}</code>
+                        </pre>
+                      )
+                    }
+                    if (block.kind === "list") {
+                      return (
+                        <ul key={i} className="list-disc space-y-1 pl-5">
+                          {block.items.map((item, j) => (
+                            <li key={j} className="text-[15px] leading-[1.7] text-text-2">
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      )
+                    }
+                    if (block.kind === "h") {
+                      return (
+                        <h4 key={i} className="pt-2 text-sm font-medium text-text">
+                          {block.text}
+                        </h4>
+                      )
+                    }
+                    if (block.kind === "quote") {
+                      return (
+                        <blockquote
+                          key={i}
+                          className="border-l-2 border-accent pl-4 text-[15px] leading-[1.7] text-text italic"
+                        >
+                          {block.text}
+                        </blockquote>
+                      )
+                    }
+                    return (
+                      <p key={i} className="text-[15px] leading-[1.7] text-text-2">
+                        {block.text}
+                      </p>
+                    )
+                  })}
+                </div>
+              </article>
             ))}
           </div>
         </section>

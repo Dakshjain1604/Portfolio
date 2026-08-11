@@ -162,6 +162,17 @@ export async function GET() {
       .sort((a, b) => b.count - a.count)
       .slice(0, 6);
 
+    /** Per-repo stars, so Finder can label a project with its real star
+     *  count instead of the reader having to take "highest-starred" on
+     *  trust. Derived from the repos array already fetched above - no extra
+     *  API call, no extra rate-limit cost. */
+    const repoStats = repos.map((repo) => ({
+      name: repo.name,
+      stars: repo.stargazerCount,
+      forks: repo.forkCount,
+      url: repo.url,
+    }));
+
     const pinned = user.pinnedItems.nodes.map((repo) => ({
       name: repo.name,
       description: repo.description,
@@ -182,6 +193,7 @@ export async function GET() {
       },
       languages,
       pinned,
+      repoStats,
     });
   } catch (error) {
     console.error("GitHub API error:", error);

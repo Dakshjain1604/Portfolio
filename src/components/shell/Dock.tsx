@@ -7,7 +7,8 @@ import { appOrder, dockLinks, type DockLink } from "@/data/apps"
 import { useOS } from "@/os/store"
 import { useReducedMotion } from "@/os/ReducedMotionContext"
 import { useDockMagnify, DOCK_ICON_VARIANTS } from "@/os/useDockMagnify"
-import { squircleBase, SQUIRCLE_GLASS, SQUIRCLE_GLYPH } from "@/components/primitives/Squircle"
+import { squircleBase, SQUIRCLE_GLASS } from "@/components/primitives/Squircle"
+import { LinkGlyph } from "@/components/primitives/AppGlyph"
 import { useGlassPointer } from "@/os/useGlassPointer"
 import { DockIcon } from "./DockIcon"
 
@@ -29,13 +30,21 @@ function DockExternalIcon({ link, mouseX }: { link: DockLink; mouseX: ReturnType
           height: size,
           translateY: lift,
           translateZ: depth,
-          ...squircleBase(["#3a3a3e", "#232326"]),
+          ...squircleBase(link.tint),
         }}
         className="relative flex shrink-0 items-center justify-center focus-visible:outline-offset-4"
       >
+        <LinkGlyph id={link.id} size={REST} />
+        {/* After the artwork, matching DockIcon: the glass sheet sits over
+            the mark, not under it. This element had the two in the other
+            order, which is why these tiles read flatter than their
+            neighbours even before the tint was fixed. */}
         <span aria-hidden className="pointer-events-none absolute inset-0" style={SQUIRCLE_GLASS} />
-        <link.icon size={REST * 0.5} weight="light" color="white" style={SQUIRCLE_GLYPH} />
       </motion.a>
+      {/* The rail is `items-end`, and every DockIcon ends in a running-state
+          dot. Without a spacer of the same height these two tiles baseline
+          7px below the app row. */}
+      <div className="mt-1 h-[3.5px] w-[3.5px]" aria-hidden />
     </motion.li>
   )
 }

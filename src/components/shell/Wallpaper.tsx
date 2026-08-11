@@ -4,12 +4,39 @@ import Image from "next/image"
 import { useOS } from "@/os/store"
 
 /**
- * "mesh" is the CSS default, always available. Real files dropped into
- * public/wallpapers/ (see plan/05-shell-desktop.md and the two-item gap
- * list in MacOS.md section 9) can be added here with no other code change;
- * the switcher and Change Wallpaper menu item both read this list.
+ * The switcher, the Control Center tile and the Change Wallpaper menu item
+ * all cycle this list, so adding an entry here is the only change a new
+ * wallpaper needs. See plan/21-composition-pass.md.
+ *
+ * The three image wallpapers are generated, not photographed: a
+ * domain-warped fbm field ramped through a palette, rendered at 2880x1800.
+ * That matters for two reasons. There is no licence attached to any of
+ * them, and the tonal distribution was picked rather than inherited -
+ * each one holds a mean luminance near 12% with its brightest 5% at ~30%,
+ * which is dark enough that white chrome text clears 8:1 anywhere on the
+ * image and bright enough that the glass tiers have something real to
+ * refract. A stock photo satisfies neither constraint reliably.
+ *
+ * "mesh" is the pure-CSS fallback, kept because it needs no network and is
+ * what renders if the images ever fail to load.
  */
-export const WALLPAPERS = ["mesh"] as const
+export const WALLPAPERS = ["abyss", "aurora", "ember", "mesh"] as const
+
+export type WallpaperId = (typeof WALLPAPERS)[number]
+
+/** Display names for the switcher UI. */
+export const WALLPAPER_LABELS: Record<WallpaperId, string> = {
+  abyss: "Abyss",
+  aurora: "Aurora",
+  ember: "Ember",
+  mesh: "Gradient",
+}
+
+const SOURCES: Record<string, string> = {
+  abyss: "/wallpapers/abyss.jpg",
+  aurora: "/wallpapers/aurora.jpg",
+  ember: "/wallpapers/ember.jpg",
+}
 
 const GRAIN_SVG =
   "data:image/svg+xml;base64," +
@@ -19,7 +46,8 @@ const GRAIN_SVG =
 
 export function Wallpaper() {
   const wallpaper = useOS((s) => s.wallpaper)
-  const isMesh = wallpaper === "mesh" || !wallpaper
+  const src = SOURCES[wallpaper]
+  const isMesh = !src
 
   return (
     <div className="absolute inset-0 z-0 overflow-hidden bg-void">
@@ -43,7 +71,18 @@ export function Wallpaper() {
           }}
         />
       ) : (
-        <Image src={wallpaper} alt="" fill priority className="object-cover" />
+        /* keyed on src so a switch cross-fades a fresh element in rather
+           than mutating one img and popping between two unrelated images. */
+        <Image
+          key={src}
+          src={src}
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          quality={90}
+          className="animate-[wp-in_var(--dur-slow)_var(--ease-os)] object-cover"
+        />
       )}
 
       <div

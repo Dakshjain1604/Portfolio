@@ -108,9 +108,28 @@
   --dur-base: 240ms;
   --dur-slow: 420ms;
 
-  /* window elevation, indexed by depth. see plan/02. */
-  --shadow-rest: 0 8px 24px rgb(0 0 0 / 0.38);
-  --shadow-focused: 0 24px 64px rgb(0 0 0 / 0.52);
+  /* Window elevation, indexed by depth. See plan/02, and plan/21 for why
+     each of these is now three layers instead of one.
+
+     A single large soft shadow is the classic web approximation, and it is
+     wrong in a specific way: it produces a uniform grey halo with no
+     contact point, so the window looks pasted onto the wallpaper rather
+     than lifted off it. macOS stacks three distinct jobs:
+
+       1. hairline   a near-opaque half-pixel ring that defines the silhouette
+                     even where the wallpaper behind is dark
+       2. contact    tight and dark, directly under the frame - this is the
+                     layer that reads as "off the surface"
+       3. ambient    wide, soft and offset downward, the light-source cue
+
+     Without (1) the bottom edge of a dark window dissolved into the dark
+     region of the wallpaper, which is exactly what this build did. */
+  --shadow-rest:
+    0 0 0 0.5px rgb(0 0 0 / 0.5), 0 4px 10px -2px rgb(0 0 0 / 0.35),
+    0 14px 36px -10px rgb(0 0 0 / 0.5);
+  --shadow-focused:
+    0 0 0 0.5px rgb(0 0 0 / 0.6), 0 8px 18px -4px rgb(0 0 0 / 0.45),
+    0 36px 80px -20px rgb(0 0 0 / 0.72);
 }
 
 @theme inline {
@@ -202,6 +221,17 @@ body[data-mode="desktop"] {
 :focus-visible {
   outline: 2px solid var(--os-accent);
   outline-offset: 2px;
+}
+
+/* A wallpaper change is a cross-fade, not a cut. Paired with the `key`
+   on the Image in Wallpaper.tsx so each switch mounts a new element. */
+@keyframes wp-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* ---------------------------------------------------------------
