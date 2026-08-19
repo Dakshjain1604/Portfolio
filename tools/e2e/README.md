@@ -2,8 +2,8 @@
 
 One script, no framework. Drives a real Chrome against a running build and
 asserts the things a type-checker cannot: that every app actually mounts
-with content, that closing works, that the no-JS Reader tree carries the
-writing, and that the mobile branch renders.
+with content, that closing works, that the no-JS Reader tree renders, and
+that the mobile branch renders.
 
 ```sh
 npm run build && npx next start -p 3100     # test the production bundle

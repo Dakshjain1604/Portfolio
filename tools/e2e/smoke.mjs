@@ -56,7 +56,7 @@ const browser = await chromium.launch({ channel: 'chrome' });
   // open every app from the dock, confirm each mounts a window with content
   const dock = page.locator('nav[aria-label="Dock"] button');
   const dockCount = await dock.count();
-  check('dock has 10 app icons', dockCount === 10, `${dockCount}`);
+  check('dock has 8 app icons', dockCount === 8, `${dockCount}`);
 
   // One at a time: open, assert it mounted with real content, close it via
   // its traffic light. Opening all ten at once cascades the last windows
@@ -72,12 +72,6 @@ const browser = await chromium.launch({ channel: 'chrome' });
       return last ? { label: last.getAttribute('aria-label'), text: (last.innerText || '').length } : null;
     });
     check(`app ${i} opens with content`, !!t && t.text > 20, t ? `${t.label} (${t.text} chars)` : 'no window');
-
-    // Writing is dock index 3 - confirm a real post body rendered
-    if (i === 3) {
-      check('Writing app rendered a post body',
-        await page.getByText('During a drag or a resize, React state is never touched').first().isVisible().catch(() => false));
-    }
 
     try {
       await page.locator('button[aria-label^="Close "]').last().click({ timeout: 8000 });
@@ -131,64 +125,6 @@ const browser = await chromium.launch({ channel: 'chrome' });
   await ctx.close();
 }
 
-// ------------------------------------------------- writing narrow drill-down
-{
-  const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
-  const page = await ctx.newPage();
-  await page.goto(BASE, { waitUntil: 'networkidle', timeout: 90000 });
-  await page.waitForTimeout(4500);
-  await page.locator('nav[aria-label="Dock"] button').nth(3).click();   // Writing
-  await page.waitForTimeout(1200);
-
-  // Shrink the WINDOW (not the viewport) below the 560px container
-  // breakpoint by dragging its east resize handle - a real interaction.
-  // Assigning style.width instead gets clobbered the moment Motion next
-  // writes the bound width, which silently un-narrowed the window mid-test.
-  const box = await page.locator('[role="region"]').first().boundingBox();
-  await page.mouse.move(box.x + box.width - 2, box.y + box.height / 2);
-  await page.mouse.down();
-  await page.mouse.move(box.x + 440, box.y + box.height / 2, { steps: 12 });
-  await page.mouse.up();
-  await page.waitForTimeout(700);
-  const nowW = (await page.locator('[role="region"]').first().boundingBox()).width;
-  check('window resized below the 560px breakpoint', nowW < 560, `window is ${Math.round(nowW)}px`);
-
-  const listW = await page.evaluate(() => {
-    const nav = document.querySelector('[role="region"] nav[aria-label="Posts"]');
-    return nav ? Math.round(nav.getBoundingClientRect().width) : -1;
-  });
-  check('narrow: post list fills the window (not a 260px rail)', listW > 300, `list is ${listW}px`);
-
-  const articleHiddenBefore = await page.evaluate(() => {
-    const a = document.querySelector('[role="region"] article');
-    return !a || a.getBoundingClientRect().width === 0;
-  });
-  check('narrow: article hidden until a post is picked', articleHiddenBefore);
-
-  await page.locator('nav[aria-label="Posts"] button').nth(1).click();
-  await page.waitForTimeout(700);
-  const afterPick = await page.evaluate(() => {
-    const nav = document.querySelector('[role="region"] nav[aria-label="Posts"]');
-    const a = document.querySelector('[role="region"] article');
-    return { navW: nav ? nav.getBoundingClientRect().width : -1, artW: a ? a.getBoundingClientRect().width : 0 };
-  });
-  check('narrow: picking a post shows the article', afterPick.artW > 300, `article ${Math.round(afterPick.artW)}px`);
-  check('narrow: list hides while reading', afterPick.navW === 0, `list ${Math.round(afterPick.navW)}px`);
-
-  const backVisible = await page.getByRole('button', { name: /All posts/ }).first().isVisible().catch(() => false);
-  check('narrow: back button present', backVisible);
-  if (backVisible) {
-    await page.getByRole('button', { name: /All posts/ }).first().click();
-    await page.waitForTimeout(600);
-    const backW = await page.evaluate(() => {
-      const nav = document.querySelector('[role="region"] nav[aria-label="Posts"]');
-      return nav ? Math.round(nav.getBoundingClientRect().width) : -1;
-    });
-    check('narrow: back returns to the list', backW > 300, `list ${backW}px`);
-  }
-  await ctx.close();
-}
-
 // ----------------------------------------------------------------- reader
 {
   const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, javaScriptEnabled: false });
@@ -197,10 +133,6 @@ const browser = await chromium.launch({ channel: 'chrome' });
   await page.waitForTimeout(1200);
   const txt = await page.evaluate(() => document.body.innerText);
   check('no-JS: name present', txt.includes('Daksh Jain'));
-  check('no-JS: writing section present', txt.includes('Writing'));
-  check('no-JS: full post body crawlable', txt.includes('During a drag or a resize, React state is never touched'));
-  check('no-JS: all 4 post titles present',
-    ['drag handler', 'square for weeks', 'Liquid Glass', 'forgot to put my name'].every(s => txt.includes(s)));
   const skillsTxt = await page.evaluate(() => {
     const h = document.getElementById('skills-h');
     return h ? h.parentElement.innerText : '';
@@ -221,18 +153,7 @@ const browser = await chromium.launch({ channel: 'chrome' });
   await page.waitForTimeout(4000);
   check('mobile: widget shows name', await page.locator('header').getByText('Daksh Jain').first().isVisible());
   const tiles = await page.$$('main button, main a');
-  check('mobile: 12 tiles (10 apps + 2 links)', tiles.length === 12, `${tiles.length}`);
-  // scoped to the springboard grid: an unscoped match also hits the inert
-  // ReaderView tree, which is always in the DOM as a sibling
-  await page.locator('main').getByText('Writing', { exact: true }).first().click();
-  await page.waitForTimeout(1500);
-  const sheet = await page.evaluate(() => {
-    const inert = document.getElementById('reader');
-    const clone = document.body.cloneNode(true);
-    clone.querySelector('#reader')?.remove();
-    return (clone.innerText || clone.textContent || '').includes('drag handler') && !!inert;
-  });
-  check('mobile: Writing sheet opens with content', sheet);
+  check('mobile: 10 tiles (8 apps + 2 links)', tiles.length === 10, `${tiles.length}`);
   check('mobile: no page errors', errors.length === 0, errors.slice(0, 2).join(' | '));
   await ctx.close();
 }

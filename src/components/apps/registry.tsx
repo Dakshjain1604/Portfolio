@@ -9,19 +9,15 @@ import { SystemSettings } from "./SystemSettings"
 import { ActivityMonitor } from "./ActivityMonitor"
 import { Mail } from "./Mail"
 import { Preview } from "./Preview"
-import { Orchestrator } from "./Orchestrator"
-import { Writing } from "./Writing"
 
 /** AppId -> content component. See plan/07 through plan/15. */
 export const appRegistry: Record<AppId, React.ComponentType<{ windowId: AppId }>> = {
   finder: Finder,
   about: AboutThisMac,
   notes: Notes,
-  writing: Writing,
   settings: SystemSettings,
   activity: ActivityMonitor,
   mail: Mail,
   preview: Preview,
   terminal: Terminal,
-  orchestrator: Orchestrator,
 }

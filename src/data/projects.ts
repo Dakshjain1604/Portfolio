@@ -139,9 +139,17 @@ export const projects: Project[] = [
   {
     id: "bioscript",
     title: "BioScript",
-    outcome: "AI drug-repurposing research dashboard for fibrotic disease discovery.",
+    outcome: "Literature-screening prototype that ranks FDA-approved drugs for fibrotic-disease repurposing.",
+    /**
+     * Reframed from "scores drug candidates against fibrotic pathways" -
+     * accurate about the mechanism (LLM reasoning over retrieved papers)
+     * but read as a pharmacological claim, which this doesn't have the
+     * validation to back. Ranking is literature evidence, not lab or
+     * clinical data, and the description now says so directly rather than
+     * letting a reader assume otherwise.
+     */
     description:
-      "A research workbench that scores FDA-approved drug candidates against fibrotic pathways using real-time PubMed literature retrieval and LLM-based reasoning, with a transparent, auditable pipeline.",
+      "A research workbench that pairs real-time PubMed retrieval with LLM-based reasoning to rank FDA-approved drugs as repurposing candidates for fibrotic disease, with every ranking traceable back to the papers behind it. A literature-screening prototype, not a validated pharmacological or clinical tool.",
     image: "/images/projects/bioscript.png",
     tech: ["Python", "Streamlit", "PubMed API", "LLM Reasoning"],
     github: "https://github.com/Dakshjain1604/AI-Powered-Drug-Repurposing-Platform",
@@ -183,7 +191,7 @@ export const projects: Project[] = [
       "A real-time vessel tracking and maritime intelligence platform monitoring ship coordinates, AIS telemetry streams, route vectors, and operational health metrics.",
     image: "/images/projects/soh-ships.png",
     tech: ["TypeScript", "Node.js", "React", "WebSockets", "Leaflet"],
-    github: "https://github.com/Dakshjain1604/SOH_Ships",
+    github: "https://github.com/Dakshjain1604/SOH-Ships",
     tags: ["web"],
   },
 ]

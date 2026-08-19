@@ -94,7 +94,11 @@ export function Window({ id }: WindowProps) {
   // backdrop blur. Written as an inline pair rather than in globals.css
   // because React emits both keys itself, so the Lightning CSS prefix
   // dedup that bit phase 19 cannot apply here.
-  const blur = focused ? undefined : "blur(12px) saturate(140%)"
+  // saturate must stay in sync with .os-glass's backdrop-filter in
+  // globals.css - drift between these two copies is what caused the
+  // window haze bug (this was stuck at a pre-fix 140% while .os-glass
+  // had already moved to 55%).
+  const blur = focused ? undefined : "blur(12px) saturate(55%)"
 
   // boxShadow deliberately does NOT go through framer's `animate` - framer
   // cannot interpolate a box-shadow value that is a var(...) reference (it
@@ -185,8 +189,8 @@ export function Window({ id }: WindowProps) {
               the frame, and --r-inset is the same value --r-float is
               derived from, so the two curves stay concentric at any
               --r-window. Apps own their own surface tier: content apps
-              use .os-plate, while Terminal, Preview and Orchestrator
-              keep their deliberately opaque backgrounds. */}
+              use .os-plate, while Terminal and Preview keep their
+              deliberately opaque backgrounds. */}
           <div
             className="relative min-h-0 flex-1 px-(--r-inset) pb-(--r-inset)"
             // scroll does not bubble, but it does reach ancestors during

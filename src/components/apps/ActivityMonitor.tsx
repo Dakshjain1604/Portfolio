@@ -3,9 +3,22 @@
 import { useEffect, useState } from "react"
 import { CloudSlash, GithubLogo, Star, GitFork } from "@phosphor-icons/react/dist/ssr"
 import { socials } from "@/data/socials"
+import { projects } from "@/data/projects"
 import { EmptyState } from "@/components/primitives/EmptyState"
 // Cache and types moved to lib/github so Finder can share this one request.
-import { fetchGithub, type Day, type GithubData, type GithubResult } from "@/lib/github"
+import { fetchGithub, repoSlug, type Day, type GithubData, type GithubResult } from "@/lib/github"
+
+/**
+ * GitHub's own repo description is null on almost every repo here - nobody
+ * fills that field in. The portfolio's project copy already has a real,
+ * human-written one-liner for the repos that made the cut (`outcome`), so a
+ * repo showcased here borrows that instead of rendering a blank line.
+ * Keyed by slug so it survives the same casing quirks `starsByRepo` already
+ * accounts for.
+ */
+const outcomeBySlug = new Map(
+  projects.filter((p) => p.github).map((p) => [repoSlug(p.github)!, p.outcome])
+)
 
 
 function computeStreaks(weeks: { days: Day[] }[]) {
@@ -171,37 +184,49 @@ export function ActivityMonitor() {
 
         {tab === "repositories" && (
           <ul id="panel-repositories" role="tabpanel" aria-labelledby="tab-repositories" className="space-y-1">
-            {data.pinned.length === 0 && (
-              <EmptyState icon={CloudSlash} title="No pinned repositories" body="Nothing is pinned on GitHub yet." />
+            {data.repoStats.length === 0 && (
+              <EmptyState icon={CloudSlash} title="No repositories" body="Nothing to show on GitHub yet." />
             )}
-            {data.pinned.map((repo) => (
-              <li key={repo.name}>
-                <a
-                  href={repo.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-between gap-3 rounded-(--r-control) px-2 py-2 hover:bg-panel-3"
-                >
-                  <div className="min-w-0">
-                    <p className="truncate text-xs font-medium text-text">{repo.name}</p>
-                    <p className="truncate text-[11px] text-text-2">{repo.description}</p>
-                  </div>
-                  <div
-                    className="flex shrink-0 items-center gap-3 font-mono text-[11px] text-text-2"
-                    style={{ fontVariantNumeric: "tabular-nums" }}
+            {data.repoStats.slice(0, 6).map((repo) => {
+              const description = repo.description ?? outcomeBySlug.get(repo.name.toLowerCase())
+              return (
+                <li key={repo.name}>
+                  <a
+                    href={repo.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-start justify-between gap-3 rounded-(--r-control) px-2 py-2 hover:bg-panel-3"
                   >
-                    <span className="flex items-center gap-1">
-                      <Star size={11} weight="light" />
-                      {repo.stars}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <GitFork size={11} weight="light" />
-                      {repo.forks}
-                    </span>
-                  </div>
-                </a>
-              </li>
-            ))}
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-1.5">
+                        {repo.language && (
+                          <span
+                            aria-hidden
+                            className="h-1.5 w-1.5 shrink-0 rounded-full"
+                            style={{ background: repo.language.color }}
+                          />
+                        )}
+                        <p className="truncate text-xs font-medium text-text">{repo.name}</p>
+                      </div>
+                      {description && <p className="mt-0.5 truncate text-[11px] text-text-2">{description}</p>}
+                    </div>
+                    <div
+                      className="flex shrink-0 items-center gap-3 pt-px font-mono text-[11px] text-text-2"
+                      style={{ fontVariantNumeric: "tabular-nums" }}
+                    >
+                      <span className="flex items-center gap-1">
+                        <Star size={11} weight="light" />
+                        {repo.stars}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <GitFork size={11} weight="light" />
+                        {repo.forks}
+                      </span>
+                    </div>
+                  </a>
+                </li>
+              )
+            })}
           </ul>
         )}
 

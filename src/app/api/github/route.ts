@@ -22,6 +22,7 @@ const USER_CONTRIBUTIONS_QUERY = `
         totalCount
         nodes {
           name
+          description
           stargazerCount
           forkCount
           primaryLanguage {
@@ -29,21 +30,6 @@ const USER_CONTRIBUTIONS_QUERY = `
             color
           }
           url
-        }
-      }
-      pinnedItems(first: 6, types: REPOSITORY) {
-        nodes {
-          ... on Repository {
-            name
-            description
-            url
-            stargazerCount
-            forkCount
-            primaryLanguage {
-              name
-              color
-            }
-          }
         }
       }
     }
@@ -68,6 +54,7 @@ interface GitHubResponse {
         totalCount: number;
         nodes: Array<{
           name: string;
+          description: string | null;
           stargazerCount: number;
           forkCount: number;
           primaryLanguage: {
@@ -75,19 +62,6 @@ interface GitHubResponse {
             color: string;
           } | null;
           url: string;
-        }>;
-      };
-      pinnedItems: {
-        nodes: Array<{
-          name: string;
-          description: string;
-          url: string;
-          stargazerCount: number;
-          forkCount: number;
-          primaryLanguage: {
-            name: string;
-            color: string;
-          } | null;
         }>;
       };
     };
@@ -162,23 +136,18 @@ export async function GET() {
       .sort((a, b) => b.count - a.count)
       .slice(0, 6);
 
-    /** Per-repo stars, so Finder can label a project with its real star
-     *  count instead of the reader having to take "highest-starred" on
-     *  trust. Derived from the repos array already fetched above - no extra
-     *  API call, no extra rate-limit cost. */
+    /** Per-repo stats, sorted by stars (the query's own orderBy) so it
+     *  serves two consumers without a second fetch: Finder labels a project
+     *  with its real star count, and Activity Monitor's Repositories tab
+     *  slices the front of this same array as its showcase - ranked by
+     *  merit rather than by whatever happens to be pinned on the profile. */
     const repoStats = repos.map((repo) => ({
       name: repo.name,
-      stars: repo.stargazerCount,
-      forks: repo.forkCount,
-      url: repo.url,
-    }));
-
-    const pinned = user.pinnedItems.nodes.map((repo) => ({
-      name: repo.name,
       description: repo.description,
-      url: repo.url,
       stars: repo.stargazerCount,
       forks: repo.forkCount,
+      url: repo.url,
+      language: repo.primaryLanguage,
     }));
 
     return NextResponse.json({
@@ -192,7 +161,6 @@ export async function GET() {
         forks: totalForks,
       },
       languages,
-      pinned,
       repoStats,
     });
   } catch (error) {

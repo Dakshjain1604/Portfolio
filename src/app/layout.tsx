@@ -1,4 +1,4 @@
-import { Geist, Geist_Mono } from "next/font/google"
+import { Geist_Mono } from "next/font/google"
 import "./globals.css"
 import { Metadata, Viewport } from "next"
 import { socials } from "@/data/socials"
@@ -8,11 +8,6 @@ export const viewport: Viewport = {
   initialScale: 1,
   themeColor: "#0B0B0E",
 }
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-})
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -100,7 +95,7 @@ export default function RootLayout({
   }
 
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="en" className={geistMono.variable}>
       <head>
         <script
           type="application/ld+json"

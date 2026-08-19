@@ -83,7 +83,10 @@ export function AboutThisMac() {
           exactly the kind of thing it should carry. */}
       <section className="mb-7 rounded-(--r-card) border border-divider p-3.5">
         <h3 className="text-[11px] font-medium tracking-wide text-text-2 uppercase">Education</h3>
-        <p className="mt-2 text-xs font-medium text-text">{profile.education.degree}</p>
+        <div className="mt-2 flex flex-wrap items-center gap-2">
+          <p className="text-xs font-medium text-text">{profile.education.degree}</p>
+          <Chip>{profile.education.status}</Chip>
+        </div>
         <p className="mt-0.5 text-[11px] text-text-2">
           {profile.education.school} &middot; {profile.education.period} &middot; CGPA{" "}
           {profile.education.cgpa}

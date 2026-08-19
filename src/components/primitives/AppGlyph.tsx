@@ -7,7 +7,6 @@ import {
   ChartLine,
   EnvelopeSimple,
   FilePdf,
-  Graph,
   GithubLogo,
 } from "@phosphor-icons/react/dist/ssr"
 import type { AppId, LinkId } from "@/data/apps"
@@ -113,41 +112,6 @@ export function AppGlyph({ id, size }: { id: AppId; size: number }) {
         </Clip>
       )
 
-    // Writing: a page of ruled text with a wide first line, so it reads as
-    // prose at Dock size. Structurally distinct from Notes next to it -
-    // Notes has the yellow header band, this has a serif mark and no band.
-    case "writing":
-      return (
-        <Clip>
-          <span
-            className="absolute font-semibold"
-            style={{
-              left: "16%",
-              top: "12%",
-              fontSize: s(0.42),
-              lineHeight: 1,
-              color: "#2b2b2e",
-              fontFamily: "Georgia, 'Times New Roman', serif",
-            }}
-          >
-            W
-          </span>
-          {[0.6, 0.73, 0.86].map((top, i) => (
-            <span
-              key={top}
-              className="absolute rounded-full"
-              style={{
-                top: `${top * 100}%`,
-                left: "17%",
-                width: i === 2 ? "36%" : "66%",
-                height: Math.max(1, s(0.05)),
-                background: "rgb(60 60 60 / .32)",
-              }}
-            />
-          ))}
-        </Clip>
-      )
-
     // Two gears, offset, the way System Settings stacks them.
     case "settings":
       return (
@@ -186,9 +150,6 @@ export function AppGlyph({ id, size }: { id: AppId; size: number }) {
 
     case "preview":
       return <FilePdf size={s(0.58)} weight="fill" color="var(--sys-red)" className="relative" />
-
-    case "orchestrator":
-      return <Graph size={s(0.56)} weight="fill" color="white" className="relative" style={{ filter: LIFT }} />
 
     case "about":
       return <Info size={s(0.58)} weight="fill" color="rgb(28 28 28 / .8)" className="relative" />

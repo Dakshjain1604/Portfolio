@@ -19,8 +19,14 @@ export type GithubData = {
   contributions: { total: number; weeks: { days: Day[] }[] }
   stats: { repos: number; stars: number; forks: number }
   languages: { name: string; count: number }[]
-  pinned: { name: string; description: string; url: string; stars: number; forks: number }[]
-  repoStats: { name: string; stars: number; forks: number; url: string }[]
+  repoStats: {
+    name: string
+    description: string | null
+    stars: number
+    forks: number
+    url: string
+    language: { name: string; color: string } | null
+  }[]
 }
 
 export type GithubResult = GithubData | { error: true }

@@ -7,8 +7,6 @@ import {
   EnvelopeSimple,
   FilePdf,
   Terminal as TerminalGlyph,
-  Graph,
-  Article,
   GithubLogo,
   LinkedinLogo,
 } from "@phosphor-icons/react/dist/ssr"
@@ -26,8 +24,6 @@ export type AppId =
   | "mail"
   | "preview"
   | "terminal"
-  | "orchestrator"
-  | "writing"
 
 export type AppMeta = {
   id: AppId
@@ -75,17 +71,6 @@ export const apps: Record<AppId, AppMeta> = {
     minSize: { w: 560, h: 400 },
     dockOrder: 2,
   },
-  writing: {
-    id: "writing",
-    title: "Writing",
-    icon: Article,
-    // Paper-white like Notes, but warmer and without the yellow band, so
-    // the two read as related without being confusable at Dock size.
-    tint: ["#fbfaf7", "#e6e2d8"],
-    defaultRect: { x: 200, y: 68, w: 900, h: 620 },
-    minSize: { w: 520, h: 400 },
-    dockOrder: 3,
-  },
   settings: {
     id: "settings",
     title: "Skills",
@@ -131,15 +116,6 @@ export const apps: Record<AppId, AppMeta> = {
     defaultRect: { x: 160, y: 140, w: 720, h: 460 },
     minSize: { w: 480, h: 300 },
     dockOrder: 8,
-  },
-  orchestrator: {
-    id: "orchestrator",
-    title: "Orchestrator",
-    icon: Graph,
-    tint: ["#7d7bf0", "#5e5ce6"],
-    defaultRect: { x: 340, y: 72, w: 800, h: 600 },
-    minSize: { w: 560, h: 420 },
-    dockOrder: 9,
   },
 }
 

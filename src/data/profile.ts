@@ -94,6 +94,10 @@ export const profile = {
     degree: "B.Tech, Computer Science & Engineering (Cloud Computing)",
     school: "JECRC University, Jaipur",
     period: "2022 to 2026",
+    /** Explicit rather than left for the reader to infer from `period` -
+     *  a closed date range reads as complete only if the reader already
+     *  knows today's date is past it. */
+    status: "Graduated",
     cgpa: "8.6/10",
     certifications: [
       "Microsoft Azure Fundamentals",

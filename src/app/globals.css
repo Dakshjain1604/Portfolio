@@ -55,7 +55,7 @@
      changes, and this build's translucent sidebars made that visible.
      label / secondaryLabel / tertiaryLabel. */
   --os-text: rgb(255 255 255 / 0.92);
-  --os-text-2: rgb(255 255 255 / 0.64);
+  --os-text-2: rgb(255 255 255 / 0.72);
   --os-text-3: rgb(255 255 255 / 0.32); /* decoration only. never body copy. */
 
   /* the one accent. Overridable at runtime (System Settings > Appearance
@@ -161,7 +161,7 @@
   --radius-card: var(--r-card);
   --radius-control: var(--r-control);
 
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: -apple-system, "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 }
 

@@ -5,7 +5,6 @@ import { profile } from "@/data/profile"
 import { projects, ingestSnippet } from "@/data/projects"
 import { experience } from "@/data/experience"
 import { skills } from "@/data/skills"
-import { posts } from "@/data/writing"
 import { socials } from "@/data/socials"
 import { useOS } from "@/os/store"
 import type { AppId } from "@/data/apps"
@@ -29,7 +28,6 @@ function help() {
     "cat ingest.py print the DocuMind RAG snippet",
     "skills        capability groups",
     "experience    work history",
-    "writing       open the writing app",
     "contact       email, linkedin, github",
     "resume        open the resume",
     "open <app>    open a window (e.g. open finder)",
@@ -44,9 +42,6 @@ const APP_ALIASES: Record<string, AppId> = {
   about: "about",
   notes: "notes",
   experience: "notes",
-  writing: "writing",
-  blog: "writing",
-  posts: "writing",
   settings: "settings",
   skills: "settings",
   activity: "activity",
@@ -55,7 +50,6 @@ const APP_ALIASES: Record<string, AppId> = {
   preview: "preview",
   resume: "preview",
   terminal: "terminal",
-  orchestrator: "orchestrator",
 }
 
 /** Fuzzy resolver: scores each candidate by keyword overlap with the input,
@@ -67,7 +61,6 @@ const KEYWORD_MAP: { keywords: string[]; command: string }[] = [
   { keywords: ["project", "built", "made", "work", "portfolio"], command: "projects" },
   { keywords: ["skill", "stack", "tech", "language"], command: "skills" },
   { keywords: ["experience", "job", "role", "career"], command: "experience" },
-  { keywords: ["writing", "blog", "post", "article", "wrote"], command: "writing" },
   { keywords: ["contact", "reach", "email", "phone", "social", "linkedin", "github"], command: "contact" },
   { keywords: ["resume", "pdf", "cv"], command: "resume" },
   { keywords: ["neoclaw", "agent", "pulse"], command: "neoclaw" },
@@ -210,10 +203,6 @@ export function Terminal() {
     if (lower === "resume" || fuzzyResolve(lower) === "resume") {
       open("preview")
       return push([{ kind: "output", text: "opening resume.pdf" }])
-    }
-    if (lower === "writing" || fuzzyResolve(lower) === "writing") {
-      open("writing")
-      return push([{ kind: "output", text: `opening writing - ${posts.length} posts` }])
     }
     if (lower === "neoclaw" || fuzzyResolve(lower) === "neoclaw")
       return push([

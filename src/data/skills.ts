@@ -37,7 +37,7 @@ export const skills: SkillGroup[] = [
       { name: "Model Evaluation & LLM Tracing" },
       { name: "Prompt Engineering" },
       { name: "Claude API", slug: "anthropic" },
-      { name: "OpenAI API", slug: "openai" },
+      { name: "OpenAI API" },
       { name: "LangChain & LangGraph", slug: "langchain" },
     ],
   },

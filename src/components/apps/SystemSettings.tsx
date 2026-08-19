@@ -17,19 +17,13 @@ import {
   Ruler,
   ArrowsLeftRight,
   ArrowsClockwise,
-  PaintBrush,
-  Check,
+  Robot,
 } from "@phosphor-icons/react/dist/ssr"
 import type { IconProps } from "@phosphor-icons/react"
 import { skills, type Skill } from "@/data/skills"
 import { projects } from "@/data/projects"
-import { useOS, ACCENT_TINTS, type AccentTint } from "@/os/store"
+import { useOS } from "@/os/store"
 import { Sidebar } from "@/components/primitives/Sidebar"
-
-/** Phase 19D: personalization, not portfolio content - deliberately kept
- *  out of src/data/skills.ts and handled as a sentinel category id here,
- *  first in the sidebar per plan/19-liquid-glass-modernization.md. */
-const APPEARANCE_ID = "appearance"
 
 /**
  * Real System Settings puts a small filled colour badge next to every
@@ -38,7 +32,6 @@ const APPEARANCE_ID = "appearance"
  * glance and one of the pane's most recognisable details.
  */
 const BADGE: Record<string, { icon: ComponentType<IconProps>; bg: string }> = {
-  [APPEARANCE_ID]: { icon: PaintBrush, bg: "var(--sys-gray)" },
   ai: { icon: Sparkle, bg: "var(--sys-purple)" },
   backend: { icon: HardDrives, bg: "var(--sys-green)" },
   frontend: { icon: Browser, bg: "var(--sys-orange)" },
@@ -60,6 +53,7 @@ const GLYPH_FALLBACK: Record<string, ComponentType<IconProps>> = {
   SQL: Database,
   OAuth2: Plugs,
   "Claude Code": Code,
+  "OpenAI API": Robot,
 }
 
 const CLOUD_INFRA = new Set(["AWS", "Docker", "CI/CD", "REST", "JWT", "OAuth2"])
@@ -152,71 +146,8 @@ function SkillRow({ skill }: { skill: Skill }) {
   return <li className={ROW}>{content}</li>
 }
 
-function AppearancePane() {
-  const accentTint = useOS((s) => s.accentTint)
-  const setAccentTint = useOS((s) => s.setAccentTint)
-  const glassClear = useOS((s) => s.glassClear)
-  const setGlassClear = useOS((s) => s.setGlassClear)
-
-  return (
-    <>
-      <Group caption="Accent color">
-        <li className="flex items-center gap-3 px-3 py-3.5">
-          <div role="radiogroup" aria-label="Accent color" className="flex items-center gap-2.5">
-            {(Object.keys(ACCENT_TINTS) as AccentTint[]).map((tint) => {
-              const selected = accentTint === tint
-              return (
-                <button
-                  key={tint}
-                  type="button"
-                  role="radio"
-                  aria-checked={selected}
-                  aria-label={tint}
-                  onClick={() => setAccentTint(tint)}
-                  className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full"
-                  style={{
-                    background: ACCENT_TINTS[tint],
-                    boxShadow: selected
-                      ? "0 0 0 2px var(--os-panel-2), 0 0 0 3.5px var(--os-text)"
-                      : "inset 0 1px 0 rgb(255 255 255 / .3)",
-                  }}
-                >
-                  {selected && <Check size={11} weight="bold" color="white" />}
-                </button>
-              )
-            })}
-          </div>
-        </li>
-      </Group>
-
-      <Group caption="Glass">
-        <li className="flex items-center justify-between gap-4 px-3 py-3">
-          <div>
-            <p className="text-[13px] text-text">Clear</p>
-            <p className="text-xs text-text-2">Maximizes transparency across windows, menus, and the Dock.</p>
-          </div>
-          <button
-            type="button"
-            role="switch"
-            aria-checked={glassClear}
-            aria-label="Clear glass"
-            onClick={() => setGlassClear(!glassClear)}
-            className="relative h-[22px] w-[38px] shrink-0 rounded-full transition-colors"
-            style={{ background: glassClear ? "var(--os-accent)" : "var(--os-panel-3)" }}
-          >
-            <span
-              className="absolute top-[2px] h-[18px] w-[18px] rounded-full bg-white transition-[left]"
-              style={{ left: glassClear ? 18 : 2 }}
-            />
-          </button>
-        </li>
-      </Group>
-    </>
-  )
-}
-
 export function SystemSettings() {
-  const [groupId, setGroupId] = useState<string>(APPEARANCE_ID)
+  const [groupId, setGroupId] = useState<string>(skills[0].id)
   const [query, setQuery] = useState("")
   const group = skills.find((g) => g.id === groupId)
 
@@ -259,19 +190,6 @@ export function SystemSettings() {
           />
         </div>
 
-        <button
-          type="button"
-          aria-pressed={groupId === APPEARANCE_ID}
-          aria-controls="settings-pane"
-          onClick={() => setGroupId(APPEARANCE_ID)}
-          className={rowClass(groupId === APPEARANCE_ID)}
-          style={rowStyle(groupId === APPEARANCE_ID)}
-        >
-          <Badge id={APPEARANCE_ID} />
-          Appearance
-        </button>
-        <div className="my-2 h-px bg-divider" aria-hidden />
-
         {visible.map((g) => (
           <button
             key={g.id}
@@ -297,7 +215,7 @@ export function SystemSettings() {
         aria-live="polite"
         className="os-plate min-w-0 flex-1 overflow-auto rounded-(--r-float) px-6 py-5"
       >
-        {group ? (
+        {group && (
           <>
             <h3 className="mb-4 text-[15px] font-semibold text-text">{group.label}</h3>
             {group.id === "cloud" ? (
@@ -320,11 +238,6 @@ export function SystemSettings() {
                 ))}
               </Group>
             )}
-          </>
-        ) : (
-          <>
-            <h3 className="mb-4 text-[15px] font-semibold text-text">Appearance</h3>
-            <AppearancePane />
           </>
         )}
       </div>
