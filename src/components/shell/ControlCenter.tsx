@@ -10,7 +10,7 @@ import {
   Drop,
   SquaresFour,
 } from "@phosphor-icons/react/dist/ssr"
-import { useOS, ACCENT_TINTS, type AccentTint } from "@/os/store"
+import { useOS, ACCENT_TINTS, type AccentTint, type ThemePreference } from "@/os/store"
 import { useReducedMotion } from "@/os/ReducedMotionContext"
 import { useGlassPointer } from "@/os/useGlassPointer"
 import { WALLPAPERS } from "./Wallpaper"
@@ -91,6 +91,8 @@ export function ControlCenter() {
   const setGlassClear = useOS((s) => s.setGlassClear)
   const menuBarSolid = useOS((s) => s.menuBarSolid)
   const setMenuBarSolid = useOS((s) => s.setMenuBarSolid)
+  const theme = useOS((s) => s.theme)
+  const setTheme = useOS((s) => s.setTheme)
   const setMode = useOS((s) => s.setMode)
 
   useEffect(() => {
@@ -169,6 +171,35 @@ export function ControlCenter() {
                 }}
               />
               <Tile label="Reader view" hint="Plain, scrollable page" icon={BookOpen} wide onClick={() => setMode("reader")} />
+            </div>
+
+            <div className="mt-3 px-1">
+              <h3 className="mb-2 text-[11px] font-medium uppercase tracking-wide text-text-2">Appearance</h3>
+              <div
+                role="radiogroup"
+                aria-label="Appearance"
+                className="flex items-center gap-1 rounded-(--r-pill) bg-panel-3 p-1"
+              >
+                {(["auto", "light", "dark"] satisfies ThemePreference[]).map((t) => {
+                  const selected = theme === t
+                  return (
+                    <button
+                      key={t}
+                      type="button"
+                      role="radio"
+                      aria-checked={selected}
+                      onClick={() => setTheme(t)}
+                      className="os-press flex-1 rounded-(--r-pill) py-1.5 text-center text-xs font-medium capitalize"
+                      style={{
+                        background: selected ? "var(--os-accent)" : "transparent",
+                        color: selected ? "#fff" : "var(--os-text)",
+                      }}
+                    >
+                      {t}
+                    </button>
+                  )
+                })}
+              </div>
             </div>
 
             <div className="mt-3 px-1">

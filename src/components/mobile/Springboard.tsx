@@ -54,8 +54,8 @@ export function Springboard() {
               /* No pill, matching DesktopIcons: iOS labels its icons with
                  shadowed text, and eleven dark chips in a grid read as UI
                  chrome rather than as names. */
-              className="text-center text-[11px] leading-tight text-white"
-              style={{ textShadow: "0 1px 3px rgb(0 0 0 / .85), 0 0 10px rgb(0 0 0 / .5)" }}
+              className="text-center text-[11px] leading-tight text-wp-text"
+              style={{ textShadow: "var(--wp-label-shadow)" }}
             >
               {apps[id].title}
             </span>
@@ -81,8 +81,8 @@ export function Springboard() {
               /* No pill, matching DesktopIcons: iOS labels its icons with
                  shadowed text, and eleven dark chips in a grid read as UI
                  chrome rather than as names. */
-              className="text-center text-[11px] leading-tight text-white"
-              style={{ textShadow: "0 1px 3px rgb(0 0 0 / .85), 0 0 10px rgb(0 0 0 / .5)" }}
+              className="text-center text-[11px] leading-tight text-wp-text"
+              style={{ textShadow: "var(--wp-label-shadow)" }}
             >
               {link.label}
             </span>

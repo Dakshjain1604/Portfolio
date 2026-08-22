@@ -75,11 +75,13 @@ export function DesktopIcons() {
                 and three dark chips stacked down the edge of the screen
                 read as UI where they should read as filenames. */}
             <span
-              className="rounded-[5px] px-1.5 text-center text-[11px] leading-tight text-white"
+              className={`rounded-[5px] px-1.5 text-center text-[11px] leading-tight ${
+                selected === i ? "text-white" : "text-wp-text"
+              }`}
               style={
                 selected === i
                   ? { background: "var(--os-accent-fill)" }
-                  : { textShadow: "0 1px 3px rgb(0 0 0 / .8), 0 0 12px rgb(0 0 0 / .5)" }
+                  : { textShadow: "var(--wp-label-shadow)" }
               }
             >
               {item.label}

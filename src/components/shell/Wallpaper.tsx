@@ -2,6 +2,7 @@
 
 import Image from "next/image"
 import { useOS } from "@/os/store"
+import { useMediaQuery } from "@/os/useMediaQuery"
 
 /**
  * The switcher, the Control Center tile and the Change Wallpaper menu item
@@ -16,6 +17,17 @@ import { useOS } from "@/os/store"
  * which is dark enough that white chrome text clears 8:1 anywhere on the
  * image and bright enough that the glass tiers have something real to
  * refract. A stock photo satisfies neither constraint reliably.
+ *
+ * Each identity (abyss/aurora/ember) is a day/night pair, not three
+ * separate light wallpapers - same seed, angle and light position as its
+ * dark counterpart, run through the same generator with an inverted gamma
+ * (~0.68 instead of ~1.45, pushing most of the canvas bright instead of
+ * dark) and a lighter palette ramp. Even the darkest 5% of each light
+ * variant still measures ~81-85% luminance, which is what keeps dark text
+ * legible everywhere on it rather than just on average. See
+ * tools/wallpaper/render.mjs's LIGHT_SPECS. This mirrors Apple's own
+ * Dynamic Wallpaper precedent: one picture, two appearances, not two
+ * unrelated choices in the switcher.
  *
  * "mesh" is the pure-CSS fallback, kept because it needs no network and is
  * what renders if the images ever fail to load.
@@ -32,10 +44,15 @@ export const WALLPAPER_LABELS: Record<WallpaperId, string> = {
   mesh: "Gradient",
 }
 
-const SOURCES: Record<string, string> = {
+const SOURCES_DARK: Record<string, string> = {
   abyss: "/wallpapers/abyss.jpg",
   aurora: "/wallpapers/aurora.jpg",
   ember: "/wallpapers/ember.jpg",
+}
+const SOURCES_LIGHT: Record<string, string> = {
+  abyss: "/wallpapers/abyss-light.jpg",
+  aurora: "/wallpapers/aurora-light.jpg",
+  ember: "/wallpapers/ember-light.jpg",
 }
 
 const GRAIN_SVG =
@@ -46,7 +63,16 @@ const GRAIN_SVG =
 
 export function Wallpaper() {
   const wallpaper = useOS((s) => s.wallpaper)
-  const src = SOURCES[wallpaper]
+  const theme = useOS((s) => s.theme)
+  // null until resolved post-mount; Wallpaper never renders during SSR
+  // (it lives under DesktopShellInner, which returns null until isDesktop
+  // resolves), so there is no hydration flash to guard against here -
+  // defaulting to dark while unresolved just matches the site's base
+  // appearance for the one frame it might apply.
+  const prefersDark = useMediaQuery("(prefers-color-scheme: dark)")
+  const isLight = theme === "light" || (theme === "auto" && prefersDark === false)
+
+  const src = (isLight ? SOURCES_LIGHT : SOURCES_DARK)[wallpaper]
   const isMesh = !src
 
   return (
@@ -62,12 +88,25 @@ export function Wallpaper() {
             // the same three hues, pushed to a luminance where the glass
             // actually has something to refract. Still dark enough that
             // white chrome text clears 4.5:1 everywhere.
-            backgroundImage: [
-              "radial-gradient(ellipse 1100px 850px at 12% 4%, rgb(28 118 126 / .55), transparent 62%)",
-              "radial-gradient(ellipse 950px 1000px at 88% 22%, rgb(58 74 168 / .5), transparent 62%)",
-              "radial-gradient(ellipse 900px 700px at 72% 92%, rgb(150 92 58 / .34), transparent 60%)",
-              "radial-gradient(ellipse 1200px 900px at 34% 108%, rgb(40 96 92 / .42), transparent 62%)",
-            ].join(", "),
+            //
+            // The light variant isn't a lower-alpha version of the same
+            // stops: on a near-white --os-void, low-alpha colour reads as
+            // almost nothing, the opposite problem the dark mesh had. It
+            // uses pastel versions of the same four hues at higher alpha
+            // instead, so the same four-lobe identity survives the switch.
+            backgroundImage: isLight
+              ? [
+                  "radial-gradient(ellipse 1100px 850px at 12% 4%, rgb(200 230 232 / .85), transparent 62%)",
+                  "radial-gradient(ellipse 950px 1000px at 88% 22%, rgb(212 216 246 / .8), transparent 62%)",
+                  "radial-gradient(ellipse 900px 700px at 72% 92%, rgb(246 227 208 / .75), transparent 60%)",
+                  "radial-gradient(ellipse 1200px 900px at 34% 108%, rgb(216 241 233 / .75), transparent 62%)",
+                ].join(", ")
+              : [
+                  "radial-gradient(ellipse 1100px 850px at 12% 4%, rgb(28 118 126 / .55), transparent 62%)",
+                  "radial-gradient(ellipse 950px 1000px at 88% 22%, rgb(58 74 168 / .5), transparent 62%)",
+                  "radial-gradient(ellipse 900px 700px at 72% 92%, rgb(150 92 58 / .34), transparent 60%)",
+                  "radial-gradient(ellipse 1200px 900px at 34% 108%, rgb(40 96 92 / .42), transparent 62%)",
+                ].join(", "),
           }}
         />
       ) : (

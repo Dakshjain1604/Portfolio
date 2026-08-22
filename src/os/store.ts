@@ -10,6 +10,7 @@ const MODE_KEY = "os-mode"
 const MENUBAR_SOLID_KEY = "os-menubar-solid"
 const ACCENT_TINT_KEY = "os-accent-tint"
 const GLASS_CLEAR_KEY = "os-glass-clear"
+const THEME_KEY = "os-theme"
 
 // Unlike `mode` below, these three are safe to read synchronously here at
 // store-creation time: nothing ReaderView or any other server-rendered
@@ -32,6 +33,11 @@ function initialGlassClear(): boolean {
   if (typeof window === "undefined") return false
   return localStorage.getItem(GLASS_CLEAR_KEY) === "1"
 }
+function initialTheme(): ThemePreference {
+  if (typeof window === "undefined") return "auto"
+  const saved = localStorage.getItem(THEME_KEY)
+  return saved === "light" || saved === "dark" || saved === "auto" ? saved : "auto"
+}
 
 /** Exported so DesktopShellInner can re-apply the restored preference in a
  *  post-mount effect - see the comment there for why this must not run at
@@ -46,6 +52,17 @@ export function applyGlassClear(clear: boolean) {
   if (typeof document === "undefined") return
   if (clear) document.documentElement.dataset.glass = "clear"
   else delete document.documentElement.dataset.glass
+}
+/** "auto" removes the attribute entirely rather than writing it, so the
+ *  `@media (prefers-color-scheme: light) { :root:not([data-theme]) ... }`
+ *  guard in globals.css picks it up - see the THEME block there. This is
+ *  the whole mechanism: Auto needs no JS beyond "don't set the attribute,"
+ *  and the OS preference is tracked live by the media query with no
+ *  listener required. */
+export function applyTheme(theme: ThemePreference) {
+  if (typeof document === "undefined") return
+  if (theme === "auto") delete document.documentElement.dataset.theme
+  else document.documentElement.dataset.theme = theme
 }
 
 // Deliberately always "desktop" here, on both server and client, even
@@ -78,20 +95,27 @@ export function clampToViewport(rect: Rect): Rect {
 
 /** Preset accent tints for System Settings > Appearance, per
  *  plan/19-liquid-glass-modernization.md phase D - Tahoe's cited
- *  "personalize icons and widgets... tinted... clear look." */
-/** Apple's dark-appearance system colors, mirrored from the --sys-* block
- *  in globals.css. Duplicated rather than read from CSS because these are
- *  needed as values in TS (swatch backgrounds, --os-accent assignment);
- *  the CSS block is the source of truth if the two ever disagree. */
+ *  "personalize icons and widgets... tinted... clear look."
+ *
+ *  Each value is a `var(--sys-*)` reference, not a literal hex - every one
+ *  of these six already matched an existing --sys-* token in globals.css
+ *  exactly (blue/purple/pink/orange/green/gray), and referencing them
+ *  rather than duplicating their hex means the swatch, and the
+ *  `--os-accent` assignment in applyAccentTint below, both resolve
+ *  through the same light/dark cascade those tokens already carry - no
+ *  separate light-appearance tint map needed, and it stays correct live
+ *  if the OS preference changes mid-session under Auto, with no listener
+ *  required. */
 export const ACCENT_TINTS = {
-  blue: "#0a84ff",
-  purple: "#bf5af2",
-  pink: "#ff375f",
-  orange: "#ff9f0a",
-  green: "#30d158",
-  graphite: "#98989d",
+  blue: "var(--sys-blue)",
+  purple: "var(--sys-purple)",
+  pink: "var(--sys-pink)",
+  orange: "var(--sys-orange)",
+  green: "var(--sys-green)",
+  graphite: "var(--sys-gray)",
 } as const
 export type AccentTint = keyof typeof ACCENT_TINTS
+export type ThemePreference = "auto" | "light" | "dark"
 
 type OSStore = {
   windows: Partial<Record<AppId, WindowState>>
@@ -105,6 +129,7 @@ type OSStore = {
   menuBarSolid: boolean
   accentTint: AccentTint
   glassClear: boolean
+  theme: ThemePreference
 
   open: (id: AppId) => void
   close: (id: AppId) => void
@@ -122,6 +147,7 @@ type OSStore = {
   setMenuBarSolid: (solid: boolean) => void
   setAccentTint: (tint: AccentTint) => void
   setGlassClear: (clear: boolean) => void
+  setTheme: (theme: ThemePreference) => void
   cycleFocus: (dir: 1 | -1) => void
 }
 
@@ -134,6 +160,7 @@ export const useOS = create<OSStore>((set, get) => ({
   menuBarSolid: initialMenuBarSolid(),
   accentTint: initialAccentTint(),
   glassClear: initialGlassClear(),
+  theme: initialTheme(),
 
   open: (id) => {
     const { windows, stack } = get()
@@ -267,6 +294,11 @@ export const useOS = create<OSStore>((set, get) => ({
     localStorage.setItem(GLASS_CLEAR_KEY, clear ? "1" : "0")
     applyGlassClear(clear)
     set({ glassClear: clear })
+  },
+  setTheme: (theme) => {
+    localStorage.setItem(THEME_KEY, theme)
+    applyTheme(theme)
+    set({ theme })
   },
 
   cycleFocus: (dir) => {

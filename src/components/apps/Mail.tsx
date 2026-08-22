@@ -63,7 +63,7 @@ export function Mail() {
               style={{ border: "1px solid var(--os-edge)" }}
             />
             {errors.from && (
-              <p id="mail-from-error" role="alert" className="mt-1 text-[11px]" style={{ color: "#e57373" }}>
+              <p id="mail-from-error" role="alert" className="mt-1 text-[11px]" style={{ color: "var(--os-error-text)" }}>
                 {errors.from}
               </p>
             )}
@@ -97,7 +97,7 @@ export function Mail() {
             style={{ border: "1px solid var(--os-edge)" }}
           />
           {errors.body && (
-            <p id="mail-body-error" role="alert" className="mt-1 text-[11px]" style={{ color: "#e57373" }}>
+            <p id="mail-body-error" role="alert" className="mt-1 text-[11px]" style={{ color: "var(--os-error-text)" }}>
               {errors.body}
             </p>
           )}

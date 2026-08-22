@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect } from "react"
-import { useOS, applyAccentTint, applyGlassClear } from "@/os/store"
+import { useOS, applyAccentTint, applyGlassClear, applyTheme } from "@/os/store"
 import { useKeyboardShortcuts } from "@/os/useKeyboardShortcuts"
 import { useMediaQuery } from "@/os/useMediaQuery"
 import { ReducedMotionProvider } from "@/os/ReducedMotionContext"
@@ -28,6 +28,7 @@ function DesktopShellInner() {
   const setMode = useOS((s) => s.setMode)
   const accentTint = useOS((s) => s.accentTint)
   const glassClear = useOS((s) => s.glassClear)
+  const theme = useOS((s) => s.theme)
   const isDesktop = useMediaQuery("(min-width: 1024px)")
 
   // Restores a saved reader-mode preference post-mount rather than at
@@ -38,15 +39,20 @@ function DesktopShellInner() {
     if (localStorage.getItem("os-mode") === "reader") setMode("reader")
   }, [setMode])
 
-  // Same category of fix, found live: the store's accentTint/glassClear
-  // values are safe to read synchronously (see os/store.ts), but actually
-  // writing them to the DOM is not - doing that at module-evaluation time
-  // set an inline style on <html> before hydration finished comparing it,
-  // and React flagged a real mismatch on the root element's attributes.
-  // Applying the already-correct store value here, post-mount, is the fix.
+  // Same category of fix, found live: the store's accentTint/glassClear/
+  // theme values are safe to read synchronously (see os/store.ts), but
+  // actually writing them to the DOM is not - doing that at
+  // module-evaluation time set an inline style on <html> before hydration
+  // finished comparing it, and React flagged a real mismatch on the root
+  // element's attributes. Applying the already-correct store value here,
+  // post-mount, is the fix. theme's Auto case needs no listener here for
+  // live OS-preference changes - that is handled entirely by the
+  // `@media (prefers-color-scheme)` block in globals.css once this
+  // effect has (or has not) set the data-theme attribute once.
   useEffect(() => {
     applyAccentTint(accentTint)
     applyGlassClear(glassClear)
+    applyTheme(theme)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

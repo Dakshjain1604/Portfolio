@@ -1,22 +1,17 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
-import { motion } from "framer-motion"
-import {
-  GithubLogo,
-  ArrowSquareOut,
-  MagnifyingGlass,
-  Star,
-  Package,
-  BookOpen,
-} from "@phosphor-icons/react/dist/ssr"
+import { useEffect, useMemo, useRef, useState } from "react"
+import { AnimatePresence, motion } from "framer-motion"
+import { Eye, MagnifyingGlass, Star } from "@phosphor-icons/react/dist/ssr"
 import { fetchGithub, repoSlug, starsByRepo, type GithubResult } from "@/lib/github"
 import { fetchPypi, packageFor, type PypiResult } from "@/lib/pypi"
-import type { ProjectLink } from "@/data/projects"
-import { projects, type ProjectTag } from "@/data/projects"
-import { Chip } from "@/components/primitives/Chip"
+import { projects, type Project, type ProjectTag } from "@/data/projects"
 import { EmptyState } from "@/components/primitives/EmptyState"
 import { Sidebar } from "@/components/primitives/Sidebar"
+import { FinderProjectDetail } from "./FinderProjectDetail"
+import { FinderQuickLook } from "./FinderQuickLook"
+import { useFinderIntent } from "@/os/finderIntent"
+import { useReducedMotion } from "@/os/ReducedMotionContext"
 
 type Source = { id: "all" | ProjectTag; label: string }
 const SOURCES: Source[] = [
@@ -26,39 +21,44 @@ const SOURCES: Source[] = [
   { id: "neo", label: "Built with NEO" },
 ]
 
-const LINK_ICONS = {
-  source: GithubLogo,
-  live: ArrowSquareOut,
-  package: Package,
-  docs: BookOpen,
-} as const
-
-function LinkButton({ link }: { link: ProjectLink }) {
-  const Icon = LINK_ICONS[link.icon ?? "live"]
-  return (
-    <a
-      href={link.href}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label={`${link.label}, opens in a new tab`}
-      className={`os-press flex items-center gap-1.5 rounded-(--r-pill) px-2.5 py-1.5 text-xs ${
-        link.primary ? "bg-accent-soft text-link" : "bg-panel-3 text-text"
-      }`}
-    >
-      <Icon size={13} weight="regular" />
-      {link.label}
-    </a>
-  )
-}
-
 function norm(s: string) {
   return s.toLowerCase().replace(/[\s.\-_]/g, "")
 }
 
 export function Finder() {
+  // Cross-app deep link: System Settings writes a project id here before
+  // calling open("finder"), which is what mounts Finder in the first place
+  // when it was not already open - so the initial value is read straight
+  // into these lazy initializers rather than pushed in through an effect.
   const [source, setSource] = useState<Source["id"]>("all")
-  const [query, setQuery] = useState("")
-  const [selectedId, setSelectedId] = useState(projects[0].id)
+  const [query, setQuery] = useState(() => {
+    const id = useFinderIntent.getState().projectId
+    return id ? (projects.find((p) => p.id === id)?.title ?? "") : ""
+  })
+  const [selectedId, setSelectedId] = useState(() => {
+    const id = useFinderIntent.getState().projectId
+    return id && projects.some((p) => p.id === id) ? id : projects[0].id
+  })
+  const reducedMotion = useReducedMotion()
+
+  // Clears the id consumed above, then keeps listening for a later one
+  // written while Finder is already mounted and open - subscribed rather
+  // than read-and-effect'd so those setState calls happen inside the
+  // external store's own change callback, not synchronously in the effect
+  // body.
+  useEffect(() => {
+    if (useFinderIntent.getState().projectId) useFinderIntent.getState().setProjectId(null)
+    return useFinderIntent.subscribe((state) => {
+      if (!state.projectId) return
+      const match = projects.find((p) => p.id === state.projectId)
+      if (match) {
+        setSource("all")
+        setQuery(match.title)
+        setSelectedId(match.id)
+      }
+      useFinderIntent.getState().setProjectId(null)
+    })
+  }, [])
 
   // Live star counts. The one claim on this page a reader can verify
   // without trusting me, so it is worth a request. Renders nothing at all
@@ -115,8 +115,58 @@ export function Finder() {
     neo: projects.filter((p) => p.tags.includes("neo")).length,
   }
 
+  // Quick Look: macOS's actual answer to "make selecting something feel
+  // alive". Double-click, Enter, or Space zooms the row into a large
+  // floating card, genie-style, from wherever it sat in the list. Unlike
+  // the side pane below, this works identically at every window width,
+  // including inside the mobile sheet.
+  const containerRef = useRef<HTMLDivElement>(null)
+  const rowRefs = useRef<Record<string, HTMLDivElement | null>>({})
+  const lastTriggerRef = useRef<HTMLDivElement | null>(null)
+  const [quickLook, setQuickLook] = useState<{ project: Project; origin: string } | null>(null)
+
+  function openQuickLook(p: Project, rowEl: HTMLDivElement | null) {
+    let origin = "50% 50%"
+    if (rowEl && containerRef.current) {
+      const c = containerRef.current.getBoundingClientRect()
+      const r = rowEl.getBoundingClientRect()
+      origin = `${((r.left + r.width / 2 - c.left) / c.width) * 100}% ${((r.top + r.height / 2 - c.top) / c.height) * 100}%`
+    }
+    lastTriggerRef.current = rowEl
+    setQuickLook({ project: p, origin })
+  }
+
+  function closeQuickLook() {
+    setQuickLook(null)
+    lastTriggerRef.current?.focus()
+  }
+
+  function handleRowKeyDown(e: React.KeyboardEvent<HTMLDivElement>, p: Project) {
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      // stopPropagation matters here: useKeyboardShortcuts.ts's global
+      // window-level listener treats any arrow key as "nudge the focused
+      // window" whenever a window is focused and the target isn't a text
+      // input - without this, moving list selection also drags the whole
+      // Finder window a few px per keystroke.
+      e.preventDefault()
+      e.stopPropagation()
+      const idx = filtered.findIndex((x) => x.id === p.id)
+      const nextIdx = e.key === "ArrowDown" ? Math.min(idx + 1, filtered.length - 1) : Math.max(idx - 1, 0)
+      const next = filtered[nextIdx]
+      if (next) {
+        setSelectedId(next.id)
+        rowRefs.current[next.id]?.focus()
+      }
+    } else if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault()
+      e.stopPropagation()
+      setSelectedId(p.id)
+      openQuickLook(p, e.currentTarget)
+    }
+  }
+
   return (
-    <div className="flex h-full gap-(--r-inset) @container">
+    <div ref={containerRef} className="relative flex h-full gap-(--r-inset) @container">
       {/* @container query, not a viewport media query: this window can be
           resized narrower than 560/720px while the browser stays wide,
           and a viewport-based breakpoint would miss that entirely.
@@ -180,13 +230,22 @@ export function Finder() {
           <motion.ul role="listbox" aria-label="Projects" className="flex-1 overflow-auto p-1">
             {filtered.map((p) => (
               <li key={p.id}>
-                <button
-                  type="button"
+                {/* A `div`, not a `button`: it hosts a real nested button
+                    below (Quick Look can't otherwise be its own focusable,
+                    clickable target - buttons can't nest), and the ARIA
+                    listbox pattern expects role="option" on a plain element
+                    anyway rather than overriding a button's implicit role. */}
+                <div
+                  ref={(el) => {
+                    rowRefs.current[p.id] = el
+                  }}
                   role="option"
                   aria-selected={selected?.id === p.id}
+                  tabIndex={selected?.id === p.id ? 0 : -1}
                   onClick={() => setSelectedId(p.id)}
-                  onDoubleClick={() => window.open(p.live ?? p.github, "_blank", "noopener,noreferrer")}
-                  className="flex w-full items-center gap-3 rounded-(--r-control) px-2 py-1.5 text-left"
+                  onDoubleClick={(e) => openQuickLook(p, e.currentTarget)}
+                  onKeyDown={(e) => handleRowKeyDown(e, p)}
+                  className="flex w-full cursor-default items-center gap-3 rounded-(--r-control) px-2 py-1.5 text-left"
                   style={{ background: selected?.id === p.id ? "var(--os-accent-soft)" : "transparent" }}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -203,7 +262,26 @@ export function Finder() {
                   ) : (
                     <span className="shrink-0 text-[10px] text-text-2">{p.tech.length} tech</span>
                   )}
-                </button>
+                  {/* The explicit, discoverable way in: double-click and
+                      Enter/Space still work, but neither is obvious from
+                      looking at the row. A visible button is.
+                      tabIndex={-1} keeps it out of the roving-tabindex tab
+                      stop count - Enter on the row (already focused) does
+                      the identical thing for keyboard users. */}
+                  <button
+                    type="button"
+                    tabIndex={-1}
+                    aria-label={`Quick look ${p.title}`}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setSelectedId(p.id)
+                      openQuickLook(p, rowRefs.current[p.id] ?? null)
+                    }}
+                    className="os-press flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-panel-3 text-text-2 hover:text-text"
+                  >
+                    <Eye size={12} weight="bold" />
+                  </button>
+                </div>
               </li>
             ))}
           </motion.ul>
@@ -212,75 +290,35 @@ export function Finder() {
 
       {selected && (
         <Sidebar as="aside" live ariaLabel="Project details" width={280} className="hidden p-4 @[720px]:block">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={selected.image} alt={`${selected.title} screenshot`} className="mb-3 w-full rounded-(--r-card) object-cover" />
-          <h3 className="mb-1 text-sm font-medium text-text">{selected.title}</h3>
-          <p className="mb-3 max-w-[46ch] text-xs text-text-2">{selected.description}</p>
-          <div className="mb-4 flex flex-wrap gap-1.5">
-            {selected.tech.map((t) => (
-              <Chip key={t}>{t}</Chip>
-            ))}
-          </div>
-          {/* `links` when the project names its own, otherwise the
-              Source/Live default. See ProjectLink in data/projects.ts. */}
-          <div className="mb-4 flex flex-wrap gap-2">
-            {(
-              selected.links ?? [
-                ...(selected.github
-                  ? [{ label: "Source", href: selected.github, icon: "source" as const }]
-                  : []),
-                ...(selected.live
-                  ? [{ label: "Live", href: selected.live, icon: "live" as const, primary: true }]
-                  : []),
-              ]
-            ).map((l) => (
-              <LinkButton key={l.href} link={l} />
-            ))}
-          </div>
-          {/* Metrics first, when they exist: a number is the most persuasive
-              thing on this panel. "Kind: AI System" and "Tech: 4
-              technologies" used to sit here, both of which the reader can
-              already see from the chips above - filler where the evidence
-              should be. */}
-          <dl className="space-y-1.5 text-[11px]">
-            {(() => {
-              const pkg = packageFor(pypi, selected.pypi)
-              if (!pkg) return null
-              return (
-                <>
-                  <div className="flex justify-between gap-3">
-                    <dt className="text-text-2">Releases</dt>
-                    <dd className="font-medium text-text">{pkg.releases}</dd>
-                  </div>
-                  <div className="flex justify-between gap-3">
-                    <dt className="text-text-2">Latest</dt>
-                    <dd className="font-mono font-medium text-text">v{pkg.version}</dd>
-                  </div>
-                </>
-              )
-            })()}
-            {selected.metrics?.map((m) => (
-              <div key={m.label} className="flex justify-between gap-3">
-                <dt className="text-text-2">{m.label}</dt>
-                <dd className="text-right font-medium text-text">{m.value}</dd>
-              </div>
-            ))}
-            {starsFor(selected.github) && (
-              <div className="flex justify-between gap-3">
-                <dt className="text-text-2">GitHub stars</dt>
-                <dd className="flex items-center gap-1 font-medium text-text">
-                  <Star size={11} weight="fill" className="text-[var(--sys-yellow)]" />
-                  {starsFor(selected.github)}
-                </dd>
-              </div>
-            )}
-            <div className="flex justify-between gap-3">
-              <dt className="text-text-2">Kind</dt>
-              <dd className="text-text-2">{selected.tags.includes("ai") ? "AI System" : "Web App"}</dd>
-            </div>
-          </dl>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={selected.id}
+              initial={reducedMotion ? { opacity: 1 } : { opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={reducedMotion ? { opacity: 1 } : { opacity: 0 }}
+              transition={{ duration: reducedMotion ? 0 : 0.14 }}
+            >
+              <FinderProjectDetail
+                project={selected}
+                stars={starsFor(selected.github)}
+                pypiPkg={packageFor(pypi, selected.pypi)}
+              />
+            </motion.div>
+          </AnimatePresence>
         </Sidebar>
       )}
+
+      <AnimatePresence>
+        {quickLook && (
+          <FinderQuickLook
+            project={quickLook.project}
+            origin={quickLook.origin}
+            stars={starsFor(quickLook.project.github)}
+            pypiPkg={packageFor(pypi, quickLook.project.pypi)}
+            onClose={closeQuickLook}
+          />
+        )}
+      </AnimatePresence>
     </div>
   )
 }

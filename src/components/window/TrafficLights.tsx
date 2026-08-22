@@ -13,21 +13,27 @@ type TrafficLightsProps = {
 const DOT = "relative flex h-3 w-3 items-center justify-center rounded-full transition-[background,box-shadow] duration-150"
 const GLYPH = "relative opacity-0 group-hover/lights:opacity-100 text-black/60"
 
-/** Phase 20B: Tahoe's dots are little glass beads, not flat circles. Three
- *  layers, same recipe the Squircle and .os-glass use - a top-left specular
- *  bloom, the tint itself, and an inset rim that is bright along the top
- *  edge and dark along the bottom so the bead reads as lit from above. The
- *  outer glow is what makes it look like colored glass rather than paint. */
+/** Real macOS traffic lights are almost flat: solid saturated colour, a
+ *  barely-there top highlight, no outer glow, no glossy spotlight. Phase
+ *  20B's "little glass bead" recipe (radial spotlight highlight + a
+ *  colour-tinted outer glow) was a heavier, softer look than that -
+ *  correcting the glow's blur radius made it smaller but the bead was
+ *  still built from the same soft-edged ingredients. This drops the
+ *  glow and the spotlight gradient entirely: a flat fill plus one
+ *  hairline-thin inset highlight is what actually reads as crisp next
+ *  to a real macOS reference rather than "glowing." */
 function dotStyle(tint: string, focused: boolean): React.CSSProperties {
   if (!focused) {
-    return {
-      background: "rgb(255 255 255 / .16)",
-      boxShadow: "inset 0 1px 0 rgb(255 255 255 / .12)",
-    }
+    // A real mid-grey (Apple's systemGray, both appearances already
+    // defined in globals.css), not "white at low alpha": that recipe only
+    // has contrast against dark chrome, and reads as nearly invisible
+    // once the titlebar itself goes light. Real macOS keeps this bead a
+    // genuine grey rather than a backdrop-dependent tint.
+    return { background: "var(--sys-gray)" }
   }
   return {
-    background: `radial-gradient(circle at 32% 26%, rgb(255 255 255 / .55), transparent 58%), ${tint}`,
-    boxShadow: `inset 0 1px 0 rgb(255 255 255 / .35), inset 0 -1px 1px rgb(0 0 0 / .28), 0 0 6px -1px ${tint}`,
+    background: tint,
+    boxShadow: "inset 0 1px 0.5px rgb(255 255 255 / .3), inset 0 -1px 1px rgb(0 0 0 / .18)",
   }
 }
 

@@ -45,10 +45,20 @@ export function Notes() {
         </header>
         <p className="mb-4 max-w-[64ch] text-sm leading-relaxed text-text-2">{selected.summary}</p>
         <ul className="mb-5 max-w-[64ch] space-y-2">
-          {selected.bullets.map((b, i) => (
+          {selected.bullets.map((parts, i) => (
             <li key={i} className="flex gap-2 text-[13px] leading-relaxed text-text-2">
               <span aria-hidden className="mt-[7px] h-[3px] w-[3px] shrink-0 rounded-full bg-text-3" />
-              {b}
+              <span>
+                {parts.map((part, j) =>
+                  part.bold ? (
+                    <strong key={j} className="font-semibold text-text">
+                      {part.text}
+                    </strong>
+                  ) : (
+                    <span key={j}>{part.text}</span>
+                  )
+                )}
+              </span>
             </li>
           ))}
         </ul>

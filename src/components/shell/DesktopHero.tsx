@@ -39,20 +39,20 @@ export function DesktopHero() {
       {/* One shadow for the whole block. Text on a wallpaper needs it even
           at 8:1 contrast - it is what stops the type reading as printed
           into the image rather than floating over it. */}
-      <div style={{ textShadow: "0 1px 24px rgb(0 0 0 / .55), 0 1px 3px rgb(0 0 0 / .4)" }}>
-        <p className="text-[clamp(1rem,1.6vw,1.35rem)] font-light text-text-2">Hi, I&rsquo;m</p>
+      <div style={{ textShadow: "var(--wp-text-shadow)" }}>
+        <p className="text-[clamp(1rem,1.6vw,1.35rem)] font-light text-wp-text-2">Hi, I&rsquo;m</p>
 
-        <p className="mt-1 text-[clamp(3rem,6.4vw,6.5rem)] leading-[0.95] font-semibold tracking-[-0.045em] text-text">
+        <p className="mt-1 text-[clamp(3rem,6.4vw,6.5rem)] leading-[0.95] font-semibold tracking-[-0.045em] text-wp-text">
           {profile.name}.
         </p>
 
-        <p className="mt-5 font-mono text-[clamp(0.7rem,0.95vw,0.8rem)] tracking-[0.18em] text-link uppercase">
+        <p className="mt-5 font-mono text-[clamp(0.7rem,0.95vw,0.8rem)] tracking-[0.18em] text-wp-link uppercase">
           {profile.role}
-          <span className="text-text-3">{" // "}</span>
+          <span className="text-wp-text-3">{" // "}</span>
           {profile.employer.name}
         </p>
 
-        <p className="mt-4 flex items-center gap-2 text-[clamp(0.8rem,1vw,0.9rem)] text-text-2">
+        <p className="mt-4 flex items-center gap-2 text-[clamp(0.8rem,1vw,0.9rem)] text-wp-text-2">
           <span
             aria-hidden
             className="inline-block h-[7px] w-[7px] shrink-0 rounded-full"
@@ -62,7 +62,7 @@ export function DesktopHero() {
                   ? "var(--sys-green)"
                   : profile.availability.status === "selective"
                     ? "var(--sys-orange)"
-                    : "var(--os-text-3)",
+                    : "var(--wp-text-3)",
               boxShadow:
                 profile.availability.status === "open"
                   ? "0 0 10px var(--sys-green)"
@@ -72,7 +72,7 @@ export function DesktopHero() {
           {profile.availability.label}
         </p>
 
-        <p className="mt-4 max-w-[34rem] text-[clamp(0.95rem,1.15vw,1.075rem)] leading-relaxed text-balance text-text-2">
+        <p className="mt-4 max-w-[34rem] text-[clamp(0.95rem,1.15vw,1.075rem)] leading-relaxed text-balance text-wp-text-2">
           {profile.tagline}
         </p>
       </div>
@@ -83,10 +83,10 @@ export function DesktopHero() {
       {/* text-2, not text-3: the token comment in globals.css scopes
           --os-text-3 to decoration and explicitly bars it from body copy,
           and this is a sentence a visitor is meant to read. */}
-      <p className="mt-10 flex items-center gap-2 font-mono text-[11px] tracking-wide text-text-2">
+      <p className="mt-10 flex items-center gap-2 font-mono text-[11px] tracking-wide text-wp-text-2">
         <span
           className="rounded-[5px] px-1.5 py-0.5"
-          style={{ background: "rgb(255 255 255 / .07)", boxShadow: "inset 0 0 0 1px var(--os-edge)" }}
+          style={{ background: "var(--wp-chip-bg)", boxShadow: "inset 0 0 0 1px var(--wp-chip-border)" }}
         >
           double-click
         </span>

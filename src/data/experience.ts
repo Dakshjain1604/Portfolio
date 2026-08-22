@@ -6,7 +6,13 @@ export type Role = {
   start: string
   end: string
   summary: string
-  bullets: string[]
+  /** Each bullet is a list of parts, same shape as profile.ts's
+   *  BioParagraph - `bold` marks the artefact, the surface it shipped on,
+   *  or the number attached to it, per the comment below on why the
+   *  bullets are written this specific way. Plain strings would leave
+   *  that distinction invisible; a reader scanning rather than reading
+   *  every word should still land on the evidence. */
+  bullets: { text: string; bold?: boolean }[][]
   tech: string[]
 }
 
@@ -33,13 +39,69 @@ export const experience: Role[] = [
     summary:
       "Joined an early-stage autonomous AI engineering startup as an intern and was promoted to full-time in three months. Owns the website, the backend behind it, and the LLM features inside the product.",
     bullets: [
-      "Built and published neo-mcp, an open-source MIT-licensed MCP server on PyPI that puts NEO inside Claude Code, Cursor, VS Code, Zed and Codex. I own its tool schemas, structured outputs, function calling, auth and error contracts, across 45 releases in 4 months.",
-      "Architected NeoClaw, a messaging-first agent orchestration layer that turns one Telegram or WhatsApp message into multi-step work through subagents over MCP, with 50+ tools behind a single contract, loop detection, confidence-based escalation to a human, and LLM tracing.",
-      "Shipped three production LLM features on the Claude API and LangChain: a research agent, a PDF parser and a dataset processor, plus the product's RAG pipelines.",
-      "Open-sourced the Ornith evaluation framework and used it to benchmark models against each other, so output quality was measured before any model change shipped. NEO's public model comparisons were written off those benchmarks.",
-      "Led the v1-to-v2 REST API migration and full React rebuild of heyneo.com as the only engineer, reworking product pages, user flows and dashboards end to end, and rebuilt the developer docs at docs.heyneo.com on Next.js.",
-      "Owns the Node.js/Express and MongoDB backend: tuned hot paths with compound indexes and aggregation pipelines, added Redis caching and rate limiting so agent traffic could not overwhelm the database, and built OAuth 2.0 and JWT auth flows with Jest coverage on critical routes.",
-      "Ships every change through Git, GitHub Actions CI/CD, Docker, AWS and Vercel.",
+      [
+        { text: "Built and published " },
+        { text: "neo-mcp", bold: true },
+        { text: ", an open-source " },
+        { text: "MIT-licensed", bold: true },
+        { text: " MCP server on " },
+        { text: "PyPI", bold: true },
+        { text: " that puts NEO inside " },
+        { text: "Claude Code, Cursor, VS Code, Zed and Codex", bold: true },
+        {
+          text: ". I own its tool schemas, structured outputs, function calling, auth and error contracts, across ",
+        },
+        { text: "45 releases in 4 months", bold: true },
+        { text: "." },
+      ],
+      [
+        { text: "Architected " },
+        { text: "NeoClaw", bold: true },
+        {
+          text: ", a messaging-first agent orchestration layer that turns one Telegram or WhatsApp message into multi-step work through subagents over MCP, with ",
+        },
+        { text: "50+ tools", bold: true },
+        { text: " behind a single contract, loop detection, confidence-based escalation to a human, and LLM tracing." },
+      ],
+      [
+        { text: "Shipped " },
+        { text: "three production LLM features", bold: true },
+        { text: " on the " },
+        { text: "Claude API and LangChain", bold: true },
+        { text: ": a research agent, a PDF parser and a dataset processor, plus the product's RAG pipelines." },
+      ],
+      [
+        { text: "Open-sourced the " },
+        { text: "Ornith evaluation framework", bold: true },
+        {
+          text: " and used it to benchmark models against each other, so output quality was measured before any model change shipped. NEO's public model comparisons were written off those benchmarks.",
+        },
+      ],
+      [
+        { text: "Led the " },
+        { text: "v1-to-v2 REST API migration", bold: true },
+        { text: " and " },
+        { text: "full React rebuild of heyneo.com", bold: true },
+        { text: " as the " },
+        { text: "only engineer", bold: true },
+        {
+          text: ", reworking product pages, user flows and dashboards end to end, and rebuilt the developer docs at ",
+        },
+        { text: "docs.heyneo.com", bold: true },
+        { text: " on Next.js." },
+      ],
+      [
+        { text: "Owns the " },
+        { text: "Node.js/Express and MongoDB backend", bold: true },
+        { text: ": tuned hot paths with " },
+        { text: "compound indexes and aggregation pipelines", bold: true },
+        { text: ", added " },
+        { text: "Redis caching and rate limiting", bold: true },
+        { text: " so agent traffic could not overwhelm the database, and built " },
+        { text: "OAuth 2.0 and JWT", bold: true },
+        { text: " auth flows with Jest coverage on critical routes." },
+      ],
+      [{ text: "Ships every change through Git, GitHub Actions CI/CD, Docker, AWS and Vercel." }],
     ],
     tech: [
       "Python",
@@ -65,8 +127,16 @@ export const experience: Role[] = [
     summary:
       "Built machine learning and NLP projects in Python for the team's client work.",
     bullets: [
-      "Built classification models with scikit-learn, pandas and NumPy so documents were sorted into categories automatically instead of by hand.",
-      "Built structure extraction over unstructured documents, turning free-form text into structured fields a downstream system could read.",
+      [
+        { text: "Built " },
+        { text: "classification models", bold: true },
+        { text: " with scikit-learn, pandas and NumPy so documents were sorted into categories automatically instead of by hand." },
+      ],
+      [
+        { text: "Built " },
+        { text: "structure extraction", bold: true },
+        { text: " over unstructured documents, turning free-form text into structured fields a downstream system could read." },
+      ],
     ],
     tech: ["Python", "scikit-learn", "pandas", "NumPy", "NLP"],
   },
@@ -86,9 +156,9 @@ export const experience: Role[] = [
     summary:
       "Built scalability modules and optimized REST interfaces for a high-traffic e-commerce platform.",
     bullets: [
-      "Developed Node.js and Express API layers with full CRUD routes.",
-      "Integrated JWT authentication and designed GraphQL schema queries.",
-      "Documented payment and user APIs using Swagger UI, and containerized the workspace with Docker.",
+      [{ text: "Developed Node.js and Express API layers with full CRUD routes." }],
+      [{ text: "Integrated JWT authentication and designed GraphQL schema queries." }],
+      [{ text: "Documented payment and user APIs using Swagger UI, and containerized the workspace with Docker." }],
     ],
     tech: ["Node.js", "Express", "GraphQL", "MongoDB", "Docker"],
   },

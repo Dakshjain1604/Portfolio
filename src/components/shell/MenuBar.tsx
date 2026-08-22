@@ -151,7 +151,7 @@ export function MenuBar() {
         // Real Tahoe's transparent bar is text floating on the wallpaper -
         // the shadow is what keeps it legible over bright regions instead
         // of a filled surface. Not needed once there's real glass behind it.
-        textShadow: menuBarSolid ? undefined : "0 1px 3px rgb(0 0 0 / 0.45)",
+        textShadow: menuBarSolid ? undefined : "var(--wp-chrome-shadow)",
       }}
       role="menubar"
     >
@@ -179,7 +179,9 @@ export function MenuBar() {
           onOpenChange={(v) => setOpenMenu(v ? "id" : null)}
           onRequestNeighbor={requestNeighbor("id")}
         />
-        <span className="px-1 text-xs font-semibold text-text">{focusedTitle}</span>
+        <span className={cn("px-1 text-xs font-semibold", menuBarSolid ? "text-text" : "text-wp-text")}>
+          {focusedTitle}
+        </span>
         <Menu
           label="File"
           ariaLabel="File"
@@ -217,7 +219,10 @@ export function MenuBar() {
           target="_blank"
           rel="noopener noreferrer"
           aria-label="GitHub, opens in a new tab"
-          className="text-text-2 transition-colors hover:text-text"
+          className={cn(
+            "transition-colors",
+            menuBarSolid ? "text-text-2 hover:text-text" : "text-wp-text-2 hover:text-wp-text"
+          )}
         >
           {/* `light` at 14px is a few sub-pixel hairlines - at menu bar size
               these were legible as "an icon" but not as which icon. */}
@@ -228,7 +233,10 @@ export function MenuBar() {
           target="_blank"
           rel="noopener noreferrer"
           aria-label="LinkedIn, opens in a new tab"
-          className="text-text-2 transition-colors hover:text-text"
+          className={cn(
+            "transition-colors",
+            menuBarSolid ? "text-text-2 hover:text-text" : "text-wp-text-2 hover:text-wp-text"
+          )}
         >
           <LinkedinLogo size={15} weight="fill" />
         </a>
@@ -237,7 +245,7 @@ export function MenuBar() {
           // Sans, not mono: the macOS clock is set in the system UI face.
           // tabular-nums is the part that actually matters, so the bar does
           // not reflow every time a digit changes width.
-          className="text-xs text-text-2"
+          className={cn("text-xs", menuBarSolid ? "text-text-2" : "text-wp-text-2")}
           style={{ fontVariantNumeric: "tabular-nums" }}
         >
           {now

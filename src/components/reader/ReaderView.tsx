@@ -90,9 +90,17 @@ export function ReaderView() {
                 </p>
                 <p className="mt-2 text-[15px] leading-[1.7] text-text-2">{role.summary}</p>
                 <ul className="mt-2 space-y-1">
-                  {role.bullets.map((b, i) => (
+                  {role.bullets.map((parts, i) => (
                     <li key={i} className="text-[15px] leading-[1.7] text-text-2">
-                      {b}
+                      {parts.map((part, j) =>
+                        part.bold ? (
+                          <strong key={j} className="font-semibold text-text">
+                            {part.text}
+                          </strong>
+                        ) : (
+                          <span key={j}>{part.text}</span>
+                        )
+                      )}
                     </li>
                   ))}
                 </ul>

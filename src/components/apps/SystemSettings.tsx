@@ -23,6 +23,7 @@ import type { IconProps } from "@phosphor-icons/react"
 import { skills, type Skill } from "@/data/skills"
 import { projects } from "@/data/projects"
 import { useOS } from "@/os/store"
+import { useFinderIntent } from "@/os/finderIntent"
 import { Sidebar } from "@/components/primitives/Sidebar"
 
 /**
@@ -100,6 +101,7 @@ const ROW = "relative flex h-11 items-center gap-3 px-3 before:absolute before:l
 
 function SkillRow({ skill }: { skill: Skill }) {
   const open = useOS((s) => s.open)
+  const setFinderIntent = useFinderIntent((s) => s.setProjectId)
   const matchingProject = projects.find((p) => p.tech.some((t) => t.toLowerCase() === skill.name.toLowerCase()))
   const Fallback = GLYPH_FALLBACK[skill.name]
   // A slug that Simple Icons does not carry renders the browser's broken
@@ -135,7 +137,10 @@ function SkillRow({ skill }: { skill: Skill }) {
       <li className={ROW}>
         <button
           type="button"
-          onClick={() => open("finder")}
+          onClick={() => {
+            setFinderIntent(matchingProject.id)
+            open("finder")
+          }}
           className="absolute inset-0 flex items-center gap-3 px-3 hover:bg-panel-3"
         >
           {content}

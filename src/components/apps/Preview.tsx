@@ -50,7 +50,7 @@ export function Preview() {
   }, [])
 
   return (
-    <div className="flex h-full flex-col overflow-hidden rounded-(--r-float)" style={{ background: "#141416" }}>
+    <div className="os-plate flex h-full flex-col overflow-hidden rounded-(--r-float)">
       <div className="flex h-9 shrink-0 items-center justify-between border-b border-divider px-3">
         <span className="truncate text-xs text-text-2">DakshJain_Resume.pdf</span>
         <div className="flex gap-3">

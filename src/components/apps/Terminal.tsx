@@ -272,15 +272,22 @@ export function Terminal() {
       onClick={() => inputRef.current?.focus()}
       ref={scrollRef}
     >
+      {/* text-wp-text*, not text-text*: a real terminal keeps its own
+          profile independent of the system appearance (this is why
+          "light terminal, dark everything else" is such a common macOS
+          setup), and the background above is fixed dark to match - so the
+          text has to be fixed light too, the same reasoning as wallpaper-
+          overlay text staying legible on a wallpaper that also doesn't
+          follow the site theme. */}
       <output aria-live="polite" aria-atomic="false" className="block">
         {buffer.map((line, i) =>
           line.kind === "input" ? (
-            <div key={i} className="flex gap-2 text-text-2">
+            <div key={i} className="flex gap-2 text-wp-text-2">
               <span aria-hidden>daksh@neo ~ %</span>
-              <span className="text-text">{line.text}</span>
+              <span className="text-wp-text">{line.text}</span>
             </div>
           ) : (
-            <div key={i} className="mb-3 whitespace-pre-wrap text-text-2">
+            <div key={i} className="mb-3 whitespace-pre-wrap text-wp-text-2">
               {line.text}
               {line.links?.map((l) => (
                 <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer" className="block text-link underline">
@@ -299,7 +306,7 @@ export function Terminal() {
           <label htmlFor="terminal-input" className="sr-only">
             Terminal input
           </label>
-          <span aria-hidden className="text-text-2">
+          <span aria-hidden className="text-wp-text-2">
             daksh@neo ~ %
           </span>
           <input
@@ -311,7 +318,7 @@ export function Terminal() {
             autoComplete="off"
             spellCheck={false}
             autoCapitalize="off"
-            className="flex-1 bg-transparent text-text caret-accent outline-none"
+            className="flex-1 bg-transparent text-wp-text caret-accent outline-none"
           />
         </form>
       )}
