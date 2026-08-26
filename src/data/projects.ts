@@ -214,12 +214,12 @@ export const projects: Project[] = [
     title: "BloombergTerminal",
     outcome: "Real-time financial terminal with a resilient, dual-backend architecture.",
     description:
-      "A Bloomberg-style terminal with a dual backend (Node.js/Fastify API gateway + Python/FastAPI data engine): live price streaming from Finnhub through Redis pub/sub into a 100ms batch flusher that collapses per-symbol ticks into one write instead of flooding the socket, 16 FRED macroeconomic indicators, and a set of technical indicator overlays. Every external API call (Finnhub, Yahoo Finance, FRED) is wrapped in a circuit breaker, so a provider outage degrades the terminal instead of taking it down.",
+      "A Bloomberg-style terminal with a dual backend (Node.js/Fastify API gateway + Python/FastAPI data engine): live price streaming from Finnhub through Redis pub/sub into a 100ms batch flusher that collapses per-symbol ticks into one write instead of flooding the socket, 16 FRED macroeconomic indicators, VADER-based news sentiment scoring, and a set of technical indicator overlays. Every external API call (Finnhub, Yahoo Finance, FRED) is wrapped in a circuit breaker, so a provider outage degrades the terminal instead of taking it down. CI runs lint, the Python test suite, a frontend build, and a Docker build on every push.",
     image: "/images/projects/bloomberg-terminal.png",
     tech: ["Node.js", "FastAPI", "React", "Docker"],
     metrics: [
-      { label: "WebSocket batching", value: "100ms flush interval" },
-      { label: "Docker services", value: "5" },
+      { label: "Backend tests", value: "25" },
+      { label: "FRED indicators", value: "16" },
     ],
     github: "https://github.com/Dakshjain1604/bloomberg-terminal-clone",
     tags: ["web"],
