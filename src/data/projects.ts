@@ -197,12 +197,31 @@ export const projects: Project[] = [
   {
     id: "soh_ships",
     title: "SOH Ships",
-    outcome: "Real-time maritime vessel tracking and AIS telemetry system.",
+    outcome: "Maritime domain awareness platform that detects dark, AIS-disabled vessels.",
     description:
-      "A real-time vessel tracking and maritime intelligence platform monitoring ship coordinates, AIS telemetry streams, route vectors, and operational health metrics.",
+      "A ship-detection pipeline that downloads Sentinel-1 SAR satellite scenes, runs a 6-step preprocessing chain (orbit correction, thermal noise removal, radiometric calibration, Lee speckle filtering), and applies a CA-CFAR adaptive-threshold detector - an O(N) box-filter implementation, not the naive O(N x W^2) convolution - to find vessels invisible to AIS. Every detection is cross-referenced against real AIS positions to classify it as MATCHED, UNCERTAIN, or DARK. A React/MapLibre GL frontend renders the results across 24 shipping lanes, 8 high-risk dark-vessel zones, and 13 military fleet overlays.",
     image: "/images/projects/soh-ships.png",
-    tech: ["TypeScript", "Node.js", "React", "WebSockets", "Leaflet"],
+    tech: ["Python", "React 19", "MapLibre GL", "Docker"],
+    metrics: [
+      { label: "Detection algorithm", value: "CA-CFAR, O(N)" },
+      { label: "Backend tests", value: "43" },
+    ],
     github: "https://github.com/Dakshjain1604/SOH-Ships",
+    tags: ["web"],
+  },
+  {
+    id: "bloomberg_terminal",
+    title: "BloombergTerminal",
+    outcome: "Real-time financial terminal with a resilient, dual-backend architecture.",
+    description:
+      "A Bloomberg-style terminal with a dual backend (Node.js/Fastify API gateway + Python/FastAPI data engine): live price streaming from Finnhub through Redis pub/sub into a 100ms batch flusher that collapses per-symbol ticks into one write instead of flooding the socket, 16 FRED macroeconomic indicators, and a set of technical indicator overlays. Every external API call (Finnhub, Yahoo Finance, FRED) is wrapped in a circuit breaker, so a provider outage degrades the terminal instead of taking it down.",
+    image: "/images/projects/bloomberg-terminal.png",
+    tech: ["Node.js", "FastAPI", "React", "Docker"],
+    metrics: [
+      { label: "WebSocket batching", value: "100ms flush interval" },
+      { label: "Docker services", value: "5" },
+    ],
+    github: "https://github.com/Dakshjain1604/bloomberg-terminal-clone",
     tags: ["web"],
   },
 ]
