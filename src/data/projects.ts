@@ -99,6 +99,31 @@ export const projects: Project[] = [
     ],
   },
   {
+    id: "documind_ai",
+    /**
+     * Promoted from position 3 (2026-08-25): a hybrid-GraphRAG rebuild adds
+     * a knowledge-graph retrieval leg, reranking, query rewriting, real auth,
+     * and - critically - a committed, reproducible retrieval eval, which is
+     * the same kind of independently-checkable evidence AutoCareer's star
+     * count is. See microService/tuning/results/scoped_ablation.md in the
+     * repo for the methodology behind the metrics below.
+     */
+    title: "DocuMind AI",
+    outcome: "Hybrid GraphRAG document Q&A, with a measured +183% Recall@10 lift over naive vector search.",
+    description:
+      "A document-intelligence platform that builds a knowledge graph (LLM entity/relation extraction, Louvain community detection) alongside a Chroma vector index and a BM25 lexical index, then fuses all three retrieval legs with weighted reciprocal rank fusion, cross-encoder reranking, and multi-query rewriting. JWT auth with per-user document ownership and per-endpoint rate limiting; every request is traced to a queryable SQLite store with per-stage latency and token counts, surfaced in a live trace panel. 182 backend tests and a GitHub Actions CI gate.",
+    image: "/images/projects/documind-ai.png",
+    tech: ["Next.js 15", "FastAPI", "Hybrid Retrieval (RRF)", "Knowledge Graphs", "Cross-Encoder Rerank", "JWT Auth"],
+    metrics: [
+      { label: "Recall@10 vs. vector-only", value: "+183%" },
+      { label: "MRR vs. vector-only", value: "+454%" },
+      { label: "Backend tests", value: "182" },
+    ],
+    github: "https://github.com/Dakshjain1604/DocuMind-Ai",
+    live: "https://docu-mind-ai-nu.vercel.app/",
+    tags: ["ai"],
+  },
+  {
     id: "autocareer",
     title: "AutoCareer",
     outcome: "Autonomous job-application orchestration agent, my highest-starred repo.",
@@ -107,22 +132,6 @@ export const projects: Project[] = [
     image: "/images/projects/autocareer.png",
     tech: ["Python", "Selenium", "OpenAI API", "Chromium"],
     github: "https://github.com/Dakshjain1604/Job-Application-AutoFiller-Agent",
-    tags: ["ai"],
-  },
-  {
-    id: "documind_ai",
-    title: "DocuMind AI",
-    outcome: "RAG document Q&A system for instant chat with PDFs.",
-    description:
-      "A full-stack document-intelligence platform for Q&A, summarisation and quiz generation over PDFs, backed by an async FastAPI microservice. Hybrid retrieval pairs ChromaDB dense vector search over SentenceTransformers embeddings with BM25 lexical search, so answers hold up for both keyword lookups and open-ended questions. OCR ingestion handles scanned PDFs; DiskCache cuts token cost on repeat queries.",
-    image: "/images/projects/documind-ai.png",
-    tech: ["Next.js 15", "React 19", "FastAPI", "LangChain", "ChromaDB", "MongoDB"],
-    metrics: [
-      { label: "Retrieval", value: "Dense vectors + BM25" },
-      { label: "Ingestion", value: "OCR via Tesseract" },
-    ],
-    github: "https://github.com/Dakshjain1604/DocuMind-Ai",
-    live: "https://docu-mind-ai-nu.vercel.app/",
     tags: ["ai"],
   },
   {
@@ -158,27 +167,29 @@ export const projects: Project[] = [
   {
     id: "interview_ai",
     title: "Interview AI",
-    outcome: "AI mock-interview simulator with performance analytics.",
+    outcome: "Multi-agent AI interviewer with adaptive, evidence-linked scoring.",
     description:
-      "A technical interview platform that parses resumes, generates LLM-tailored questions across difficulty tiers and auto-scores responses. Timed assessments carry crash-safe session recovery, so a candidate who loses their browser mid-interview resumes at the same question instead of starting over.",
+      "A voice-first technical interview platform where nine cooperating agents turn a resume into an adaptive interview: question complexity adjusts in real time from how the candidate is answering, every dimension score cites the exact transcript turn it came from, and a recruiter dashboard reads the same Postgres rows the interview wrote, not sample data. Runs end to end against a real LLM provider chain with automatic failover to a deterministic backup so a session never dies.",
     image: "/images/projects/ai-interview.png",
-    tech: ["React", "TypeScript", "Redux Toolkit", "OpenAI API"],
+    tech: ["Next.js 15", "FastAPI", "PostgreSQL", "LiteLLM"],
     github: "https://github.com/Dakshjain1604/Ai_Interview",
-    live: "https://ai-interview-six-eosin.vercel.app",
     tags: ["ai"],
+    metrics: [
+      { label: "Agent pipeline", value: "9 cooperating agents" },
+      { label: "Backend tests", value: "157" },
+    ],
   },
   {
     id: "ai_coding_agent",
     title: "Ai-Coding-Agent",
-    outcome: "Lightweight CLI agent that generates and edits real project files.",
+    outcome: "Local-first coding agent CLI with a sandboxed, permission-guarded tool layer.",
     description:
-      "A Node.js CLI that turns a plain-English task into a real file tree on disk - Express and JWT backends, React components, configs - with diff-based updates and non-destructive skip behaviour. Runs fully offline on local Ollama models with no API keys.",
+      "A mode-switching coding agent CLI that routes across a dynamic Ollama, Groq, and OpenRouter provider chain, picking a local model size from free system RAM when no API key is configured. Every write is confined to a per-task sandbox and merged back only through an explicit diff-reviewed apply step - a property I verified by live-testing it, finding a real sandbox-escape bug in the process, and fixing it with regression tests to lock it in.",
     image: "/images/projects/ai-coding-agent.png",
-    tech: ["Node.js", "Ollama", "CLI", "Claude Code"],
+    tech: ["TypeScript", "oclif", "Ollama"],
     metrics: [
-      { label: "Cold start", value: "38ms" },
-      { label: "Dependencies", value: "12" },
-      { label: "Memory", value: "under 50MB" },
+      { label: "Test suite", value: "82 tests" },
+      { label: "Provider chain", value: "Ollama / Groq / OpenRouter" },
     ],
     github: "https://github.com/Dakshjain1604/Ai-coding-Agent",
     tags: ["ai"],
