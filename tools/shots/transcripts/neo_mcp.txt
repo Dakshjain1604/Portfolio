@@ -1,0 +1,20 @@
+$ curl -s https://pypi.org/pypi/neo-mcp/json | jq -r '.urls[] | [.packagetype, .filename, .size] | @tsv'
+bdist_wheel	neo_mcp-0.5.13-py3-none-any.whl	122770 bytes
+sdist	neo_mcp-0.5.13.tar.gz	171687 bytes
+
+$ pip show -f neo-mcp | sed -n '/^Files:/,$p'
+Files:
+  ../../../bin/neo-mcp
+  neo_mcp-0.5.12.dist-info/INSTALLER
+  neo_mcp-0.5.12.dist-info/METADATA
+  neo_mcp-0.5.12.dist-info/RECORD
+  neo_mcp-0.5.12.dist-info/REQUESTED
+  neo_mcp-0.5.12.dist-info/WHEEL
+  neo_mcp-0.5.12.dist-info/entry_points.txt
+  neo_mcp-0.5.12.dist-info/top_level.txt
+  neo_mcp/__init__.py
+  neo_mcp/__main__.py
+  neo_mcp/__pycache__/__init__.cpython-313.pyc
+  neo_mcp/__pycache__/__main__.cpython-313.pyc
+  neo_mcp/__pycache__/action_handlers.cpython-313.pyc
+

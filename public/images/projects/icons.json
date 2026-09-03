@@ -1,0 +1,152 @@
+{
+  "neo_mcp": {
+    "from": "/images/projects/neo_mcp/package.png",
+    "crop": {
+      "cx": 0.16,
+      "cy": 0.3,
+      "size": 0.62
+    },
+    "icon": "/images/projects/neo_mcp/icon.png",
+    "thumbs": [
+      "/images/projects/neo_mcp/package.thumb.png",
+      "/images/projects/neo_mcp/distribution.thumb.png",
+      "/images/projects/neo_mcp/diagram.thumb.png"
+    ]
+  },
+  "documind_ai": {
+    "from": "/images/projects/documind_ai/home.png",
+    "crop": {
+      "cx": 0.5,
+      "cy": 0.44,
+      "size": 0.82
+    },
+    "icon": "/images/projects/documind_ai/icon.png",
+    "thumbs": [
+      "/images/projects/documind_ai/home.thumb.png",
+      "/images/projects/documind_ai/retrieval.thumb.png",
+      "/images/projects/documind_ai/pipeline.thumb.png",
+      "/images/projects/documind_ai/signin.thumb.png",
+      "/images/projects/documind_ai/dashboard.thumb.png"
+    ]
+  },
+  "autocareer": {
+    "from": "/images/projects/autocareer/dashboard.png",
+    "crop": {
+      "cx": 0.115,
+      "cy": 0.1,
+      "size": 0.28
+    },
+    "icon": "/images/projects/autocareer/icon.png",
+    "thumbs": [
+      "/images/projects/autocareer/dashboard.thumb.png",
+      "/images/projects/autocareer/jobs.thumb.png",
+      "/images/projects/autocareer/draft.thumb.png",
+      "/images/projects/autocareer/logs.thumb.png",
+      "/images/projects/autocareer/settings.thumb.png"
+    ]
+  },
+  "llm_response_judge": {
+    "from": "/images/projects/llm_response_judge/results.png",
+    "crop": {
+      "cx": 0.42,
+      "cy": 0.31,
+      "size": 0.52
+    },
+    "icon": "/images/projects/llm_response_judge/icon.png",
+    "thumbs": [
+      "/images/projects/llm_response_judge/results.thumb.png",
+      "/images/projects/llm_response_judge/response-detail.thumb.png",
+      "/images/projects/llm_response_judge/dark-mode.thumb.png",
+      "/images/projects/llm_response_judge/welcome.thumb.png",
+      "/images/projects/llm_response_judge/api-config.thumb.png"
+    ]
+  },
+  "bioscript": {
+    "from": "/images/projects/bioscript/workbench.png",
+    "crop": {
+      "cx": 0.4,
+      "cy": 0.32,
+      "size": 0.55
+    },
+    "icon": "/images/projects/bioscript/icon.png",
+    "thumbs": [
+      "/images/projects/bioscript/workbench.thumb.png",
+      "/images/projects/bioscript/guide.thumb.png",
+      "/images/projects/bioscript/advanced-settings.thumb.png",
+      "/images/projects/bioscript/configuration.thumb.png"
+    ]
+  },
+  "interview_ai": {
+    "from": "/images/projects/interview_ai/home.png",
+    "crop": {
+      "cx": 0.5,
+      "cy": 0.44,
+      "size": 0.82
+    },
+    "icon": "/images/projects/interview_ai/icon.png",
+    "thumbs": [
+      "/images/projects/interview_ai/home.thumb.png",
+      "/images/projects/interview_ai/features.thumb.png",
+      "/images/projects/interview_ai/interviewee.thumb.png",
+      "/images/projects/interview_ai/login.thumb.png"
+    ]
+  },
+  "ai_coding_agent": {
+    "from": "/images/projects/ai_coding_agent/cli.png",
+    "crop": {
+      "cx": 0.17,
+      "cy": 0.22,
+      "size": 0.55
+    },
+    "icon": "/images/projects/ai_coding_agent/icon.png",
+    "thumbs": [
+      "/images/projects/ai_coding_agent/cli.thumb.png",
+      "/images/projects/ai_coding_agent/providers.thumb.png",
+      "/images/projects/ai_coding_agent/memory.thumb.png"
+    ]
+  },
+  "soh_ships": {
+    "from": "/images/projects/soh_ships/map.png",
+    "crop": {
+      "cx": 0.4,
+      "cy": 0.42,
+      "size": 0.55
+    },
+    "icon": "/images/projects/soh_ships/icon.png",
+    "thumbs": [
+      "/images/projects/soh_ships/map.thumb.png",
+      "/images/projects/soh_ships/detections.thumb.png",
+      "/images/projects/soh_ships/dark-vessels.thumb.png",
+      "/images/projects/soh_ships/new-analysis.thumb.png"
+    ]
+  },
+  "bloomberg_terminal": {
+    "from": "/images/projects/bloomberg_terminal/terminal.png",
+    "crop": {
+      "cx": 0.15,
+      "cy": 0.22,
+      "size": 0.45
+    },
+    "icon": "/images/projects/bloomberg_terminal/icon.png",
+    "thumbs": [
+      "/images/projects/bloomberg_terminal/terminal.thumb.png",
+      "/images/projects/bloomberg_terminal/indicators.thumb.png",
+      "/images/projects/bloomberg_terminal/chart-range.thumb.png",
+      "/images/projects/bloomberg_terminal/watchlist.thumb.png",
+      "/images/projects/bloomberg_terminal/shortcuts.thumb.png"
+    ]
+  },
+  "website_cloner": {
+    "from": "/images/projects/website_cloner/home.png",
+    "crop": {
+      "cx": 0.5,
+      "cy": 0.16,
+      "size": 0.45
+    },
+    "icon": "/images/projects/website_cloner/icon.png",
+    "thumbs": [
+      "/images/projects/website_cloner/home.thumb.png",
+      "/images/projects/website_cloner/url-entered.thumb.png"
+    ]
+  }
+}

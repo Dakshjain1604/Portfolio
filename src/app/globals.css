@@ -97,6 +97,17 @@
   --wp-text-shadow: 0 1px 24px rgb(0 0 0 / .55), 0 1px 3px rgb(0 0 0 / .4);
   --wp-chrome-shadow: 0 1px 3px rgb(0 0 0 / .45);
   --wp-label-shadow: 0 1px 3px rgb(0 0 0 / .8), 0 0 12px rgb(0 0 0 / .5);
+
+  /* Full-screen overlay scrim - Launchpad, Mission Control.
+     Both used to dim the wallpaper with a fixed `brightness(0.45)`, which
+     made the surface dark in *both* themes while the text on it kept
+     following the theme. In Light that put near-black --wp-text on a
+     darkened backdrop: measured 2.74:1 for Launchpad labels and 1.05:1 for
+     Mission Control's, i.e. very nearly invisible. See
+     tools/e2e/contrast.mjs, which is what caught it.
+     A tinted scrim instead of a filter also makes the result independent of
+     which wallpaper is loaded, so contrast cannot regress by changing one. */
+  --os-scrim: rgb(6 7 9 / .74);
   --wp-chip-bg: rgb(255 255 255 / .07);
   --wp-chip-border: rgb(255 255 255 / .14);
 
@@ -271,6 +282,10 @@
     --wp-text-shadow: 0 1px 24px rgb(255 255 255 / .6), 0 1px 3px rgb(255 255 255 / .5);
     --wp-chrome-shadow: 0 1px 3px rgb(255 255 255 / .5);
     --wp-label-shadow: 0 1px 3px rgb(255 255 255 / .8), 0 0 12px rgb(255 255 255 / .5);
+
+  /* Light's counterpart - see the note in the dark block. The whole point
+     is that this flips with the theme while `brightness()` never did. */
+  --os-scrim: rgb(233 236 241 / .76);
     --wp-chip-bg: rgb(0 0 0 / .05);
     --wp-chip-border: rgb(0 0 0 / .12);
   }
@@ -322,6 +337,10 @@
   --wp-text-shadow: 0 1px 24px rgb(255 255 255 / .6), 0 1px 3px rgb(255 255 255 / .5);
   --wp-chrome-shadow: 0 1px 3px rgb(255 255 255 / .5);
   --wp-label-shadow: 0 1px 3px rgb(255 255 255 / .8), 0 0 12px rgb(255 255 255 / .5);
+
+  /* Light's counterpart - see the note in the dark block. The whole point
+     is that this flips with the theme while `brightness()` never did. */
+  --os-scrim: rgb(233 236 241 / .76);
   --wp-chip-bg: rgb(0 0 0 / .05);
   --wp-chip-border: rgb(0 0 0 / .12);
 }
@@ -419,6 +438,22 @@ body[data-mode="desktop"] {
 :focus-visible {
   outline: 2px solid var(--os-accent);
   outline-offset: 2px;
+}
+
+/* The one sanctioned exception: a control whose focus ring is drawn by its
+   wrapper instead of by itself, because the wrapper is the shape the user
+   perceives as the control. Launchpad's search pill is the case that forced
+   this - the input fills a rounded pill, so the rule above drew a second,
+   smaller accent rectangle *inside* the pill and it read as a rendering
+   bug rather than as focus.
+
+   Unlayered, and matching on a class so it out-specifies the rule above.
+   A Tailwind `focus-visible:outline-none` cannot do this job: utilities are
+   layered, unlayered CSS beats layered CSS unconditionally, and this file
+   already documents that trap higher up. The ring is not removed - it moves
+   to the wrapper, which must carry one. */
+.focus-ring-on-wrapper:focus-visible {
+  outline: none;
 }
 
 /* A wallpaper change is a cross-fade, not a cut. Paired with the `key`

@@ -7,11 +7,30 @@ that the mobile branch renders.
 
 ```sh
 npm run build && npx next start -p 3100     # test the production bundle
-npm i -D playwright                         # not an app dependency
-node tools/e2e/smoke.mjs http://localhost:3100
+node tools/e2e/smoke.mjs    http://localhost:3100
+node tools/e2e/contrast.mjs http://localhost:3100
 ```
 
-Exits non-zero on any failure and prints every check either way.
+Both exit non-zero on any failure and print every check either way.
+`playwright` and `sharp` are devDependencies.
+
+## contrast.mjs
+
+Measured WCAG contrast for every label that sits on the wallpaper, in
+**both** themes. Not a token audit: all of it sits on a `backdrop-filter`
+surface, so the colour behind the text depends on the wallpaper, the blur
+and the scrim together and cannot be derived from the CSS. It screenshots
+the real page, samples the pixels actually behind each label, composites the
+text colour over them, and reports the ratio against a 4.5:1 floor.
+
+It earned its place immediately. Launchpad and Mission Control dimmed the
+wallpaper with a fixed `brightness(0.45)`/`(0.55)`, so their surface was dark
+in *both* themes while the text on it followed the theme. In Light that put
+near-black `--wp-text` on a darkened backdrop: **2.74:1** for Launchpad
+labels and **1.05:1** for Mission Control's - text and background within a
+rounding error of each other. Fixed with a `--os-scrim` token that flips with
+the theme; a colour rather than a filter also means contrast no longer
+depends on which wallpaper is loaded. Now 12.13 and 6.76.
 
 ## Why it exists
 
@@ -30,6 +49,15 @@ cleanly:
 
 ## Test-writing notes, learned the hard way here
 
+- **Seed the theme the way a visitor would, in `localStorage`.** Setting
+  `documentElement.dataset.theme` after load does nothing: DesktopShell
+  re-applies the *store's* preference post-mount, and the default, `auto`,
+  deletes the attribute. The first contrast run measured the light theme
+  twice and reported it as "dark" and "light".
+- **A loose selector fails silently and confidently.** `li span` for the
+  Mission Control label matched a span inside the card's *live app content*
+  instead, and reported the same 1.05:1 before and after a fix that had
+  actually landed.
 - **Query the real DOM before asserting against it.** The windows are
   `div[role="region"]`, not `section` — an early version of this file used
   `section[role="region"]`, matched nothing, and every window assertion

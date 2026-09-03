@@ -1,7 +1,7 @@
 "use client"
 
 import { GithubLogo, ArrowSquareOut, Package, BookOpen, Star } from "@phosphor-icons/react/dist/ssr"
-import type { Project, ProjectLink } from "@/data/projects"
+import { thumbOf, type Project, type ProjectLink } from "@/data/projects"
 import type { PypiPackage } from "@/lib/pypi"
 import { Chip } from "@/components/primitives/Chip"
 
@@ -36,6 +36,9 @@ type FinderProjectDetailProps = {
   pypiPkg: PypiPackage | null
   /** Quick Look renders a larger hero and heading than the persistent side pane. */
   size?: "pane" | "quicklook"
+  /** A project's own window already shows the screenshots at full size and
+   *  carries the title in its title bar, so it asks for the facts only. */
+  showHero?: boolean
 }
 
 /**
@@ -44,7 +47,13 @@ type FinderProjectDetailProps = {
  * the two presentations of a project can never drift - the same reasoning
  * src/data/ applies at the app level, one level down.
  */
-export function FinderProjectDetail({ project, stars, pypiPkg, size = "pane" }: FinderProjectDetailProps) {
+export function FinderProjectDetail({
+  project,
+  stars,
+  pypiPkg,
+  size = "pane",
+  showHero = true,
+}: FinderProjectDetailProps) {
   const links: ProjectLink[] =
     project.links ?? [
       ...(project.github ? [{ label: "Source", href: project.github, icon: "source" as const }] : []),
@@ -53,15 +62,30 @@ export function FinderProjectDetail({ project, stars, pypiPkg, size = "pane" }: 
 
   return (
     <>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={project.image}
-        alt={`${project.title} screenshot`}
-        className={`mb-3 w-full rounded-(--r-card) object-cover ${size === "quicklook" ? "max-h-72" : ""}`}
-      />
-      <h3 className={size === "quicklook" ? "mb-1 text-base font-medium text-text" : "mb-1 text-sm font-medium text-text"}>
-        {project.title}
-      </h3>
+      {showHero && (
+        <>
+          {/* `object-contain` and the baked thumb, not `object-cover` on the
+              full-size hero: cover cropped the screenshot to whatever height
+              the pane happened to have, which is the same square-peg problem
+              the app tiles had, one size up. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={thumbOf(project.image)}
+            alt={`${project.title} screenshot`}
+            loading="lazy"
+            className={`mb-3 w-full rounded-(--r-card) bg-[rgb(10_10_12)] object-contain ${
+              size === "quicklook" ? "max-h-72" : ""
+            }`}
+          />
+          <h3
+            className={
+              size === "quicklook" ? "mb-1 text-base font-medium text-text" : "mb-1 text-sm font-medium text-text"
+            }
+          >
+            {project.title}
+          </h3>
+        </>
+      )}
       <p className="mb-3 max-w-[46ch] text-xs text-text-2">{project.description}</p>
       <div className="mb-4 flex flex-wrap gap-1.5">
         {project.tech.map((t) => (

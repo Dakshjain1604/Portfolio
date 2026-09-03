@@ -6,6 +6,13 @@ import { readFileSync } from 'node:fs';
 const profileSrc = readFileSync(new URL('../../src/data/profile.ts', import.meta.url), 'utf8');
 const availabilityLabel = profileSrc.match(/availability:[\s\S]*?label:\s*"([^"]+)"/)[1];
 
+// Same reasoning as availabilityLabel: read the count out of the data file
+// rather than hardcoding it, so adding a project cannot silently make the
+// Launchpad assertion vacuous.
+const projectsSrc = readFileSync(new URL('../../src/data/projects.ts', import.meta.url), 'utf8');
+const projectCount = projectsSrc.match(/export const PROJECT_IDS = \[([\s\S]*?)\] as const/)[1]
+  .split(',').filter((s) => s.trim()).length;
+
 const BASE = process.argv[2] || process.env.BASE || 'http://localhost:3000';
 const fails = [];
 const notes = [];
@@ -54,9 +61,32 @@ const browser = await chromium.launch({ channel: 'chrome' });
   check('wallpaper image decoded', !!wp && wp.ok, wp ? wp.src : 'no img element');
 
   // open every app from the dock, confirm each mounts a window with content
-  const dock = page.locator('nav[aria-label="Dock"] button');
+  //
+  // Scoped to aria-label^="Open ", not every button in the Dock: the Dock
+  // also holds Launchpad, which opens a full-screen overlay rather than a
+  // window. An index-based selector picked it up as "app 1", and the
+  // overlay's own backdrop then intercepted every later click - so this
+  // matches on what an app tile actually says instead of on position, which
+  // also survives the next reordering.
+  const dock = page.locator('nav[aria-label="Dock"] button[aria-label^="Open "]:not([aria-label*="Launchpad"])');
   const dockCount = await dock.count();
   check('dock has 8 app icons', dockCount === 8, `${dockCount}`);
+
+  // Launchpad is its own thing: one tile, an overlay, one tile per project.
+  {
+    await page.mouse.move(720, 300);
+    await page.getByRole('button', { name: /Open Launchpad/ }).click();
+    await page.waitForTimeout(700);
+    const tiles = await page.locator('[aria-label="Launchpad"] li button').count();
+    check('launchpad opens with a tile per project', tiles === projectCount, `${tiles} of ${projectCount}`);
+    const shots = await page.evaluate(() =>
+      [...document.querySelectorAll('[aria-label="Launchpad"] li img')].every((i) => i.complete && i.naturalWidth > 0)
+    );
+    check('every launchpad tile screenshot decoded', shots);
+    await page.keyboard.press('Escape');
+    await page.waitForTimeout(500);
+    check('launchpad closes on Escape', (await page.locator('[aria-label="Launchpad"]').count()) === 0);
+  }
 
   // One at a time: open, assert it mounted with real content, close it via
   // its traffic light. Opening all ten at once cascades the last windows
@@ -153,7 +183,21 @@ const browser = await chromium.launch({ channel: 'chrome' });
   await page.waitForTimeout(4000);
   check('mobile: widget shows name', await page.locator('header').getByText('Daksh Jain').first().isVisible());
   const tiles = await page.$$('main button, main a');
-  check('mobile: 10 tiles (8 apps + 2 links)', tiles.length === 10, `${tiles.length}`);
+  const expectedTiles = 8 + 2 + projectCount;
+  check(
+    `mobile: ${expectedTiles} tiles (8 apps + 2 links + ${projectCount} projects)`,
+    tiles.length === expectedTiles,
+    `${tiles.length}`
+  );
+  // The projects section is below the fold and the springboard now scrolls,
+  // so a tile can exist in the DOM and still never be reachable.
+  const lastProjectVisible = await page
+    .locator('main button')
+    .last()
+    .scrollIntoViewIfNeeded()
+    .then(() => page.locator('main button').last().isVisible())
+    .catch(() => false);
+  check('mobile: last project tile is reachable by scrolling', lastProjectVisible);
   check('mobile: no page errors', errors.length === 0, errors.slice(0, 2).join(' | '));
   await ctx.close();
 }

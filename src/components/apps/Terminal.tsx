@@ -30,13 +30,29 @@ function help() {
     "experience    work history",
     "contact       email, linkedin, github",
     "resume        open the resume",
-    "open <app>    open a window (e.g. open finder)",
+    "open <app>    open a window (e.g. open finder, open soh-ships)",
     "neoclaw       ?",
     "clear         clear the screen",
   ].join("\n")
 }
 
 const APP_ALIASES: Record<string, AppId> = {
+  // Every project answers to its own name here, so `open soh-ships` works
+  // the same way `open finder` does. Derived from the data rather than
+  // listed, so a new project needs no edit in this file. Both the id
+  // (soh_ships) and the hyphenated title (soh-ships) resolve, because a
+  // visitor types what they saw on the tile.
+  ...Object.fromEntries(
+    projects.flatMap((p) => {
+      const target = `project.${p.id}` as AppId
+      const slug = p.title.toLowerCase().replace(/[^a-z0-9]+/g, "-")
+      return [
+        [p.id, target],
+        [p.id.replace(/_/g, "-"), target],
+        [slug, target],
+      ] as [string, AppId][]
+    })
+  ),
   finder: "finder",
   projects: "finder",
   about: "about",

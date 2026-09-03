@@ -14,7 +14,9 @@ export type WindowState = {
   openedAt: number
 }
 
-export type OSMode = "desktop" | "missionControl" | "reader"
+/** `missionControl` and `launchpad` are transient overlays - the store
+ *  deliberately never persists either, only `desktop` and `reader`. */
+export type OSMode = "desktop" | "missionControl" | "launchpad" | "reader"
 
 export const MENUBAR_H = 28
 /** dock at REST (52px icon + padding + margin). magnification grows icons to 76px

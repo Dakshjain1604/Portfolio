@@ -91,6 +91,10 @@ export function MenuBar() {
       disabled: openCount < 2,
       onSelect: () => setMode("missionControl"),
     },
+    // Never disabled, unlike Mission Control above: Launchpad's grid is the
+    // projects, which always exist, where Mission Control has nothing to
+    // show until two windows are open.
+    { kind: "action", label: "Launchpad", shortcut: "F4", onSelect: () => setMode("launchpad") },
     { kind: "separator" },
     {
       kind: "action",

@@ -1,14 +1,15 @@
 "use client"
 
-import { useRef } from "react"
+import { Fragment, useRef, useState } from "react"
 
 import { motion, useMotionValue } from "framer-motion"
 import { appOrder, dockLinks, type DockLink } from "@/data/apps"
 import { useOS } from "@/os/store"
 import { useReducedMotion } from "@/os/ReducedMotionContext"
 import { useDockMagnify, DOCK_ICON_VARIANTS } from "@/os/useDockMagnify"
-import { squircleBase, SQUIRCLE_GLASS } from "@/components/primitives/Squircle"
+import { squircleBase, SQUIRCLE_GLASS, SQUIRCLE_RADIUS } from "@/components/primitives/Squircle"
 import { LinkGlyph } from "@/components/primitives/AppGlyph"
+import { projects, projectIconSrc } from "@/data/projects"
 import { useGlassPointer } from "@/os/useGlassPointer"
 import { DockIcon } from "./DockIcon"
 
@@ -49,6 +50,74 @@ function DockExternalIcon({ link, mouseX }: { link: DockLink; mouseX: ReturnType
   )
 }
 
+
+/**
+ * Launchpad's tile, made of the projects it opens.
+ *
+ * macOS draws Launchpad as a grid of miniature app icons, and here the apps
+ * are the projects - so the tile is a 3x3 mosaic of the first nine real
+ * screenshots rather than a rocket. It says what is behind it before the
+ * tooltip does, and it is the one Dock tile that changes when the work
+ * changes.
+ *
+ * The only place a project is still shown as a square. Nine cells at ~14px
+ * each are texture, not content: nobody reads them, so cropping a 16:10
+ * screenshot to fit costs nothing here. Everywhere a project tile is meant
+ * to be legible it is drawn at the screenshot's own aspect ratio instead.
+ */
+function DockLaunchpadIcon({ mouseX }: { mouseX: ReturnType<typeof useMotionValue<number>> }) {
+  const ref = useRef<HTMLButtonElement>(null)
+  const reducedMotion = useReducedMotion()
+  const { size, lift, depth } = useDockMagnify(ref, mouseX, reducedMotion)
+  const mode = useOS((s) => s.mode)
+  const setMode = useOS((s) => s.setMode)
+  const [showTooltip, setShowTooltip] = useState(false)
+  const open = mode === "launchpad"
+
+  return (
+    <motion.li variants={DOCK_ICON_VARIANTS} className="relative flex flex-col items-center">
+      {showTooltip && (
+        <div
+          role="tooltip"
+          className="os-plate pointer-events-none absolute bottom-full mb-2 whitespace-nowrap rounded-(--r-pill) px-2.5 py-1 text-xs text-text"
+        >
+          Launchpad
+        </div>
+      )}
+      <motion.button
+        ref={ref}
+        type="button"
+        aria-label={open ? "Close Launchpad" : "Open Launchpad, all projects"}
+        aria-expanded={open}
+        onClick={() => setMode(open ? "desktop" : "launchpad")}
+        onMouseEnter={() => setShowTooltip(true)}
+        onMouseLeave={() => setShowTooltip(false)}
+        onFocus={() => setShowTooltip(true)}
+        onBlur={() => setShowTooltip(false)}
+        style={{ width: size, height: size, translateY: lift, translateZ: depth, ...squircleBase(["#5a5f68", "#2b2e34"]) }}
+        className="relative flex shrink-0 items-center justify-center focus-visible:outline-offset-4"
+      >
+        <span
+          aria-hidden
+          className="absolute inset-[14%] grid grid-cols-3 gap-[6%] overflow-hidden"
+          style={{ borderRadius: "16%" }}
+        >
+          {projects.slice(0, 9).map((p) => (
+            /* eslint-disable-next-line @next/next/no-img-element */
+            <img key={p.id} src={projectIconSrc(p.id)} alt="" className="h-full w-full rounded-[3px] object-cover" />
+          ))}
+        </span>
+        <span aria-hidden className="pointer-events-none absolute inset-0" style={{ ...SQUIRCLE_GLASS, borderRadius: SQUIRCLE_RADIUS }} />
+      </motion.button>
+      <div
+        className="mt-1 h-[3.5px] w-[3.5px] rounded-full"
+        style={{ background: open ? "var(--os-accent)" : "transparent" }}
+        aria-hidden
+      />
+    </motion.li>
+  )
+}
+
 export function Dock() {
   const mouseX = useMotionValue(Infinity)
   const booted = useOS((s) => s.booted)
@@ -73,8 +142,14 @@ export function Dock() {
         animate={reducedMotion || booted ? "show" : "hidden"}
         variants={{ hidden: {}, show: { transition: { staggerChildren: 0.04 } } }}
       >
+        {/* Launchpad sits immediately after Finder, where macOS puts it -
+            and where a visitor who has just read "Projects" finds the
+            thing that shows them. */}
         {appOrder.map((id) => (
-          <DockIcon key={id} id={id} mouseX={mouseX} />
+          <Fragment key={id}>
+            <DockIcon id={id} mouseX={mouseX} />
+            {id === "finder" && <DockLaunchpadIcon mouseX={mouseX} />}
+          </Fragment>
         ))}
         <li role="separator" aria-hidden className="mx-1 h-[40%] w-px self-center bg-divider" />
         {dockLinks.map((link) => (

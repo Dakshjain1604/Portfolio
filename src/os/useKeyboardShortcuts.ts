@@ -26,7 +26,15 @@ export function useKeyboardShortcuts() {
         return
       }
 
-      if (e.key === "Escape" && os.mode === "missionControl") {
+      // F4 is Launchpad on a real keyboard, and F3 above is Mission
+      // Control - the pair is muscle memory, so they are wired the same way.
+      if (e.key === "F4") {
+        e.preventDefault()
+        os.setMode(os.mode === "launchpad" ? "desktop" : "launchpad")
+        return
+      }
+
+      if (e.key === "Escape" && (os.mode === "missionControl" || os.mode === "launchpad")) {
         os.setMode("desktop")
         return
       }

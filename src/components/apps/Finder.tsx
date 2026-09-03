@@ -2,10 +2,12 @@
 
 import { useEffect, useMemo, useRef, useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
-import { Eye, MagnifyingGlass, Star } from "@phosphor-icons/react/dist/ssr"
+import { ArrowsOutSimple, Eye, MagnifyingGlass, Star } from "@phosphor-icons/react/dist/ssr"
 import { fetchGithub, repoSlug, starsByRepo, type GithubResult } from "@/lib/github"
 import { fetchPypi, packageFor, type PypiResult } from "@/lib/pypi"
-import { projects, type Project, type ProjectTag } from "@/data/projects"
+import { projects, thumbOf, type Project, type ProjectTag } from "@/data/projects"
+import type { ProjectAppId } from "@/data/apps"
+import { useOS } from "@/os/store"
 import { EmptyState } from "@/components/primitives/EmptyState"
 import { Sidebar } from "@/components/primitives/Sidebar"
 import { FinderProjectDetail } from "./FinderProjectDetail"
@@ -40,6 +42,9 @@ export function Finder() {
     return id && projects.some((p) => p.id === id) ? id : projects[0].id
   })
   const reducedMotion = useReducedMotion()
+  // Opening a project's own app from here rather than duplicating the
+  // gallery inside Finder: Quick Look is the peek, the app is the read.
+  const openApp = useOS((s) => s.open)
 
   // Clears the id consumed above, then keeps listening for a later one
   // written while Finder is already mounted and open - subscribed rather
@@ -248,8 +253,16 @@ export function Finder() {
                   className="flex w-full cursor-default items-center gap-3 rounded-(--r-control) px-2 py-1.5 text-left"
                   style={{ background: selected?.id === p.id ? "var(--os-accent-soft)" : "transparent" }}
                 >
+                  {/* 16:10, not a 32px square: cropping a screenshot to a
+                      square throws away a third of it, and at this size the
+                      thumbnail's only job is to be recognisable as that app. */}
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={p.image} alt={`${p.title} screenshot`} className="h-8 w-8 shrink-0 rounded object-cover" />
+                  <img
+                    src={thumbOf(p.image)}
+                    alt={`${p.title} screenshot`}
+                    loading="lazy"
+                    className="h-[26px] w-[42px] shrink-0 rounded-[4px] bg-[rgb(10_10_12)] object-contain"
+                  />
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-xs text-text">{p.title}</p>
                     <p className="truncate text-[11px] text-text-2">{p.outcome}</p>
@@ -268,6 +281,19 @@ export function Finder() {
                       tabIndex={-1} keeps it out of the roving-tabindex tab
                       stop count - Enter on the row (already focused) does
                       the identical thing for keyboard users. */}
+                  <button
+                    type="button"
+                    tabIndex={-1}
+                    aria-label={`Open ${p.title} screenshots`}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setSelectedId(p.id)
+                      openApp(`project.${p.id}` as ProjectAppId)
+                    }}
+                    className="os-press flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-panel-3 text-text-2 hover:text-text"
+                  >
+                    <ArrowsOutSimple size={12} weight="bold" />
+                  </button>
                   <button
                     type="button"
                     tabIndex={-1}

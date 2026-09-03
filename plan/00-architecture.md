@@ -357,7 +357,7 @@ The existing codebase has four files under `subComponents/` that use hooks with 
 | `globals.css` `@theme inline` structure | keep the mechanism, replace the values |
 | `TerminalSection.tsx` command resolver | salvage the fuzzy-match logic and command bodies before deleting the file |
 | `agent-orchestration-graph-3d.tsx` | salvage node positions and edge pairs before deleting |
-| `public/images/projects/*.png` | keep all 7. they are the real project screenshots. |
+| `public/images/projects/*.png` | keep all 7. they are the real project screenshots. **Superseded — see plan/23-real-screenshots.md.** Not all 7 were: `autocareer.png` was a generated mockup of a dashboard the project does not have. All ten projects are now captured by `tools/shots/` from the running software. |
 | `public/images/og-image.jpg` | keep. referenced by metadata. |
 | `public/images/profile.avif` | keep. used by About This Mac. |
 

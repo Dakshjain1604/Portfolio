@@ -1,9 +1,10 @@
 "use client"
 
 import { AnimatePresence, motion } from "framer-motion"
-import { appOrder, apps, dockLinks, type AppId } from "@/data/apps"
+import { appOrder, apps, dockLinks, projectAppOrder, projectIdOf, type AppId } from "@/data/apps"
 import { useOS } from "@/os/store"
 import { profile } from "@/data/profile"
+import { projects, thumbOf } from "@/data/projects"
 import { Squircle, squircleBase, SQUIRCLE_GLASS } from "@/components/primitives/Squircle"
 import { LinkGlyph } from "@/components/primitives/AppGlyph"
 import { Wallpaper } from "@/components/shell/Wallpaper"
@@ -20,7 +21,7 @@ export function Springboard() {
   const openApp = stack[stack.length - 1]
 
   return (
-    <div className="fixed inset-0 overflow-hidden">
+    <div className="fixed inset-0 flex flex-col overflow-hidden">
       <Wallpaper />
       <StatusBar />
 
@@ -41,7 +42,13 @@ export function Springboard() {
         <p className="mt-2.5 text-[13px] leading-snug text-balance text-text-2">{profile.tagline}</p>
       </header>
 
-      <main className="relative z-10 grid grid-cols-3 gap-x-4 gap-y-5 px-6 pt-6">
+      {/* Scrolls, unlike the desktop shell. The eight apps used to be the
+          whole home screen; ten project icons do not fit under them at any
+          tile size worth tapping, and iOS's own answer - a second page -
+          costs a pager and a gesture for content that reads fine as one
+          continuous screen. The bottom padding clears the fixed Dock. */}
+      <main className="relative z-10 min-h-0 flex-1 overflow-y-auto px-6 pt-6 pb-32">
+        <div className="grid grid-cols-3 gap-x-4 gap-y-5">
         {appOrder.map((id) => (
           <button
             key={id}
@@ -88,6 +95,55 @@ export function Springboard() {
             </span>
           </a>
         ))}
+        </div>
+
+        {/* The projects are apps here too - same tiles, same screenshots,
+            same windows - but they sit under a heading rather than mixed
+            in with Terminal and Contact, because on a 390px screen an
+            undifferentiated grid of eighteen is a wall. */}
+        <h2 className="mt-8 mb-3 text-[11px] font-medium uppercase tracking-[0.14em] text-wp-text" style={{ textShadow: "var(--wp-label-shadow)" }}>
+          Projects
+        </h2>
+        {/* Two columns of landscape cards, not three columns of squares.
+            Same reason as Launchpad: the shots are 16:10, and a square tile
+            can only show two thirds of one. At 390px wide a card is ~170px
+            across - small, but the whole screen is there and uncut, which a
+            62px square could never manage. */}
+        <ul className="grid grid-cols-2 gap-x-4 gap-y-5">
+          {projectAppOrder.map((id) => {
+            const project = projects.find((p) => p.id === projectIdOf(id))
+            if (!project) return null
+            return (
+              <li key={id}>
+                <button
+                  type="button"
+                  onClick={() => open(id)}
+                  className="block w-full text-left"
+                  aria-label={`Open ${project.title} — ${project.outcome}`}
+                >
+                  <div
+                    className="aspect-[16/10] w-full overflow-hidden rounded-(--r-card) bg-[rgb(10_10_12)]"
+                    style={{ boxShadow: "0 6px 18px -8px rgb(0 0 0 / .7), inset 0 0 0 .5px rgb(255 255 255 / .16)" }}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={thumbOf(project.image)}
+                      alt=""
+                      loading="lazy"
+                      className="h-full w-full object-contain"
+                    />
+                  </div>
+                  <span
+                    className="mt-1.5 block truncate text-[11.5px] font-medium leading-tight text-wp-text"
+                    style={{ textShadow: "var(--wp-label-shadow)" }}
+                  >
+                    {project.title}
+                  </span>
+                </button>
+              </li>
+            )
+          })}
+        </ul>
       </main>
 
       <nav

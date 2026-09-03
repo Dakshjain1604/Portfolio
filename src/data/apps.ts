@@ -7,15 +7,17 @@ import {
   EnvelopeSimple,
   FilePdf,
   Terminal as TerminalGlyph,
+  ImageSquare,
   GithubLogo,
   LinkedinLogo,
 } from "@phosphor-icons/react/dist/ssr"
 import type { IconProps } from "@phosphor-icons/react"
 import type { ComponentType } from "react"
 import { socials } from "./socials"
+import { projects, type ProjectId } from "./projects"
 import type { Rect } from "@/os/types"
 
-export type AppId =
+export type CoreAppId =
   | "finder"
   | "about"
   | "notes"
@@ -24,6 +26,19 @@ export type AppId =
   | "mail"
   | "preview"
   | "terminal"
+
+/**
+ * One app per project.
+ *
+ * The prefix is what keeps a project id from ever colliding with a core
+ * app id, and what lets `isProjectApp` recover the project from a window
+ * id without a lookup table.
+ */
+export type ProjectAppId = `project.${ProjectId}`
+export type AppId = CoreAppId | ProjectAppId
+
+export const isProjectApp = (id: AppId): id is ProjectAppId => id.startsWith("project.")
+export const projectIdOf = (id: ProjectAppId): ProjectId => id.slice("project.".length) as ProjectId
 
 export type AppMeta = {
   id: AppId
@@ -42,7 +57,7 @@ export type AppMeta = {
   dockOrder: number
 }
 
-export const apps: Record<AppId, AppMeta> = {
+const coreApps: Record<CoreAppId, AppMeta> = {
   finder: {
     id: "finder",
     title: "Projects",
@@ -119,9 +134,44 @@ export const apps: Record<AppId, AppMeta> = {
   },
 }
 
-export const appOrder: AppId[] = Object.values(apps)
+/**
+ * Project apps, derived rather than written out.
+ *
+ * Everything a project window needs is already in data/projects.ts, so
+ * duplicating a title and a rect per project here would just be a second
+ * place to forget to update. `dockOrder` is deliberately past the core
+ * apps' range and unused: these never appear in the Dock (ten more tiles
+ * would bury the eight that orient a visitor), they live in Launchpad -
+ * which is exactly where macOS puts the apps that are not pinned.
+ */
+export const projectApps = Object.fromEntries(
+  projects.map((p, i): [ProjectAppId, AppMeta] => [
+    `project.${p.id}`,
+    {
+      id: `project.${p.id}`,
+      title: p.title,
+      icon: ImageSquare,
+      // Never actually painted - a project tile is its own screenshot, so
+      // AppGlyph returns before the gradient shows. Kept non-null because
+      // AppMeta requires it and because it is the honest fallback colour
+      // if a shot ever fails to load.
+      tint: ["#3b3f47", "#22252b"],
+      defaultRect: { x: 140, y: 60, w: 1000, h: 660 },
+      minSize: { w: 520, h: 420 },
+      dockOrder: 100 + i,
+    },
+  ])
+) as Record<ProjectAppId, AppMeta>
+
+export const apps: Record<AppId, AppMeta> = { ...coreApps, ...projectApps }
+
+/** The Dock. Core apps only - see the note on projectApps above. */
+export const appOrder: CoreAppId[] = Object.values(coreApps)
   .sort((a, b) => a.dockOrder - b.dockOrder)
-  .map((a) => a.id)
+  .map((a) => a.id as CoreAppId)
+
+/** Launchpad's grid, in the same ranked order data/projects.ts uses. */
+export const projectAppOrder: ProjectAppId[] = projects.map((p) => `project.${p.id}` as ProjectAppId)
 
 /** The `README.txt` desktop icon has no window of its own; it opens `about`. */
 export const readmeDesktopIcon = { label: "README.txt", opens: "about" as AppId }

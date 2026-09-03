@@ -90,7 +90,11 @@ export function MissionControl() {
             aria-label="Close Mission Control"
             onClick={() => setMode("desktop")}
             className="absolute inset-0 h-full w-full"
-            style={{ backdropFilter: "blur(20px) brightness(0.55)" }}
+            // Same fix as Launchpad's, and this one was worse: the label
+            // below uses panel text tokens, so on a permanently-dark scrim
+            // the Light theme measured 1.05:1 - text and background within a
+            // rounding error of each other. See tools/e2e/contrast.mjs.
+            style={{ background: "var(--os-scrim)", backdropFilter: "blur(20px) saturate(130%)" }}
           />
 
           <ul
@@ -142,7 +146,14 @@ export function MissionControl() {
                         <AppContent windowId={id} />
                       </div>
                     </div>
-                    <span className="mt-2 flex items-center gap-1.5 text-xs text-text-2 group-hover:text-text">
+                    {/* Wallpaper tokens with a label shadow, not panel
+                        tokens: this text sits on the scrim, not on a panel,
+                        and --os-text-2 is tuned for the latter. The shadow is
+                        what carries it over whatever the blur leaves behind. */}
+                    <span
+                      className="mt-2 flex items-center gap-1.5 text-xs text-wp-text opacity-80 group-hover:opacity-100"
+                      style={{ textShadow: "var(--wp-label-shadow)" }}
+                    >
                       <meta.icon size={12} weight="light" />
                       {meta.title}
                     </span>

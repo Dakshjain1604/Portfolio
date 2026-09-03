@@ -11,6 +11,7 @@ import { Dock } from "./Dock"
 import { MenuBar } from "./MenuBar"
 import { ContextMenu, type ContextMenuState } from "./ContextMenu"
 import { MissionControl } from "./MissionControl"
+import { Launchpad } from "./Launchpad"
 import { BootSequence } from "./BootSequence"
 
 export function Desktop() {
@@ -46,6 +47,7 @@ export function Desktop() {
       <MenuBar />
       <ContextMenu state={menuState} onClose={() => setMenuState(null)} />
       <MissionControl />
+      <Launchpad />
       <BootSequence />
     </div>
   )

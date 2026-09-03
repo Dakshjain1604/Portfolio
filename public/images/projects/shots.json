@@ -1,0 +1,257 @@
+{
+  "soh_ships": {
+    "title": "SOH Ships",
+    "capturedAt": "2026-09-01T14:13:21.288Z",
+    "shots": [
+      {
+        "name": "map",
+        "src": "/images/projects/soh_ships/map.png",
+        "url": "http://127.0.0.1:5301/"
+      },
+      {
+        "name": "detections",
+        "src": "/images/projects/soh_ships/detections.png",
+        "url": "http://127.0.0.1:5301/"
+      },
+      {
+        "name": "dark-vessels",
+        "src": "/images/projects/soh_ships/dark-vessels.png",
+        "url": "http://127.0.0.1:5301/"
+      },
+      {
+        "name": "new-analysis",
+        "src": "/images/projects/soh_ships/new-analysis.png",
+        "url": "http://127.0.0.1:5301/"
+      }
+    ]
+  },
+  "bloomberg_terminal": {
+    "title": "BloombergTerminal",
+    "capturedAt": "2026-09-01T14:32:16.493Z",
+    "shots": [
+      {
+        "name": "terminal",
+        "src": "/images/projects/bloomberg_terminal/terminal.png",
+        "url": "http://127.0.0.1:5302/"
+      },
+      {
+        "name": "indicators",
+        "src": "/images/projects/bloomberg_terminal/indicators.png",
+        "url": "http://127.0.0.1:5302/"
+      },
+      {
+        "name": "chart-range",
+        "src": "/images/projects/bloomberg_terminal/chart-range.png",
+        "url": "http://127.0.0.1:5302/"
+      },
+      {
+        "name": "shortcuts",
+        "src": "/images/projects/bloomberg_terminal/shortcuts.png",
+        "url": "http://127.0.0.1:5302/"
+      },
+      {
+        "name": "watchlist",
+        "src": "/images/projects/bloomberg_terminal/watchlist.png",
+        "url": "http://127.0.0.1:5302/"
+      }
+    ]
+  },
+  "llm_response_judge": {
+    "title": "LLM Response Judge",
+    "capturedAt": "2026-09-01T14:13:53.351Z",
+    "shots": [
+      {
+        "name": "results",
+        "src": "/images/projects/llm_response_judge/results.png",
+        "url": "http://127.0.0.1:5303/"
+      },
+      {
+        "name": "response-detail",
+        "src": "/images/projects/llm_response_judge/response-detail.png",
+        "url": "http://127.0.0.1:5303/"
+      },
+      {
+        "name": "dark-mode",
+        "src": "/images/projects/llm_response_judge/dark-mode.png",
+        "url": "http://127.0.0.1:5303/"
+      },
+      {
+        "name": "welcome",
+        "src": "/images/projects/llm_response_judge/welcome.png",
+        "url": "http://127.0.0.1:5303/"
+      },
+      {
+        "name": "api-config",
+        "src": "/images/projects/llm_response_judge/api-config.png",
+        "url": "http://127.0.0.1:5303/"
+      }
+    ]
+  },
+  "interview_ai": {
+    "title": "Interview AI",
+    "capturedAt": "2026-09-01T14:21:04.509Z",
+    "shots": [
+      {
+        "name": "home",
+        "src": "/images/projects/interview_ai/home.png",
+        "url": "http://127.0.0.1:5304/"
+      },
+      {
+        "name": "features",
+        "src": "/images/projects/interview_ai/features.png",
+        "url": "http://127.0.0.1:5304/"
+      },
+      {
+        "name": "interviewee",
+        "src": "/images/projects/interview_ai/interviewee.png",
+        "url": "http://127.0.0.1:5304/interviewee"
+      },
+      {
+        "name": "login",
+        "src": "/images/projects/interview_ai/login.png",
+        "url": "http://127.0.0.1:5304/login"
+      }
+    ]
+  },
+  "documind_ai": {
+    "title": "DocuMind AI",
+    "capturedAt": "2026-09-01T14:24:28.361Z",
+    "shots": [
+      {
+        "name": "home",
+        "src": "/images/projects/documind_ai/home.png",
+        "url": "http://127.0.0.1:5305/"
+      },
+      {
+        "name": "retrieval",
+        "src": "/images/projects/documind_ai/retrieval.png",
+        "url": "http://127.0.0.1:5305/"
+      },
+      {
+        "name": "pipeline",
+        "src": "/images/projects/documind_ai/pipeline.png",
+        "url": "http://127.0.0.1:5305/"
+      },
+      {
+        "name": "signin",
+        "src": "/images/projects/documind_ai/signin.png",
+        "url": "http://127.0.0.1:5305/signin"
+      },
+      {
+        "name": "dashboard",
+        "src": "/images/projects/documind_ai/dashboard.png",
+        "url": "http://127.0.0.1:5305/signup"
+      }
+    ]
+  },
+  "bioscript": {
+    "title": "BioScript",
+    "capturedAt": "2026-09-01T14:17:39.167Z",
+    "shots": [
+      {
+        "name": "workbench",
+        "src": "/images/projects/bioscript/workbench.png",
+        "url": "http://127.0.0.1:8306/"
+      },
+      {
+        "name": "guide",
+        "src": "/images/projects/bioscript/guide.png",
+        "url": "http://127.0.0.1:8306/"
+      },
+      {
+        "name": "advanced-settings",
+        "src": "/images/projects/bioscript/advanced-settings.png",
+        "url": "http://127.0.0.1:8306/"
+      },
+      {
+        "name": "configuration",
+        "src": "/images/projects/bioscript/configuration.png",
+        "url": "http://127.0.0.1:8306/"
+      }
+    ]
+  },
+  "website_cloner": {
+    "title": "Website Cloner",
+    "capturedAt": "2026-09-01T14:33:20.319Z",
+    "shots": [
+      {
+        "name": "home",
+        "src": "/images/projects/website_cloner/home.png",
+        "url": "http://127.0.0.1:5307/"
+      },
+      {
+        "name": "url-entered",
+        "src": "/images/projects/website_cloner/url-entered.png",
+        "url": "http://127.0.0.1:5307/"
+      }
+    ]
+  },
+  "autocareer": {
+    "title": "AutoCareer",
+    "capturedAt": "2026-09-01T14:30:22.671Z",
+    "shots": [
+      {
+        "name": "dashboard",
+        "src": "/images/projects/autocareer/dashboard.png",
+        "url": "http://127.0.0.1:5308/"
+      },
+      {
+        "name": "jobs",
+        "src": "/images/projects/autocareer/jobs.png",
+        "url": "http://127.0.0.1:5308/"
+      },
+      {
+        "name": "draft",
+        "src": "/images/projects/autocareer/draft.png",
+        "url": "http://127.0.0.1:5308/"
+      },
+      {
+        "name": "logs",
+        "src": "/images/projects/autocareer/logs.png",
+        "url": "http://127.0.0.1:5308/"
+      },
+      {
+        "name": "settings",
+        "src": "/images/projects/autocareer/settings.png",
+        "url": "http://127.0.0.1:5308/"
+      }
+    ]
+  },
+  "neo_mcp": {
+    "title": "neo-mcp \u2014 what ships",
+    "capturedAt": "2026-09-01T14:27:03.320Z",
+    "shots": [
+      {
+        "name": "package",
+        "src": "/images/projects/neo_mcp/package.png",
+        "terminal": true
+      },
+      {
+        "name": "distribution",
+        "src": "/images/projects/neo_mcp/distribution.png",
+        "terminal": true
+      }
+    ]
+  },
+  "ai_coding_agent": {
+    "title": "coding-agent \u2014 run \"add a unit test for slugify in slugify.js\"",
+    "capturedAt": "2026-09-01T14:28:02.275Z",
+    "shots": [
+      {
+        "name": "providers",
+        "src": "/images/projects/ai_coding_agent/providers.png",
+        "terminal": true
+      },
+      {
+        "name": "memory",
+        "src": "/images/projects/ai_coding_agent/memory.png",
+        "terminal": true
+      },
+      {
+        "name": "cli",
+        "src": "/images/projects/ai_coding_agent/cli.png",
+        "terminal": true
+      }
+    ]
+  }
+}
